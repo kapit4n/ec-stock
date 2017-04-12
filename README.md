@@ -1,3 +1,9 @@
-EcStock-sbt
-=========
-Simple inventory system.
+EcStock
+================
+
+## Prerequisites
+* sbt
+* openjfx
+
+## Install and Run
+* sbt run

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2013, ScalaFX Project
+ * Copyright (c) 2012-2015, ScalaFX Ensemble Project
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,49 +25,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package hello
+package scalafx.ecstock.commons
 
-import scalafx.application.JFXApp
-import scalafx.application.JFXApp.PrimaryStage
-import scalafx.geometry.Insets
-import scalafx.scene.Scene
-import scalafx.scene.effect.DropShadow
-import scalafx.scene.layout.HBox
-import scalafx.scene.paint.Color._
-import scalafx.scene.paint.{Stops, LinearGradient}
-import scalafx.scene.text.Text
+import scala.io.Source
 
-object EcStock extends JFXApp {
+/** Helper functions related to I/O. */
+object IOUtils {
 
-  stage = new PrimaryStage {
-    title = "Easy Stock"
-    scene = new Scene {
-      fill = BLACK
-      content = new HBox {
-        padding = Insets(20)
-        content = Seq(
-          new Text {
-            text = "Inventory "
-            style = "-fx-font-size: 100pt"
-            fill = new LinearGradient(
-              endX = 0,
-              stops = Stops(PALEGREEN, SEAGREEN))
-          },
-          new Text {
-            text = "System!!!"
-            style = "-fx-font-size: 100pt"
-            fill = new LinearGradient(
-              endX = 0,
-              stops = Stops(CYAN, DODGERBLUE)
-            )
-            effect = new DropShadow {
-              color = DODGERBLUE
-              radius = 25
-              spread = 0.25
-            }
-          }
-        )
-      }
-    }
+  /** Load a resource as a string.
+    *
+    * @param reference using class loader of the `reference` object to load the resource
+    * @param path to the resource, relative to the reference, or absolute of it starts with `/`
+    */
+  def loadResourceAsString(reference: Any, path: String): String = {
+    val in = reference.getClass.getResourceAsStream(path)
+    Source.fromInputStream(in).mkString
   }
+
 }
