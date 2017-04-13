@@ -10,66 +10,54 @@ import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstrain
 /**
  *
  */
-class EcStockAddVendor extends EcStockExample {
+class EcStockAddProductInventory extends EcStockExample {
 
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
-      text = "Vendor Information"
+      text = "ProductInventory Information"
       wrapText = true
     }
 
-    val nameLbl = new Label("Name:") {
+    val productLbl = new Label("Product:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(nameLbl, 0, 0, 1, 1)
+    GridPane.setConstraints(productLbl, 0, 0, 1, 1)
 
-    val nameTxt = new TextField {text = "Vendor Name"}
+    val productTxt = new TextField {text = "Product 1"}
 
-    GridPane.setConstraints(nameTxt, 1, 0, 2, 1)
+    GridPane.setConstraints(productTxt, 1, 0, 2, 1)
 
-    val addressLbl = new Label("Address:") {
+    val quantityLbl = new Label("Quantity:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(addressLbl, 0, 1, 1, 1)
+    GridPane.setConstraints(quantityLbl, 0, 1, 1, 1)
 
-    val addressTxt = new TextField() {
-      text = "Republica Av, Cochabamba City, BO"
+    val quantityTxt = new TextField() {
+      text = "100"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(addressTxt, 1, 1, 5, 1)
+    GridPane.setConstraints(quantityTxt, 1, 1, 5, 1)
 
-    val contactLbl = new Label("Contact:") {
+    val costLbl = new Label("Cost:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(contactLbl, 0, 2, 1, 1)
+    GridPane.setConstraints(costLbl, 0, 2, 1, 1)
 
-    val contactTxt = new TextField() {
-      text = "Luis Arce"
+    val costTxt = new TextField() {
+      text = "20 Bs"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(contactTxt, 1, 2, 5, 1)
-
-    val contact2Lbl = new Label("Contact2:") {
-      style = "-fx-font-weight:bold"
-      alignmentInParent = Pos.BaselineRight
-    }
-    GridPane.setConstraints(contact2Lbl, 0, 3, 1, 1)
-
-    val contact2Txt = new TextField() {
-      text = "Hansel Arce"
-      alignmentInParent = Pos.BaselineLeft
-    }
-    GridPane.setConstraints(contact2Txt, 1, 3 , 5, 1)
+    GridPane.setConstraints(costTxt, 1, 2, 5, 1)
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt, contactLbl, contactTxt, contact2Lbl, contact2Txt)
+      children ++= Seq(productLbl, productTxt, quantityLbl, quantityTxt, costLbl, costTxt)
     }
 
     val saveBtn = new Button("SAVE")

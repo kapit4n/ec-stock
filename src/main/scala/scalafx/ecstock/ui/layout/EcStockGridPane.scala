@@ -8,20 +8,11 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
 
 /**
- * An example of a GridPane layout. There is more than one approach to using a
- * GridPane. First, the code can specify which rows and/or columns should
- * contain the content. Second, the code can alter the constraints of the
- * rows and/or columns themselves, either by specifying the preferred minimum
- * or  maximum heights or widths, or by specifying the percentage of the
- * GridPane that belongs to certain rows or columns.
  *
- * @see scalafx.scene.layout.GridPane
- * @resource /scalafx/ecstock/images/icon-48x48.png
  */
 class EcStockGridPane extends EcStockExample {
 
   def getContent = {
-    // grid1 places the children by specifying the rows and columns in GridPane.setConstraints()
     val grid1Caption = new Label {
       text = "The example below shows GridPane content placement by specifying rows and columns:"
       wrapText = true
@@ -56,9 +47,6 @@ class EcStockGridPane extends EcStockExample {
       children ++= Seq(label1, label11, label21, label22)
     }
 
-    // grid2 places the child by influencing the rows and columns themselves
-    // via GridRowInfo and GridColumnInfo. This grid uses the preferred
-    // width/height and max/min width/height.
     val grid2Caption = new Label {
       text = "The example below shows GridPane content placement by influencing the rows and columns themselves."
       wrapText = true

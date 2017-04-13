@@ -8,17 +8,11 @@ import scalafx.scene.layout.{AnchorPane, BorderPane, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 
-/** An example of  a BorderPane layout, with placement of children in the top,
-  * left, center, right, and bottom positions.
+/** 
   *
-  * @see scalafx.scene.layout.BorderPane
-  * @resource /scalafx/ecstock/images/icon-48x48.png
   */
 class EcStockBorderPane extends EcStockExample {
 
-  // @stage-property width = 440
-  // @stage-property height = 300
-  // @stage-property resizable = false
 
   def getContent = {
     // Top content using a rectangle

@@ -10,12 +10,12 @@ import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstrain
 /**
  *
  */
-class EcStockAddVendor extends EcStockExample {
+class EcStockAddCategory extends EcStockExample {
 
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
-      text = "Vendor Information"
+      text = "Category Information"
       wrapText = true
     }
 
@@ -25,51 +25,27 @@ class EcStockAddVendor extends EcStockExample {
     }
     GridPane.setConstraints(nameLbl, 0, 0, 1, 1)
 
-    val nameTxt = new TextField {text = "Vendor Name"}
+    val nameTxt = new TextField {text = "Category Name"}
 
     GridPane.setConstraints(nameTxt, 1, 0, 2, 1)
 
-    val addressLbl = new Label("Address:") {
+    val descriptionLbl = new Label("Description:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(addressLbl, 0, 1, 1, 1)
+    GridPane.setConstraints(descriptionLbl, 0, 1, 1, 1)
 
-    val addressTxt = new TextField() {
+    val descriptionTxt = new TextField() {
       text = "Republica Av, Cochabamba City, BO"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(addressTxt, 1, 1, 5, 1)
-
-    val contactLbl = new Label("Contact:") {
-      style = "-fx-font-weight:bold"
-      alignmentInParent = Pos.BaselineRight
-    }
-    GridPane.setConstraints(contactLbl, 0, 2, 1, 1)
-
-    val contactTxt = new TextField() {
-      text = "Luis Arce"
-      alignmentInParent = Pos.BaselineLeft
-    }
-    GridPane.setConstraints(contactTxt, 1, 2, 5, 1)
-
-    val contact2Lbl = new Label("Contact2:") {
-      style = "-fx-font-weight:bold"
-      alignmentInParent = Pos.BaselineRight
-    }
-    GridPane.setConstraints(contact2Lbl, 0, 3, 1, 1)
-
-    val contact2Txt = new TextField() {
-      text = "Hansel Arce"
-      alignmentInParent = Pos.BaselineLeft
-    }
-    GridPane.setConstraints(contact2Txt, 1, 3 , 5, 1)
+    GridPane.setConstraints(descriptionTxt, 1, 1, 5, 1)
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt, contactLbl, contactTxt, contact2Lbl, contact2Txt)
+      children ++= Seq(nameLbl, nameTxt, descriptionLbl, descriptionTxt)
     }
 
     val saveBtn = new Button("SAVE")
