@@ -1,12 +1,12 @@
 package scalafx.ecstock.models
 
-import scalafx.beans.property.{ObjectProperty, StringProperty, LongProperty, DoubleProperty}
+import scalafx.beans.property.{StringProperty}
 
-class Product(name_ : String, description_ : String, retailPrice_ : Double, vendor_ : Long, brand_ : Long, category_ : Long) {
+class Product(name_ : String, retailPrice_ : String, vendor_ : String, brand_ : String, category_ : String, description_ : String) {
   val name = new StringProperty(this, "name", name_)
+  val retailPrice = new StringProperty(this, "retailPrice", retailPrice_)
+  val vendor = new StringProperty(this, "vendor", vendor_)
+  val brand = new StringProperty(this, "brand", brand_)
+  val category = new StringProperty(this, "category", category_)
   val description = new StringProperty(this, "description", description_)
-  val retailPrice = new DoubleProperty(this, "retailPrice", retailPrice_)
-  val vendor = new LongProperty(this, "vendor", vendor_)
-  val brand = new LongProperty(this, "brand", brand_)
-  val category = new LongProperty(this, "category", category_)
 }

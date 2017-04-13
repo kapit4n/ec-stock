@@ -6,7 +6,7 @@ import scalafx.geometry.{HPos, Insets, Pos}
 import scalafx.scene.control.{Button, Label, Separator, TextField}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
-import scalafx.ecstock.models.ProductInventory
+import scalafx.ecstock.models.Product
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.collections.ObservableBuffer
@@ -20,39 +20,48 @@ import scalafx.scene.shape.Circle
 /**
  *
  */
-class EcStockListInventory extends EcStockExample {
+class EcStockListProduct extends EcStockExample {
 
   def getContent = {
     val infoCaution = new Label {
-      text = "ProductInventory List"
+      text = "Product List"
       wrapText = true
     }
 
-    val products = ObservableBuffer[ProductInventory](
-      new ProductInventory("Product 1","Vendor 1","100", "20.0"),
-      new ProductInventory("Product 2", "Vendor 2", "200", "50.0")
+    val customers = ObservableBuffer[Product](
+      new Product("Product 1", "10 Bs", "Vendor 1", "Brand 1", "Category 1", "Description 1")
     )
 
-    val table1 = new TableView[ProductInventory](products) {
+    val table1 = new TableView[Product](customers) {
       columns ++= List(
-        new TableColumn[ProductInventory, String] {
-          text = "Product Name"
-          cellValueFactory = { _.value.product }
+        new TableColumn[Product, String] {
+          text = "Name"
+          cellValueFactory = { _.value.name }
           prefWidth = 100
         },
-        new TableColumn[ProductInventory, String] {
-          text = "Vendor Name"
+        new TableColumn[Product, String]() {
+          text = "Retail Price"
+          cellValueFactory = { _.value.retailPrice }
+          prefWidth = 100
+        },
+        new TableColumn[Product, String]() {
+          text = "Vendor"
           cellValueFactory = { _.value.vendor }
           prefWidth = 100
         },
-        new TableColumn[ProductInventory, String]() {
-          text = "Quantity"
-          cellValueFactory = { _.value.quantity }
+        new TableColumn[Product, String]() {
+          text = "Brand"
+          cellValueFactory = { _.value.brand }
           prefWidth = 100
         },
-        new TableColumn[ProductInventory, String]() {
-          text = "Cost 1"
-          cellValueFactory = { _.value.cost }
+        new TableColumn[Product, String]() {
+          text = "Category"
+          cellValueFactory = { _.value.category }
+          prefWidth = 100
+        },
+        new TableColumn[Product, String]() {
+          text = "Description"
+          cellValueFactory = { _.value.description }
           prefWidth = 100
         }
       )

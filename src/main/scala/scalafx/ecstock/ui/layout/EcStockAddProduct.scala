@@ -11,21 +11,21 @@ import scalafx.collections.ObservableBuffer
 /**
  *
  */
-class EcStockAddProductInventory extends EcStockExample {
+class EcStockAddProduct extends EcStockExample {
 
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
-      text = "ProductInventory Information"
+      text = "Product Information"
       wrapText = true
     }
 
-    val products = ObservableBuffer(
-      "Product 1", "Product 2", "Product 3",
-      "Product 4", "Product 5", "Product 6",
+    val categories = ObservableBuffer(
+      "Category 1", "Category 2", "Category 3",
+      "Category 4", "Category 5", "Category 6",
       "Longer ComboBox item",
-      "Product 7", "Product 8", "Product 9",
-      "Product 10", "Product 12")
+      "Category 7", "Category 8", "Category 9",
+      "Category 10", "Category 12")
 
     val vendors = ObservableBuffer(
       "Vendor 1", "Vendor 2", "Vendor 3",
@@ -34,65 +34,93 @@ class EcStockAddProductInventory extends EcStockExample {
       "Vendor 7", "Vendor 8", "Vendor 9",
       "Vendor 10", "Vendor 12")
 
-    val productLbl = new Label("Product:") {
+    val brands = ObservableBuffer(
+      "Brand 1", "Brand 2", "Brand 3",
+      "Brand 4", "Brand 5", "Brand 6",
+      "Longer ComboBox item",
+      "Brand 7", "Brand 8", "Brand 9",
+      "Brand 10", "Brand 12")
+
+    val nameLbl = new Label("Name:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
+    GridPane.setConstraints(nameLbl, 0, 0, 1, 1)
 
-    GridPane.setConstraints(productLbl, 0, 0, 1, 1)
+    val nameTxt = new TextField {text = "Product Name"}
 
-    val productCb = new ComboBox[String] {
-          maxWidth = 200
-          promptText = "Make a choice..."
-          items = products
-        };
+    GridPane.setConstraints(nameTxt, 1, 0, 2, 1)
 
-    GridPane.setConstraints(productCb, 1, 0, 2, 1)
+    val retailPriceLbl = new Label("Retail Price:") {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+    GridPane.setConstraints(retailPriceLbl, 0, 1, 1, 1)
+
+    val retailPriceTxt = new TextField() {
+      text = "100 Bs"
+      alignmentInParent = Pos.BaselineLeft
+    }
+    GridPane.setConstraints(retailPriceTxt, 1, 1, 5, 1)
 
     val vendorLbl = new Label("Vendor:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-
-    GridPane.setConstraints(vendorLbl, 0, 1, 1, 1)
+    GridPane.setConstraints(vendorLbl, 0, 2, 1, 1)
 
     val vendorCb = new ComboBox[String] {
           maxWidth = 200
           promptText = "Make a choice..."
           items = vendors
         };
+    GridPane.setConstraints(vendorCb, 1, 2, 5, 1)
 
-    GridPane.setConstraints(vendorCb, 1, 1, 3, 1)
-
-    val quantityLbl = new Label("Quantity:") {
+    val brandLbl = new Label("Brand:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(quantityLbl, 0, 2, 1, 1)
+    GridPane.setConstraints(brandLbl, 0, 3, 1, 1)
 
-    val quantityTxt = new TextField() {
-      text = "100"
-      alignmentInParent = Pos.BaselineLeft
-    }
-    GridPane.setConstraints(quantityTxt, 1, 2, 4, 1)
+    val brandCb = new ComboBox[String] {
+          maxWidth = 200
+          promptText = "Make a choice..."
+          items = brands
+        };
+    GridPane.setConstraints(brandCb, 1, 3 , 5, 1)
 
-    val costLbl = new Label("Cost:") {
+    val categoryLbl = new Label("Category:") {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(costLbl, 0, 3, 1, 1)
+    GridPane.setConstraints(categoryLbl, 0, 4, 1, 1)
 
-    val costTxt = new TextField() {
-      text = "20 Bs"
+    val categoryCb = new ComboBox[String] {
+          maxWidth = 200
+          promptText = "Make a choice..."
+          items = categories
+        };
+    GridPane.setConstraints(categoryCb, 1, 4 , 6, 1)
+
+    val descriptionLbl = new Label("Description:") {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+    GridPane.setConstraints(descriptionLbl, 0, 5, 1, 1)
+
+    val descriptionTxt = new TextField() {
+      text = "100 Bs"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(costTxt, 1, 3, 5, 1)
+    GridPane.setConstraints(descriptionTxt, 1, 5, 7, 1)
+
+
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(productLbl, productCb, vendorLbl, vendorCb, quantityLbl, quantityTxt, costLbl, costTxt)
+      children ++= Seq(nameLbl, nameTxt, retailPriceLbl, retailPriceTxt, vendorLbl, vendorCb, brandLbl, brandCb, categoryLbl, categoryCb, descriptionLbl, descriptionTxt)
     }
 
     val saveBtn = new Button("SAVE")
