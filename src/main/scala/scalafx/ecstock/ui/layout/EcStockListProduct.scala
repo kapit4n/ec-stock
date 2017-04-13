@@ -28,11 +28,11 @@ class EcStockListProduct extends EcStockExample {
       wrapText = true
     }
 
-    val customers = ObservableBuffer[Product](
+    val products = ObservableBuffer[Product](
       new Product("Product 1", "10 Bs", "Vendor 1", "Brand 1", "Category 1", "Description 1")
     )
 
-    val table1 = new TableView[Product](customers) {
+    val table1 = new TableView[Product](products) {
       columns ++= List(
         new TableColumn[Product, String] {
           text = "Name"
@@ -67,11 +67,11 @@ class EcStockListProduct extends EcStockExample {
       )
     }
 
-    GridPane.setConstraints(table1, 0, 1, 1, 1)
+    GridPane.setConstraints(table1, 0, 0, 1, 1)
 
     val infoGrid = new GridPane {
-      hgap = 4
-      vgap = 6
+      hgap = 1
+      vgap = 1
       margin = Insets(18)
       children ++= Seq(table1)
     }
