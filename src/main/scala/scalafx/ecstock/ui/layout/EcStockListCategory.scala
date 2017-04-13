@@ -28,8 +28,8 @@ class EcStockListCategory extends EcStockExample {
     }
 
     val categories = ObservableBuffer[Category](
-      new Category("Category 1", "Description 1"),
-      new Category("Category 2", "Description 2")
+      new Category("Category 1", "Description 1", "imgSrc"),
+      new Category("Category 2", "Description 2", "imgSrc")
     )
 
     val table1 = new TableView[Category](categories) {

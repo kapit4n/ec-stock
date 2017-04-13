@@ -2,7 +2,8 @@ package scalafx.ecstock.models
 
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
-class Category(name_ : String, description_ : String) {
+class Category(name_ : String, description_ : String, imgSrc_ : String) {
   val name = new StringProperty(this, "name", name_)
   val description = new StringProperty(this, "description", description_)
+  val imgSrc = new StringProperty(this, "imgSrc", imgSrc_)
 }

@@ -53,13 +53,11 @@ object EcStockTree {
 
   private def createThumbnails() = {
     val pairs = for ((dirName, examples) <- loadExampleNames()) yield {
-      print("This is the main example")
       val groupName = dirName
       val thumbs = for (leafName <- examples) yield {
         val sampleName = ExampleInfo.formatAddSpaces(leafName)
         val img = new ImageView {
           val filePath = ExampleInfo.thumbnailPath(leafName, groupName)
-          print(filePath)
           val inputStream = this.getClass.getResourceAsStream(filePath)
           if (inputStream == null) {
             throw new IOException("Unable to locate resource: " + filePath)
@@ -67,12 +65,6 @@ object EcStockTree {
           image = new Image(inputStream)
         }
         val button = new Button(sampleName, img) {
-          print(sampleName)
-          print(sampleName)
-          print(img)
-          print(img)
-          print(groupName)
-          print(groupName)
           prefWidth = 140
           prefHeight = 145
           contentDisplay = ContentDisplay.Top

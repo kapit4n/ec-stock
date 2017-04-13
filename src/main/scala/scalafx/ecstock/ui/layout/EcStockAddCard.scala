@@ -11,18 +11,36 @@ import scalafx.scene.control._
 import java.io.IOException
 import scalafx.ecstock.models.Product
 import scalafx.ecstock.models.ProductCard
+import scalafx.ecstock.models.Category
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
-
-
 
 /**
  *
  */
 class EcStockAddCard extends EcStockExample {
 
-  def addAmount(product: String, quantity: Int, productCards: ObservableBuffer[ProductCard]) = {
+  val productCards: ObservableBuffer[ProductCard] = ObservableBuffer[ProductCard]()
+  val products: ObservableBuffer[Product] = ObservableBuffer[Product]()
+  val categories: ObservableBuffer[Category] = ObservableBuffer[Category]()
+  val productImgWidth = 100
+  val productImgHeight = 100
+  val categoryImgWidth = 100
+  val categoryImgHeight = 60
+
+  val productsGrid = new GridPane {
+    hgap = 3
+    vgap = 3
+    gridLinesVisible = true
+    margin = Insets(18)
+    style = "-fx-background-color: yellow"
+  }
+
+  /*
+   * Updates the amount of the product on the card and add if it doensn't exist
+   */
+  def addAmount(product: String, quantity: Int) = {
     var found = false
     for (card <- productCards.find(_.product.value == product)) {
         card.quantity.value = (card.quantity.value.toInt + 1).toString
@@ -33,31 +51,108 @@ class EcStockAddCard extends EcStockExample {
     }
   }
 
+  /**
+   * Method to generate product list by category
+   */
+  def generateCategory(containerGrid: GridPane, category: String) = {
+    var found = false
+    val maxC = 3
+    val maxR = 3
+    var column = 0
+    var row = 0
+    containerGrid.children.clear()
+    for (product <- products.filter(_.category.value == category)) {
+        val imgAux = new ImageView {
+          val filePath =  product.imgSrc.value
+          val inputStream = this.getClass.getResourceAsStream(filePath)
+          if (inputStream == null) {
+            throw new IOException("Unable to locate resource: " + filePath)
+          }
+          image = new Image(inputStream)
+          fitWidth = productImgWidth
+          fitHeight = productImgHeight
+        }
+
+        val auxData = new Button(product.name.value, imgAux) {
+            contentDisplay = ContentDisplay.Top
+            onAction = (ae: ActionEvent) => {
+              addAmount(product.name.value, 1)              
+            }
+          }
+
+        GridPane.setConstraints(auxData, column, row, 1, 1)
+        containerGrid.children += auxData
+
+        column = column + 1
+        column = column % maxC
+        if (column == 0) {
+          row = row + 1
+        }
+    }
+  }
+  /**
+   * Method to generate category list
+   */
+  def generateCategories(containerGrid: GridPane) = {
+    var found = false
+    val maxC = 3
+    val maxR = 3
+    var column = 0
+    var row = 0
+    containerGrid.children.clear()
+    for (category <- categories) {
+        val imgAux = new ImageView {
+          val filePath =  category.imgSrc.value
+          val inputStream = this.getClass.getResourceAsStream(filePath)
+          if (inputStream == null) {
+            throw new IOException("Unable to locate resource: " + filePath)
+          }
+          image = new Image(inputStream)
+          fitWidth = categoryImgWidth
+          fitHeight = categoryImgHeight
+        }
+
+        val auxData = new Button(category.name.value, imgAux) {
+            contentDisplay = ContentDisplay.Top
+            onAction = (ae: ActionEvent) => {
+              generateCategory(productsGrid, category.name.value)
+            }
+          }
+
+        GridPane.setConstraints(auxData, column, row, 1, 1)
+        containerGrid.children += auxData
+
+        column = column + 1
+        column = column % maxC
+        if (column == 0) {
+          row = row + 1
+        }
+    }
+  }
+
   def getContent = {
+
+    products += new Product("IPAD", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/ipad.jpg")
+    products += new Product("IMAC", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/imac.png")
+    products += new Product("TV", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/tv.jpg")
+    products += new Product("APPLE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/apple.jpg")
+    products += new Product("ORANGE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/orange.jpg")
+    products += new Product("WATERMELON", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/watermelon.jpg")
+    products += new Product("CHOCOLATE", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/chocolate.jpg")
+    products += new Product("LOLLIPOPS", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/lollipops.jpg")
+
+
+    categories += new Category("FRUIT", "Description 1", "/scalafx/ecstock/products/fruits.jpg")
+    categories += new Category("CANDY", "Description 2", "/scalafx/ecstock/products/candies.jpg")
+    categories += new Category("GADGET", "Description 2", "/scalafx/ecstock/products/gadgets.png")
+
+
     val infoCaution = new Label {
       text = "Card Information"
       wrapText = true
     }
 
-    val img = new ImageView {
-      val filePath = "/scalafx/ecstock/images/boat.jpg"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 100
-    }
-    val img1 = new ImageView {
-      val filePath = "/scalafx/ecstock/images/ScalaFX-icon-64x64.png"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-    }
-    val img2 = new ImageView {
+    var calculatorImg = new ImageView {
       val filePath = "/scalafx/ecstock/images/scala-logo.png"
       val inputStream = this.getClass.getResourceAsStream(filePath)
       if (inputStream == null) {
@@ -65,93 +160,6 @@ class EcStockAddCard extends EcStockExample {
       }
       image = new Image(inputStream)
     }
-    val img3 = new ImageView {
-      val filePath = "/scalafx/ecstock/images/ScalaFX-icon-64x64.png"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-    }
-
-    val imacImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/imac.png"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 100
-    }
-
-    val ipadImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/ipad.jpg"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 100
-    }
-
-    val tvImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/tv.jpg"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 100
-    }
-
-    val chocolateImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/chocolate.jpg"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 100
-    }
-
-    val candiesImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/candies.jpg"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 50
-    }
-
-    val gadgetsImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/gadgets.png"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 50
-    }
-
-    val fruitsImg = new ImageView {
-      val filePath = "/scalafx/ecstock/products/fruits.jpg"
-      val inputStream = this.getClass.getResourceAsStream(filePath)
-      if (inputStream == null) {
-        throw new IOException("Unable to locate resource: " + filePath)
-      }
-      image = new Image(inputStream)
-      fitWidth = 100
-      fitHeight = 50
-    }
-
-    val productCards = ObservableBuffer[ProductCard]()
 
     val detailTable = new TableView[ProductCard](productCards) {
       columns ++= List(
@@ -170,17 +178,7 @@ class EcStockAddCard extends EcStockExample {
 
     GridPane.setConstraints(detailTable, 0, 0, 1, 1)
 
-    val detail = new Button("Detail", img) {
-        prefWidth = 110
-        prefHeight = 396
-        contentDisplay = ContentDisplay.Top
-        styleClass.clear()
-        styleClass += "sample-tile"
-        onAction = (ae: ActionEvent) => {
-          println("Was choosen a product")
-        }
-      }
-    GridPane.setConstraints(detail, 0, 0, 1, 1)
+
     val detailGrid = new GridPane {
       hgap = 1
       vgap = 1
@@ -189,53 +187,14 @@ class EcStockAddCard extends EcStockExample {
       style = "-fx-background-color: red"
       children ++= Seq(detailTable)
     }
+
     detailGrid.setPrefSize(110, 396)
     GridPane.setConstraints(detailGrid, 0, 0, 2, 1)
 
-    val imacProduct = new Button("IMAC", imacImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          addAmount("IMAC", 1, productCards)
-        }
-      }
-    GridPane.setConstraints(imacProduct, 0, 0, 1, 1)
-
-    val ipadProduct = new Button("IPAD", ipadImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          addAmount("IPAD", 1, productCards)
-        }
-      }
-    GridPane.setConstraints(ipadProduct, 1, 0, 1, 1)
-
-    val tvProduct = new Button("TV", tvImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          addAmount("TV", 1, productCards)
-        }
-      }
-    GridPane.setConstraints(tvProduct, 2, 0, 1, 1)
-
-    val chocolateProduct = new Button("CHOCOLATE", chocolateImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          addAmount("CHOCOLATE", 1, productCards)
-        }
-      }
-    GridPane.setConstraints(chocolateProduct, 0, 1, 1, 1)
-
-    val productsGrid = new GridPane {
-      hgap = 3
-      vgap = 3
-      gridLinesVisible = true
-      margin = Insets(18)
-      style = "-fx-background-color: yellow"
-      children ++= Seq(imacProduct, ipadProduct, tvProduct, chocolateProduct)
-    }
     productsGrid.setPrefSize(396, 396)
     GridPane.setConstraints(productsGrid, 1, 0, 2, 2)
 
-    val calculator = new Button("Calculator", img2) {
+    val calculator = new Button("Calculator", calculatorImg) {
         prefWidth = 110
         prefHeight = 110
         contentDisplay = ContentDisplay.Top
@@ -257,42 +216,18 @@ class EcStockAddCard extends EcStockExample {
     }
     calculatorGrid.setPrefSize(198, 110)
     GridPane.setConstraints(calculatorGrid, 0, 2, 1, 1)
-
-
-    val candiesProduct = new Button("CANDIES", candiesImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          println("Was choosen a CANDIES")
-        }
-      }
-    GridPane.setConstraints(candiesProduct, 0, 0, 1, 1)
-
-    val gadgetsProduct = new Button("GADGETS", gadgetsImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          println("Was choosen a IPAD")
-        }
-      }
-    GridPane.setConstraints(gadgetsProduct, 1, 0, 1, 1)
-
-    val fruitsProduct = new Button("FRUITS", fruitsImg) {
-        contentDisplay = ContentDisplay.Top
-        onAction = (ae: ActionEvent) => {
-          println("Was choosen a TV")
-        }
-      }
-    GridPane.setConstraints(fruitsProduct, 2, 0, 1, 1)
-
+    generateCategory(productsGrid, "GADGET")
 
     val categoriesGrid = new GridPane {
       hgap = 3
       vgap = 3
       margin = Insets(18)
       style = "-fx-background-color: blue"
-      children ++= Seq(candiesProduct, gadgetsProduct, fruitsProduct)
     }
     categoriesGrid.setPrefSize(396, 110)
     GridPane.setConstraints(categoriesGrid, 1, 2, 1, 2)
+
+    generateCategories(categoriesGrid)
 
     val infoGrid = new GridPane {
       hgap = 3

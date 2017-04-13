@@ -29,7 +29,7 @@ class EcStockListProduct extends EcStockExample {
     }
 
     val products = ObservableBuffer[Product](
-      new Product("Product 1", "10 Bs", "Vendor 1", "Brand 1", "Category 1", "Description 1")
+      new Product("Product 1", "10 Bs", "Vendor 1", "Brand 1", "Category 1", "Description 1", "imgSrc")
     )
 
     val table1 = new TableView[Product](products) {
