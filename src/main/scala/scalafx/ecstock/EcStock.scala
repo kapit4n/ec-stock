@@ -18,7 +18,7 @@ object EcStock extends JFXApp {
   // Example selection tree
   //
   var centerPane = PageDisplayer.choosePage("dashBoard")
-  val rootTreeItem = new TreeItem[String]("ScalaFX EcStockYYY") {
+  val rootTreeItem = new TreeItem[String]("ScalaFX EcStock") {
     expanded = true
     children = EcStockTree.create().getTree
   }
