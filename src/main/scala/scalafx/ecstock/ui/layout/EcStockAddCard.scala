@@ -15,6 +15,8 @@ import scalafx.ecstock.models.Category
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
+import scalafx.util.converter.DefaultStringConverter
+import scalafx.scene.control.cell.TextFieldTableCell
 
 /**
  *
@@ -170,10 +172,12 @@ class EcStockAddCard extends EcStockExample {
         },
         new TableColumn[ProductCard, String]() {
           text = "Quantity"
-          cellValueFactory = { _.value.quantity }
+          cellValueFactory = { _.value.quantity}
+          cellFactory = column => new TextFieldTableCell[ProductCard, String] (new DefaultStringConverter())
           prefWidth = 100
         }
       )
+      editable = true
     }
 
     GridPane.setConstraints(detailTable, 0, 0, 1, 1)
