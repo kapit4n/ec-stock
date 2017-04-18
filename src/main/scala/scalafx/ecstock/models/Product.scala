@@ -1,13 +1,27 @@
 package scalafx.ecstock.models
+import javax.persistence._
 
 import scalafx.beans.property.{StringProperty}
 
-class Product(name_ : String, retailPrice_ : String, vendor_ : String, brand_ : String, category_ : String, description_ : String, imgSrc_ : String) {
-  val name = new StringProperty(this, "name", name_)
-  val retailPrice = new StringProperty(this, "retailPrice", retailPrice_)
-  val vendor = new StringProperty(this, "vendor", vendor_)
-  val brand = new StringProperty(this, "brand", brand_)
-  val category = new StringProperty(this, "category", category_)
-  val description = new StringProperty(this, "description", description_)
-  val imgSrc = new StringProperty(this, "imgSrc", imgSrc_)
+@Entity
+@Table(name = "product")
+class Product(name : String, retailPrice : String, vendor : String, brand : String, category : String, description : String, imgSrc : String) {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  var id: Int = _
+
+  @Transient
+  val nameProperty = new StringProperty(this, "nameProperty", name)
+  @Transient
+  val retailPriceProperty = new StringProperty(this, "retailPriceProperty", retailPrice)
+  @Transient
+  val vendorProperty = new StringProperty(this, "vendorProperty", vendor)
+  @Transient
+  val brandProperty = new StringProperty(this, "brandProperty", brand)
+  @Transient
+  val categoryProperty = new StringProperty(this, "categoryProperty", category)
+  @Transient
+  val descriptionProperty = new StringProperty(this, "descriptionProperty", description)
+  @Transient
+  val imgSrcProperty = new StringProperty(this, "imgSrcProperty", imgSrc)
 }

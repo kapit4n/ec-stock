@@ -28,8 +28,6 @@ class EcStockListVendor extends EcStockExample {
       wrapText = true
     }
 
-
-
     val vendors = ObservableBuffer[Vendor](
       new Vendor("Vendor 1", "Address 1", "Contact 1", "Contact 2"),
       new Vendor("Vendor 2", "Address 2", "Contact 1", "Contact 2")
@@ -39,22 +37,22 @@ class EcStockListVendor extends EcStockExample {
       columns ++= List(
         new TableColumn[Vendor, String] {
           text = "Vendor Name"
-          cellValueFactory = { _.value.name }
+          cellValueFactory = { _.value.nameProperty }
           prefWidth = 100
         },
         new TableColumn[Vendor, String]() {
           text = "Address"
-          cellValueFactory = { _.value.address }
+          cellValueFactory = { _.value.addressProperty }
           prefWidth = 100
         },
         new TableColumn[Vendor, String]() {
           text = "Contact 1"
-          cellValueFactory = { _.value.contact }
+          cellValueFactory = { _.value.contactProperty }
           prefWidth = 100
         },
         new TableColumn[Vendor, String]() {
           text = "Contact 2"
-          cellValueFactory = { _.value.contact2 }
+          cellValueFactory = { _.value.contact2Property }
           prefWidth = 100
         }
       )

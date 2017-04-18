@@ -64,35 +64,11 @@ class EcStockAddCustomer extends EcStockExample {
     }
     GridPane.setConstraints(addressTxt, 1, 1, 5, 1)
 
-    val contactLbl = new Label("Contact:") {
-      style = "-fx-font-weight:bold"
-      alignmentInParent = Pos.BaselineRight
-    }
-    GridPane.setConstraints(contactLbl, 0, 2, 1, 1)
-
-    val contactTxt = new TextField() {
-      text = "Luis Arce"
-      alignmentInParent = Pos.BaselineLeft
-    }
-    GridPane.setConstraints(contactTxt, 1, 2, 5, 1)
-
-    val contact2Lbl = new Label("Contact2:") {
-      style = "-fx-font-weight:bold"
-      alignmentInParent = Pos.BaselineRight
-    }
-    GridPane.setConstraints(contact2Lbl, 0, 3, 1, 1)
-
-    val contact2Txt = new TextField() {
-      text = "Hansel Arce"
-      alignmentInParent = Pos.BaselineLeft
-    }
-    GridPane.setConstraints(contact2Txt, 1, 3 , 5, 1)
-
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt, contactLbl, contactTxt, contact2Lbl, contact2Txt)
+      children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt)
     }
 
     val saveBtn = new Button("SAVE")

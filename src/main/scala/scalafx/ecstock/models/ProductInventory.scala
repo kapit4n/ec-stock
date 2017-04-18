@@ -1,10 +1,20 @@
 package scalafx.ecstock.models
-
+import javax.persistence._
 import scalafx.beans.property.{StringProperty}
 
-class ProductInventory(product_ : String, vendor_ : String, quantity_ : String, cost_ : String) {
-  val product = new StringProperty(this, "product", product_)
-  val vendor = new StringProperty(this, "vendor", vendor_)
-  val quantity = new StringProperty(this, "quantity", quantity_)
-  val cost = new StringProperty(this, "cost", cost_)
+@Entity
+@Table(name = "productInventory")
+class ProductInventory(product : String, vendor : String, quantity : String, cost : String) {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  var id: Int = _
+
+  @Transient
+  val productProperty = new StringProperty(this, "productProperty", product)
+  @Transient
+  val vendorProperty = new StringProperty(this, "vendorProperty", vendor)
+  @Transient
+  val quantityProperty = new StringProperty(this, "quantityProperty", quantity)
+  @Transient
+  val costProperty = new StringProperty(this, "costProperty", cost)
 }

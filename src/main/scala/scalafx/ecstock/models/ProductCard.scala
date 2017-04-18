@@ -1,8 +1,16 @@
 package scalafx.ecstock.models
-
+import javax.persistence._
 import scalafx.beans.property.{StringProperty}
 
-class ProductCard(product_ : String, quantity_ : String) {
-  val product = new StringProperty(this, "product", product_)
-  val quantity = new StringProperty(this, "quantity", quantity_)
+@Entity
+@Table(name = "productCard")
+class ProductCard(product : String, quantity : String) {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  var id: Int = _
+
+  @Transient
+  val productProperty = new StringProperty(this, "productProperty", product)
+  @Transient
+  val quantityProperty = new StringProperty(this, "quantityProperty", quantity)
 }

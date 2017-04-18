@@ -36,32 +36,32 @@ class EcStockListProduct extends EcStockExample {
       columns ++= List(
         new TableColumn[Product, String] {
           text = "Name"
-          cellValueFactory = { _.value.name }
+          cellValueFactory = { _.value.nameProperty }
           prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = "Retail Price"
-          cellValueFactory = { _.value.retailPrice }
+          cellValueFactory = { _.value.retailPriceProperty }
           prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = "Vendor"
-          cellValueFactory = { _.value.vendor }
+          cellValueFactory = { _.value.vendorProperty }
           prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = "Brand"
-          cellValueFactory = { _.value.brand }
+          cellValueFactory = { _.value.brandProperty }
           prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = "Category"
-          cellValueFactory = { _.value.category }
+          cellValueFactory = { _.value.categoryProperty }
           prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = "Description"
-          cellValueFactory = { _.value.description }
+          cellValueFactory = { _.value.descriptionProperty }
           prefWidth = 100
         }
       )

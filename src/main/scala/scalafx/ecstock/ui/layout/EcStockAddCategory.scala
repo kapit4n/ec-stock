@@ -1,5 +1,6 @@
 package scalafx.ecstock.ui.layout
 
+import scalafx.event.ActionEvent
 import scalafx.Includes._
 import scalafx.ecstock.commons.EcStockExample
 import scalafx.geometry.{HPos, Insets, Pos}
@@ -16,11 +17,6 @@ import scalafx.ecstock.models.HibernateUtil
 class EcStockAddCategory extends EcStockExample {
   def getContent = {
     val session: Session = HibernateUtil.getSessionFactory.openSession();
-    session.beginTransaction();
-    val cat = new Category("Name", "description", "imgUrl")
-    session.save(cat);
-    session.getTransaction().commit();
-    println("FINISHED")
 
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
@@ -57,7 +53,14 @@ class EcStockAddCategory extends EcStockExample {
       children ++= Seq(nameLbl, nameTxt, descriptionLbl, descriptionTxt)
     }
 
-    val saveBtn = new Button("SAVE")
+    val saveBtn = new Button("SAVE") {
+      onAction = (ae: ActionEvent) => {
+          session.beginTransaction();
+          val catAux = new Category(nameTxt.getText(), descriptionTxt.getText(), "Img" )
+          session.save(catAux);
+          session.getTransaction().commit();            
+      }
+    }
     GridPane.setConstraints(saveBtn, 0, 0)
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
