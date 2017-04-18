@@ -9,14 +9,13 @@ import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
 import org.hibernate._
 import scalafx.ecstock.models.Category
-import scalafx.ecstock.models.HibernateUtil
+import scalafx.ecstock.models.DBManager
 
 /**
  *
  */
 class EcStockAddCategory extends EcStockExample {
   def getContent = {
-    val session: Session = HibernateUtil.getSessionFactory.openSession();
 
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
@@ -55,10 +54,10 @@ class EcStockAddCategory extends EcStockExample {
 
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
-          session.beginTransaction();
+          DBManager.session.beginTransaction();
           val catAux = new Category(nameTxt.getText(), descriptionTxt.getText(), "Img" )
-          session.save(catAux);
-          session.getTransaction().commit();            
+          DBManager.session.save(catAux);
+          DBManager.session.getTransaction().commit();
       }
     }
     GridPane.setConstraints(saveBtn, 0, 0)
