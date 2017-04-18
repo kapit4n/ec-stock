@@ -6,31 +6,36 @@ import scalafx.geometry.{HPos, Insets, Pos}
 import scalafx.scene.control.{Button, Label, Separator, TextField}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
-import slick.driver.JdbcProfile
-//import scala.slick.driver.MySQLDriver.simple._
-import slick.driver.MySQLDriver.api._
 import scalafx.collections.ObservableBuffer
 import scalafx.ecstock.models.Customer
+import java.sql.{Connection,DriverManager}
 
 /**
  *
  */
 class EcStockAddCustomer extends EcStockExample {
+    
+    def getContent = {
 
-  def getContent = {
-    // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
-    class Customers(tag: Tag) extends Table[Customer](tag, "customer"){
-      def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
-      def name = column[String]("name")
-      def address = column[String]("address")
-      def contact = column[String]("contact")
-      def contact2 = column[String]("contact2")
-      def * = (id.?, name, address, contact, contact2) <> ((Customer.apply _).tupled, Customer.unapply)
-
+    val url = "jdbc:mysql://localhost:3306/ecstock"
+    val driver = "com.mysql.jdbc.Driver"
+    val username = "root"
+    val password = "root"
+    try {
+        Class.forName(driver)
+        var connection = DriverManager.getConnection(url, username, password)
+        val statement = connection.createStatement
+        val rs = statement.executeQuery("SELECT id, name FROM customer")
+        while (rs.next) {
+            val host = rs.getString("id")
+            val user = rs.getString("name")
+            println("idCustomer = %s, name = %s".format(host,user))
+        }
+    } catch {
+        case e: Exception => e.printStackTrace
+    } finally {
+      //connection.close
     }
-
-    val customersTableModel = new ObservableBuffer[Customer]
-    //customersTableModel ++= TableQuery(Customers).list
 
     val infoCaution = new Label {
       text = "Customer Information"

@@ -11,10 +11,9 @@ scalaVersion := "2.11.8"
 libraryDependencies ++= Seq(
   "org.scalafx" %% "scalafx" % "8.0.92-R10",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
-  "com.typesafe.slick" %% "slick" % "3.0.0",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
-  "mysql" % "mysql-connector-java" % "5.1.34"
-)
+  "mysql" % "mysql-connector-java" % "5.1.24",
+  )
 
 resolvers += Opts.resolver.sonatypeSnapshots
 
