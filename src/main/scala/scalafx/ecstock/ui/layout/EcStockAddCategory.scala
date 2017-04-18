@@ -6,13 +6,22 @@ import scalafx.geometry.{HPos, Insets, Pos}
 import scalafx.scene.control.{Button, Label, Separator, TextField}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
+import org.hibernate._
+import scalafx.ecstock.models.Category
+import scalafx.ecstock.models.HibernateUtil
 
 /**
  *
  */
 class EcStockAddCategory extends EcStockExample {
-
   def getContent = {
+    val session: Session = HibernateUtil.getSessionFactory.openSession();
+    session.beginTransaction();
+    val cat = new Category("Name", "description", "imgUrl")
+    session.save(cat);
+    session.getTransaction().commit();
+    println("FINISHED")
+
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
       text = "Category Information"

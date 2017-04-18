@@ -36,12 +36,12 @@ class EcStockListCategory extends EcStockExample {
       columns ++= List(
         new TableColumn[Category, String] {
           text = "Category 1"
-          cellValueFactory = { _.value.name }
+          cellValueFactory = { _.value.nameProperty }
           prefWidth = 100
         },
         new TableColumn[Category, String]() {
           text = "Description"
-          cellValueFactory = { _.value.description }
+          cellValueFactory = { _.value.descriptionProperty }
           prefWidth = 100
         }
       )

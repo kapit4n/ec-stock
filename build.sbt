@@ -12,8 +12,16 @@ libraryDependencies ++= Seq(
   "org.scalafx" %% "scalafx" % "8.0.92-R10",
   "org.scala-lang.modules" %% "scala-xml" % "1.0.5",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
-  "mysql" % "mysql-connector-java" % "5.1.24",
-  )
+  "org.slf4j" % "slf4j-api" % "1.7.5",
+  "org.scala-lang" % "scala-library" % "2.11.2",
+  "edu.uci.ics" % "crawler4j" % "3.4",
+  "mysql" % "mysql-connector-java" % "5.1.9",
+  "org.hibernate" % "hibernate-entitymanager" % "3.3.2.GA",
+  "dom4j" % "dom4j" % "1.6.1",
+  "commons-logging" % "commons-logging" % "1.1.1",
+  "commons-collections" % "commons-collections" % "3.2.1",
+  "cglib" % "cglib" % "2.2",
+  "javax.transaction" % "jta" % "1.1")
 
 resolvers += Opts.resolver.sonatypeSnapshots
 
