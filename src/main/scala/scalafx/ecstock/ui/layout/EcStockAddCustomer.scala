@@ -6,6 +6,11 @@ import scalafx.geometry.{HPos, Insets, Pos}
 import scalafx.scene.control.{Button, Label, Separator, TextField}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
+import slick.driver.JdbcProfile
+//import scala.slick.driver.MySQLDriver.simple._
+import slick.driver.MySQLDriver.api._
+import scalafx.collections.ObservableBuffer
+import scalafx.ecstock.models.Customer
 
 /**
  *
@@ -14,6 +19,19 @@ class EcStockAddCustomer extends EcStockExample {
 
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
+    object Customers extends Table[Customer]("customer"){
+      def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
+      def name = column[String]("name")
+      def address = column[String]("address")
+      def contact = column[String]("contact")
+      def contact2 = column[String]("contact2")
+      def * = (id, name, address, contact, contact2) <> ((Customer.apply _).tupled, Customer.unapply _)
+      def forInsert = (name, address, contact, contact2) <> ({t => Customer(None, t._1, t._2, t._3, t._4)}, {(p: Person) => Some(p.name, p.address, p.contact, p.contact2)})
+    }
+
+    val customersTableModel = new ObservableBuffer[Customer]
+    customersTableModel ++= Query(Customers).list
+
     val infoCaution = new Label {
       text = "Customer Information"
       wrapText = true

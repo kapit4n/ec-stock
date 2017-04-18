@@ -2,9 +2,9 @@ package scalafx.ecstock.models
 
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
-class Customer(name_ : String, address_ : String, contact_ : String, contact2_ : String) {
-  val name = new StringProperty(this, "name", name_)
-  val address = new StringProperty(this, "address", address_)
-  val contact = new StringProperty(this, "contact", contact_)
-  val contact2 = new StringProperty(this, "contact2", contact2_)
+case class Customer(id: Option[Int], name : String, address : String, contact : String, contact2 : String) {
+  val nameField = new StringProperty(this, "nameField", name)
+  val addressField = new StringProperty(this, "addressField", address)
+  val contactField = new StringProperty(this, "contactField", contact)
+  val contact2Field = new StringProperty(this, "contact2Field", contact2)
 }

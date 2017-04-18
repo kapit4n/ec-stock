@@ -31,30 +31,30 @@ class EcStockListCustomer extends EcStockExample {
 
 
     val customers = ObservableBuffer[Customer](
-      new Customer("Customer 1", "Address 1", "Contact 1", "Contact 2"),
-      new Customer("Customer 2", "Address 2", "Contact 1", "Contact 2")
+      new Customer(Option(1), "Customer 1", "Address 1", "Contact 1", "Contact 2"),
+      new Customer(Option(2), "Customer 2", "Address 2", "Contact 1", "Contact 2")
     )
 
     val table1 = new TableView[Customer](customers) {
       columns ++= List(
         new TableColumn[Customer, String] {
           text = "Customer Name"
-          cellValueFactory = { _.value.name }
+          cellValueFactory = { _.value.nameField }
           prefWidth = 100
         },
         new TableColumn[Customer, String]() {
           text = "Address"
-          cellValueFactory = { _.value.address }
+          cellValueFactory = { _.value.addressField }
           prefWidth = 100
         },
         new TableColumn[Customer, String]() {
           text = "Contact 1"
-          cellValueFactory = { _.value.contact }
+          cellValueFactory = { _.value.contactField }
           prefWidth = 100
         },
         new TableColumn[Customer, String]() {
           text = "Contact 2"
-          cellValueFactory = { _.value.contact2 }
+          cellValueFactory = { _.value.contact2Field }
           prefWidth = 100
         }
       )
