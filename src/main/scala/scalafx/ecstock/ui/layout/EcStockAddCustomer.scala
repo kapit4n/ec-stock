@@ -19,18 +19,18 @@ class EcStockAddCustomer extends EcStockExample {
 
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
-    object Customers extends Table[Customer]("customer"){
+    class Customers(tag: Tag) extends Table[Customer](tag, "customer"){
       def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
       def name = column[String]("name")
       def address = column[String]("address")
       def contact = column[String]("contact")
       def contact2 = column[String]("contact2")
-      def * = (id, name, address, contact, contact2) <> ((Customer.apply _).tupled, Customer.unapply _)
-      def forInsert = (name, address, contact, contact2) <> ({t => Customer(None, t._1, t._2, t._3, t._4)}, {(p: Person) => Some(p.name, p.address, p.contact, p.contact2)})
+      def * = (id.?, name, address, contact, contact2) <> ((Customer.apply _).tupled, Customer.unapply)
+
     }
 
     val customersTableModel = new ObservableBuffer[Customer]
-    customersTableModel ++= Query(Customers).list
+    //customersTableModel ++= TableQuery(Customers).list
 
     val infoCaution = new Label {
       text = "Customer Information"

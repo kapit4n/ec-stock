@@ -8,3 +8,6 @@ case class Customer(id: Option[Int], name : String, address : String, contact : 
   val contactField = new StringProperty(this, "contactField", contact)
   val contact2Field = new StringProperty(this, "contact2Field", contact2)
 }
+
+object Customer {
+}
