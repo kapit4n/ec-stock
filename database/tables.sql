@@ -1,3 +1,5 @@
+drop table IF EXISTS cardItem;
+drop table IF EXISTS card;
 drop table IF EXISTS productInventory;
 drop table IF EXISTS product;
 drop table IF EXISTS category;
@@ -60,6 +62,27 @@ create table productInventory (
   vendor int NOT NULL,
   product int NOT NULL,
   FOREIGN KEY (vendor) REFERENCES vendor(id),
+  FOREIGN KEY (product) REFERENCES product(id),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table card (
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  customer int NOT NULL,
+  totalPrice float,
+  observation VARCHAR(100),
+  FOREIGN KEY (customer) REFERENCES customer(id),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table cardItem (
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  card int NOT NULL,
+  product int NOT NULL,
+  quantity int not null,
+  price float NOT NULL,
+  totalPrice float NOT NULL,
+  FOREIGN KEY (card) REFERENCES card(id),
   FOREIGN KEY (product) REFERENCES product(id),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
