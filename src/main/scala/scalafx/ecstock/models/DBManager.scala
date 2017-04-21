@@ -126,6 +126,29 @@ object DBManager {
     return results.toList
   }
 
+  def getCards(): List[ProductCard] = {
+    var results = new ListBuffer[ProductCard]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c INNER JOIN customer AS cs ON c.customer = cs.id")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val customer = rs.getString("customer").toInt
+        val totalPrice = rs.getString("totalPrice").toDouble
+        val observation = rs.getString("observation")
+        val customerName = rs.getString("customerName")
+        results += new ProductCard(id, customer, totalPrice, observation, customerName)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
+
   def getProductInventories(): List[ProductInventory] = {
     var results = new ListBuffer[ProductInventory]()
     Class.forName(driver)

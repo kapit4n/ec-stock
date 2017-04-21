@@ -22,9 +22,11 @@ import scalafx.ecstock.models.DBManager
  */
 class EcStockAddCard extends EcStockExample {
 
-  val productCards: ObservableBuffer[ProductCardItem] = ObservableBuffer[ProductCardItem]()
+  val productCardItems: ObservableBuffer[ProductCardItem] = ObservableBuffer[ProductCardItem]()
   val products: ObservableBuffer[Product] = ObservableBuffer[Product](DBManager.getProducts())
   val categories: ObservableBuffer[Category] = ObservableBuffer[Category](DBManager.getCategories())
+  val customers = ObservableBuffer(DBManager.getCustomers())
+
   val productImgWidth = 100
   val productImgHeight = 100
   val categoryImgWidth = 100
@@ -43,13 +45,15 @@ class EcStockAddCard extends EcStockExample {
    */
   def addAmount(product: Int, quantity: Int) = {
     var found = false
-    for (card <- productCards.filter(_.product == product)) {
-        card.quantityProperty.value = (card.quantityProperty.value.toInt + 1).toString
-        found = true
+    for (card <- productCardItems.filter(_.product == product)) {
+      card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity).toString
+      card.quantity = card.quantity + quantity
+      card.totalPrice = card.price * card.quantity
+      found = true
     }
     if (!found) {
       val items = products.filter(_.id == product)
-      productCards += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).name)
+      productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).name)
     }
   }
 
@@ -163,7 +167,7 @@ class EcStockAddCard extends EcStockExample {
       image = new Image(inputStream)
     }
 
-    val detailTable = new TableView[ProductCardItem](productCards) {
+    val detailTable = new TableView[ProductCardItem](productCardItems) {
       columns ++= List(
         new TableColumn[ProductCardItem, String] {
           text = "Product"
@@ -241,7 +245,45 @@ class EcStockAddCard extends EcStockExample {
       children ++= Seq(detailGrid, productsGrid, calculatorGrid, categoriesGrid)
     }
 
-    val saveBtn = new Button("SAVE")
+    val customerLbl = new Label("Customer:") {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+
+    GridPane.setConstraints(customerLbl, 0, 1)
+
+    val customerCb = new ComboBox[Customer] {
+          maxWidth = 200
+          promptText = "Make a choice..."
+          items = customers
+        };
+
+    GridPane.setConstraints(customerCb, 1, 1)
+
+    val saveBtn = new Button("SAVE") {
+      onAction = (ae: ActionEvent) => {
+
+          var totalPrice: Double = 0
+          for (cardItem <- productCardItems) {
+            totalPrice = totalPrice + cardItem.totalPrice
+          }
+          val card = new ProductCard(0, customerCb.getValue().id, totalPrice, "Observations", "")
+          DBManager.session.beginTransaction()
+          DBManager.session.save(card)
+          DBManager.session.getTransaction().commit()
+          println(card.id)
+          DBManager.session.beginTransaction()
+          for (cardItem <- productCardItems) {
+            cardItem.card = card.id
+            DBManager.session.save(cardItem)
+          }
+          DBManager.session.getTransaction().commit()
+
+          for (cardItem <- productCardItems) {
+            DBManager.updateProductTotal(cardItem.quantity * -1, cardItem.product)
+          }
+      }
+    }
     GridPane.setConstraints(saveBtn, 0, 0)
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
@@ -251,8 +293,10 @@ class EcStockAddCard extends EcStockExample {
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)
 
+
+
     val actionCaution = new Label {
-      text = "Save Data."
+      text = "Save Data"
       wrapText = true
     }
 
@@ -260,7 +304,7 @@ class EcStockAddCard extends EcStockExample {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(saveBtn, cancelBtn)
+      children ++= Seq(saveBtn, cancelBtn, customerLbl, customerCb)
     }
 
     new VBox {
@@ -269,7 +313,9 @@ class EcStockAddCard extends EcStockExample {
       spacing = 10
       padding = Insets(20)
       children = List(
-        infoGrid
+        infoGrid,
+        new Separator(),
+        new VBox {children = List(actionCaution, actionGrid)}
       )
     }
   }

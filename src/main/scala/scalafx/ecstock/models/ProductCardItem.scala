@@ -4,7 +4,7 @@ import scalafx.beans.property.{StringProperty}
 
 @Entity
 @Table(name = "cardItem")
-class ProductCardItem(idParam: Int, val card: Int, val product: Int, val quantity: Int, val price: Double, val totalPrice: Double, productName: String) {
+class ProductCardItem(idParam: Int, var card: Int, val product: Int, var quantity: Int, var price: Double, var totalPrice: Double, productName: String) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Int = idParam
