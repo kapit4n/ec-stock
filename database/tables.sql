@@ -45,6 +45,7 @@ create table product (
   category int NOT NULL,
   description VARCHAR(100) not null,
   imgSrc VARCHAR(100) not null,
+  total int DEFAULT 0,
   FOREIGN KEY (vendor) REFERENCES vendor(id),
   FOREIGN KEY (brand) REFERENCES brand(id),
   FOREIGN KEY (category) REFERENCES category(id),
@@ -62,3 +63,4 @@ create table productInventory (
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+insert into brand(name, description) values("Brand 1", "Description of brand");

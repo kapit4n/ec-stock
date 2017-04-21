@@ -104,7 +104,7 @@ object DBManager {
     var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description FROM product")
+      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total FROM product")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val name = rs.getString("name")
@@ -113,7 +113,8 @@ object DBManager {
         val brand = rs.getString("brand").toInt
         val category = rs.getString("category").toInt
         val description = rs.getString("description")
-        results += new Product(id, name, retailPrice, vendor, brand, category, description, "IMG")
+        val total = rs.getString("total").toLong
+        results += new Product(id, name, retailPrice, vendor, brand, category, description, "IMG", total)
       }
     } catch {
       case e: Exception => e.printStackTrace
@@ -145,4 +146,19 @@ object DBManager {
     }
     return results.toList
   }
+
+  def updateProductTotal(amount: Int, productId: Int) = {
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("UPDATE product SET total = total + " + amount + "  WHERE id = " + productId)
+      println(rs)
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+  }
+
 }
