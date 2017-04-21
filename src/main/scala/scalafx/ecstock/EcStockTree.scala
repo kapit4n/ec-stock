@@ -10,6 +10,7 @@ import scalafx.geometry.{Insets, Orientation}
 import scalafx.scene.control._
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{Region, TilePane}
+import scalafx.ecstock.i18n.Messages
 
 /**
  * Object to load examples as Map which in turn is used
@@ -29,7 +30,7 @@ object EcStockTree {
   private def createTree(): Map[String, List[TreeItem[String]]] = {
     val pairs = for ((dirName, examples) <- loadExampleNames()) yield {
       val leaves = for (leafName <- examples) yield {
-        new TreeItem(ExampleInfo.formatAddSpaces(leafName))
+        new TreeItem(Messages.data(ExampleInfo.formatAddSpaces(leafName)))
       }
       dirName -> leaves.toList.sortWith(SortUtils.treeItemSort)
     }
@@ -64,7 +65,7 @@ object EcStockTree {
           }
           image = new Image(inputStream)
         }
-        val button = new Button(sampleName, img) {
+        val button = new Button(Messages.data(sampleName), img) {
           prefWidth = 140
           prefHeight = 145
           contentDisplay = ContentDisplay.Top

@@ -10,6 +10,7 @@ import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstrain
 import org.hibernate._
 import scalafx.ecstock.models.Category
 import scalafx.ecstock.models.DBManager
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -52,7 +53,7 @@ class EcStockAddCategory extends EcStockExample {
       children ++= Seq(nameLbl, nameTxt, descriptionLbl, descriptionTxt)
     }
 
-    val saveBtn = new Button("SAVE") {
+    val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
           val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "/scalafx/ecstock/products/candies.jpg")
@@ -65,7 +66,7 @@ class EcStockAddCategory extends EcStockExample {
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
 
-    val cancelBtn = new Button("CANCEL")
+    val cancelBtn = new Button(Messages.data("cancel"))
     GridPane.setConstraints(cancelBtn, 1, 0)
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)

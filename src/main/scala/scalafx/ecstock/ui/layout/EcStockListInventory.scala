@@ -16,7 +16,7 @@ import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
-
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -36,24 +36,25 @@ class EcStockListInventory extends EcStockExample {
         new TableColumn[ProductInventory, String] {
           text = "Product Name"
           cellValueFactory = { _.value.productProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[ProductInventory, String] {
           text = "Vendor Name"
           cellValueFactory = { _.value.vendorProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[ProductInventory, String]() {
           text = "Quantity"
           cellValueFactory = { _.value.quantityProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[ProductInventory, String]() {
           text = "Cost 1"
           cellValueFactory = { _.value.costProperty }
-          prefWidth = 100
+          prefWidth = 200
         }
       )
+      prefWidth = 600
     }
 
     GridPane.setConstraints(table1, 0, 1, 1, 1)

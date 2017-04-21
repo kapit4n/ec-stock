@@ -10,6 +10,7 @@ import scalafx.collections.ObservableBuffer
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.models._
 import scalafx.event.ActionEvent
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -89,7 +90,7 @@ class EcStockAddProductInventory extends EcStockExample {
       children ++= Seq(productLbl, productCb, vendorLbl, vendorCb, quantityLbl, quantityTxt, costLbl, costTxt)
     }
 
-    val saveBtn = new Button("SAVE") {
+    val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
           val productInv = new ProductInventory(0, productCb.getValue().id, vendorCb.getValue().id, quantityTxt.getText().toLong, costTxt.getText().toDouble)
@@ -102,7 +103,7 @@ class EcStockAddProductInventory extends EcStockExample {
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
 
-    val cancelBtn = new Button("CANCEL")
+    val cancelBtn = new Button(Messages.data("cancel"))
     GridPane.setConstraints(cancelBtn, 1, 0)
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)

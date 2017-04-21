@@ -16,6 +16,7 @@ import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
+import scalafx.ecstock.i18n.Messages
 
 
 /**

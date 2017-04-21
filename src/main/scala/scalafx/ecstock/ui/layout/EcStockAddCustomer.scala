@@ -11,6 +11,7 @@ import java.sql.{Connection,DriverManager}
 import scalafx.ecstock.models.Customer
 import scalafx.ecstock.models.DBManager
 import scalafx.event.ActionEvent
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -73,7 +74,7 @@ class EcStockAddCustomer extends EcStockExample {
       children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt)
     }
 
-    val saveBtn = new Button("SAVE") {
+    val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
           val customer = new Customer(0, nameTxt.getText(), addressTxt.getText())
@@ -86,7 +87,7 @@ class EcStockAddCustomer extends EcStockExample {
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
 
-    val cancelBtn = new Button("CANCEL")
+    val cancelBtn = new Button(Messages.data("cancel"))
     GridPane.setConstraints(cancelBtn, 1, 0)
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)

@@ -33,6 +33,7 @@ import scalafx.geometry.Pos
 import scalafx.scene.Node
 import scalafx.scene.control.{Tab, TabPane}
 import scalafx.scene.layout.{Priority, StackPane}
+import scalafx.ecstock.i18n.Messages
 
 object EcStockTabbedPage {
 
@@ -44,11 +45,7 @@ object EcStockTabbedPage {
       id = "source-tabs"
       tabs = Seq(
         new Tab() {
-          text = "Demo"
-          closable = false
-        },
-        new Tab() {
-          text = "Source"
+          text = "Principal"
           closable = false
         }
       )
@@ -68,11 +65,9 @@ object EcStockTabbedPage {
 
 class EcStockTabbedPage(tabPane: TabPane, ctrlName: String, ctrlGroup: String)
   extends DisplayablePage {
-
   def getPage = {
     import scalafx.ecstock.stage.EcStockTabbedPage._
     tabPane.tabs(0).content = buildTabContent(ContentFactory.createContent(ctrlName, ctrlGroup))
-    tabPane.tabs(1).content = buildTabContent(ContentFactory.createSrcContent(ctrlName, ctrlGroup))
     tabPane
   }
 }

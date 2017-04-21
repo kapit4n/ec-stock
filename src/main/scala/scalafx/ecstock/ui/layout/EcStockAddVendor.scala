@@ -9,6 +9,7 @@ import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstrain
 import scalafx.ecstock.models.Vendor
 import scalafx.ecstock.models.DBManager
 import scalafx.event.ActionEvent
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -75,7 +76,7 @@ class EcStockAddVendor extends EcStockExample {
       children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt, contactLbl, contactTxt, contact2Lbl, contact2Txt)
     }
 
-    val saveBtn = new Button("SAVE") {
+    val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
           val vendor = new Vendor(0, nameTxt.getText(), addressTxt.getText(), contactTxt.getText(), contact2Txt.getText())
@@ -88,7 +89,7 @@ class EcStockAddVendor extends EcStockExample {
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
 
-    val cancelBtn = new Button("CANCEL")
+    val cancelBtn = new Button(Messages.data("cancel"))
     GridPane.setConstraints(cancelBtn, 1, 0)
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)

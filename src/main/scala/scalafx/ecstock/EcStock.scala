@@ -65,7 +65,7 @@ object EcStock extends JFXApp {
   stage = new PrimaryStage {
     title = "ScalaFX EcStock"
     icons += new Image("/scalafx/ecstock/images/ScalaFX-icon-64x64.png")
-    scene = new Scene(1020, 700) {
+    scene = new Scene(1500, 800) {
       stylesheets += this.getClass.getResource("/scalafx/ecstock/css/ecstock.css").toExternalForm
       root = new BorderPane {
         top = new VBox {

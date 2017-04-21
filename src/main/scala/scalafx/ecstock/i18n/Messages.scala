@@ -1,0 +1,46 @@
+package scalafx.ecstock.i18n
+import scalafx.Includes._
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{Map, SynchronizedMap, HashMap}
+
+object Messages {
+  val data = collection.mutable.Map[String, String]()
+  data += ("save" -> "Guardar")
+  data += ("cancel" -> "Cancelar")
+  data += ("Add Card" -> "Nueva Venta")
+  data += ("Add Category" -> "Nueva Categoria")
+  data += ("Add Customer" -> "Nuevo Cliente")
+  data += ("Add Product" -> "Nuevo Producto")
+  data += ("Add Product Inventory" -> "Comprar")
+  data += ("Add Vendor" -> "Nuevo Proveedor")
+  data += ("Border Pane" -> "Border Pane")
+  data += ("Grid Pane" -> "Grid Pane")
+  data += ("Inventory" -> "Inventario")
+  data += ("List Card" -> "Listar Ventas")
+  data += ("List Card Item" -> "Listar Ventas/Producto")
+  data += ("List Category" -> "Listar Categorias")
+  data += ("List Customer" -> "Listar Clientes")
+  data += ("List Inventory" -> "Listar Compras")
+  data += ("List Product" -> "Listar Productos")
+  data += ("List Vendor" -> "Listar Proveedores")
+
+  val dataOpposite = collection.mutable.Map[String, String]()
+  dataOpposite += ("Guardar" -> "save")
+  dataOpposite += ("Cancelar" -> "cancel")
+  dataOpposite += ("Nueva Venta" -> "Add Card")
+  dataOpposite += ("Nueva Categoria" -> "Add Category")
+  dataOpposite += ("Nuevo Cliente" -> "Add Customer")
+  dataOpposite += ("Nuevo Producto" -> "Add Product")
+  dataOpposite += ("Comprar" -> "Add Product Inventory")
+  dataOpposite += ("Nuevo Proveedor" -> "Add Vendor")
+  dataOpposite += ("Border Pane" -> "Border Pane")
+  dataOpposite += ("Grid Pane" -> "Grid Pane")
+  dataOpposite += ("Inventario" -> "Inventory")
+  dataOpposite += ("Listar Ventas" -> "List Card")
+  dataOpposite += ("Listar Ventas/Producto" -> "List Card Item")
+  dataOpposite += ("Listar Categorias" -> "List Category")
+  dataOpposite += ("Listar Clientes" -> "List Customer")
+  dataOpposite += ("Listar Compras" -> "List Inventory")
+  dataOpposite += ("Listar Productos" -> "List Product")
+  dataOpposite += ("Listar Proveedores" -> "List Vendor")
+}

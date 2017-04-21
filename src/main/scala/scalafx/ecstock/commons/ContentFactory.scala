@@ -42,6 +42,8 @@ import scalafx.scene.input.{Clipboard, ClipboardContent}
 import scalafx.scene.layout.{BorderPane, Priority, StackPane, VBox}
 import scalafx.scene.web.WebView
 import scalafx.stage.DirectoryChooser
+import scalafx.ecstock.i18n.Messages
+
 
 /**
  * populates the tabbed content by loading

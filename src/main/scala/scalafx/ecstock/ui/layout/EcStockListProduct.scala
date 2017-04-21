@@ -19,7 +19,7 @@ import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
-
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -39,7 +39,7 @@ class EcStockListProduct extends EcStockExample {
         new TableColumn[Product, String] {
           text = "Name"
           cellValueFactory = { _.value.nameProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Product, String]() {
           text = "Retail Price"
@@ -67,6 +67,7 @@ class EcStockListProduct extends EcStockExample {
           prefWidth = 100
         }
       )
+      prefWidth = 800
     }
 
     GridPane.setConstraints(table1, 0, 0, 1, 1)

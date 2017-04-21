@@ -16,6 +16,7 @@ import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.util.converter.DefaultStringConverter
 import scalafx.scene.control.cell.TextFieldTableCell
 import scalafx.ecstock.models.DBManager
+import scalafx.ecstock.i18n.Messages
 
 /**
  *
@@ -172,15 +173,16 @@ class EcStockAddCard extends EcStockExample {
         new TableColumn[ProductCardItem, String] {
           text = "Product"
           cellValueFactory = { _.value.productNameProperty }
-          prefWidth = 100
+          prefWidth = 180
         },
         new TableColumn[ProductCardItem, String]() {
           text = "Quantity"
           cellValueFactory = { _.value.quantityProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
-          prefWidth = 100
+          prefWidth = 120
         }
       )
+      prefWidth = 300
       editable = true
     }
 
@@ -243,6 +245,7 @@ class EcStockAddCard extends EcStockExample {
       margin = Insets(18)
       style = "-fx-background-color: #336699"
       children ++= Seq(detailGrid, productsGrid, calculatorGrid, categoriesGrid)
+      prefWidth = 800
     }
 
     val customerLbl = new Label("Customer:") {
@@ -260,7 +263,7 @@ class EcStockAddCard extends EcStockExample {
 
     GridPane.setConstraints(customerCb, 1, 1)
 
-    val saveBtn = new Button("SAVE") {
+    val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
 
           var totalPrice: Double = 0
@@ -288,7 +291,7 @@ class EcStockAddCard extends EcStockExample {
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
 
-    val cancelBtn = new Button("CANCEL")
+    val cancelBtn = new Button(Messages.data("cancel"))
     GridPane.setConstraints(cancelBtn, 1, 0)
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)

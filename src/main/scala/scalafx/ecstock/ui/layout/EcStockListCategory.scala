@@ -20,7 +20,7 @@ import org.hibernate.{ Session, Criteria }
 import scalafx.ecstock.models.DBManager
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
-
+import scalafx.ecstock.i18n.Messages
 
 /**
  */
@@ -46,14 +46,15 @@ class EcStockListCategory extends EcStockExample {
         new TableColumn[Category, String] {
           text = "Category"
           cellValueFactory = { _.value.nameProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Category, String]() {
           text = "Description"
           cellValueFactory = { _.value.descriptionProperty }
-          prefWidth = 100
+          prefWidth = 300
         }
       )
+      prefWidth = 500
     }
 
     GridPane.setConstraints(table1, 0, 1, 1, 1)
