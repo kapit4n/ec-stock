@@ -3,7 +3,7 @@ import javax.persistence._
 import scalafx.beans.property.{StringProperty}
 
 @Entity
-@Table(name = "productCard")
+@Table(name = "card")
 class ProductCard(idParam: Int, customer: Int, totalPrice: Double, observations: String) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

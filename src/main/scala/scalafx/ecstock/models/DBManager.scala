@@ -104,18 +104,19 @@ object DBManager {
     var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit FROM product")
+      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, imgSrc FROM product")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val name = rs.getString("name")
-        val retailPrice = rs.getString("retailPrice").toLong
+        val retailPrice = rs.getString("retailPrice").toDouble
         val vendor = rs.getString("vendor").toInt
         val brand = rs.getString("brand").toInt
         val category = rs.getString("category").toInt
         val description = rs.getString("description")
         val total = rs.getString("total").toLong
         val stockLimit = rs.getString("stockLimit").toLong
-        results += new Product(id, name, retailPrice, vendor, brand, category, description, "IMG", total, stockLimit)
+        val imgSrc = rs.getString("imgSrc")
+        results += new Product(id, name, retailPrice, vendor, brand, category, description, imgSrc, total, stockLimit)
       }
     } catch {
       case e: Exception => e.printStackTrace

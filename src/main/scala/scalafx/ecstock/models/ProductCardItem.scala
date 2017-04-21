@@ -3,8 +3,8 @@ import javax.persistence._
 import scalafx.beans.property.{StringProperty}
 
 @Entity
-@Table(name = "productCardItem")
-class ProductCardItem(idParam: Int, card: Int, product: Int, quantity: Int, price: Double, totalPrice: Double) {
+@Table(name = "cardItem")
+class ProductCardItem(idParam: Int, val card: Int, val product: Int, val quantity: Int, val price: Double, val totalPrice: Double) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Int = idParam

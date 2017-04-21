@@ -136,7 +136,7 @@ class EcStockAddProduct extends EcStockExample {
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toLong, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "IMG", totalTxt.getText().toLong, limitTxt.getText().toLong)
+          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toDouble, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "/scalafx/ecstock/products/imac.png", totalTxt.getText().toLong, limitTxt.getText().toLong)
           DBManager.session.save(product);
           DBManager.session.getTransaction().commit();
       }

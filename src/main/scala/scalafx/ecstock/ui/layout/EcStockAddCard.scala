@@ -9,23 +9,22 @@ import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstrain
 import scalafx.event.ActionEvent
 import scalafx.scene.control._
 import java.io.IOException
-import scalafx.ecstock.models.Product
-import scalafx.ecstock.models.ProductCard
-import scalafx.ecstock.models.Category
+import scalafx.ecstock.models._
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.util.converter.DefaultStringConverter
 import scalafx.scene.control.cell.TextFieldTableCell
+import scalafx.ecstock.models.DBManager
 
 /**
  *
  */
 class EcStockAddCard extends EcStockExample {
 
-  val productCards: ObservableBuffer[ProductCard] = ObservableBuffer[ProductCard]()
-  val products: ObservableBuffer[Product] = ObservableBuffer[Product]()
-  val categories: ObservableBuffer[Category] = ObservableBuffer[Category]()
+  val productCards: ObservableBuffer[ProductCardItem] = ObservableBuffer[ProductCardItem]()
+  val products: ObservableBuffer[Product] = ObservableBuffer[Product](DBManager.getProducts())
+  val categories: ObservableBuffer[Category] = ObservableBuffer[Category](DBManager.getCategories())
   val productImgWidth = 100
   val productImgHeight = 100
   val categoryImgWidth = 100
@@ -42,30 +41,31 @@ class EcStockAddCard extends EcStockExample {
   /*
    * Updates the amount of the product on the card and add if it doensn't exist
    */
-  def addAmount(product: String, quantity: Int) = {
+  def addAmount(product: Int, quantity: Int) = {
     var found = false
-    for (card <- productCards.find(_.product.value == product)) {
-        card.quantity.value = (card.quantity.value.toInt + 1).toString
+    for (card <- productCards.filter(_.product == product)) {
+        card.quantityProperty.value = (card.quantityProperty.value.toInt + 1).toString
         found = true
     }
     if (!found) {
-      productCards += new ProductCard(product, "1")
+      val items = products.filter(_.id == product)
+      productCards += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice)
     }
   }
 
   /**
    * Method to generate product list by category
    */
-  def generateCategory(containerGrid: GridPane, category: String) = {
+  def generateCategory(containerGrid: GridPane, categoryId: Int) = {
     var found = false
     val maxC = 3
     val maxR = 3
     var column = 0
     var row = 0
     containerGrid.children.clear()
-    for (product <- products.filter(_.category.value == category)) {
+    for (product <- products.filter(_.category == categoryId)) {
         val imgAux = new ImageView {
-          val filePath =  product.imgSrc.value
+          val filePath =  product.imgSrc
           val inputStream = this.getClass.getResourceAsStream(filePath)
           if (inputStream == null) {
             throw new IOException("Unable to locate resource: " + filePath)
@@ -75,10 +75,10 @@ class EcStockAddCard extends EcStockExample {
           fitHeight = productImgHeight
         }
 
-        val auxData = new Button(product.name.value, imgAux) {
+        val auxData = new Button(product.name, imgAux) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
-              addAmount(product.name.value, 1)              
+              addAmount(product.id, 1)
             }
           }
 
@@ -104,7 +104,7 @@ class EcStockAddCard extends EcStockExample {
     containerGrid.children.clear()
     for (category <- categories) {
         val imgAux = new ImageView {
-          val filePath =  category.imgSrc.value
+          val filePath =  category.imgSrc
           val inputStream = this.getClass.getResourceAsStream(filePath)
           if (inputStream == null) {
             throw new IOException("Unable to locate resource: " + filePath)
@@ -114,10 +114,10 @@ class EcStockAddCard extends EcStockExample {
           fitHeight = categoryImgHeight
         }
 
-        val auxData = new Button(category.name.value, imgAux) {
+        val auxData = new Button(category.name, imgAux) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
-              generateCategory(productsGrid, category.name.value)
+              generateCategory(productsGrid, category.id)
             }
           }
 
@@ -134,19 +134,19 @@ class EcStockAddCard extends EcStockExample {
 
   def getContent = {
 
-    products += new Product("IPAD", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/ipad.jpg")
-    products += new Product("IMAC", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/imac.png")
-    products += new Product("TV", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/tv.jpg")
-    products += new Product("APPLE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/apple.jpg")
-    products += new Product("ORANGE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/orange.jpg")
-    products += new Product("WATERMELON", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/watermelon.jpg")
-    products += new Product("CHOCOLATE", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/chocolate.jpg")
-    products += new Product("LOLLIPOPS", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/lollipops.jpg")
+    //products += new Product("IPAD", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/ipad.jpg")
+    //products += new Product("IMAC", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/imac.png")
+    //products += new Product("TV", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/tv.jpg")
+    //products += new Product("APPLE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/apple.jpg")
+    //products += new Product("ORANGE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/orange.jpg")
+    //products += new Product("WATERMELON", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/watermelon.jpg")
+    //products += new Product("CHOCOLATE", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/chocolate.jpg")
+    //products += new Product("LOLLIPOPS", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/lollipops.jpg")
 
 
-    categories += new Category("FRUIT", "Description 1", "/scalafx/ecstock/products/fruits.jpg")
-    categories += new Category("CANDY", "Description 2", "/scalafx/ecstock/products/candies.jpg")
-    categories += new Category("GADGET", "Description 2", "/scalafx/ecstock/products/gadgets.png")
+    //categories += new Category("FRUIT", "Description 1", "/scalafx/ecstock/products/fruits.jpg")
+    //categories += new Category("CANDY", "Description 2", "/scalafx/ecstock/products/candies.jpg")
+    //categories += new Category("GADGET", "Description 2", "/scalafx/ecstock/products/gadgets.png")
 
 
     val infoCaution = new Label {
@@ -163,17 +163,17 @@ class EcStockAddCard extends EcStockExample {
       image = new Image(inputStream)
     }
 
-    val detailTable = new TableView[ProductCard](productCards) {
+    val detailTable = new TableView[ProductCardItem](productCards) {
       columns ++= List(
-        new TableColumn[ProductCard, String] {
+        new TableColumn[ProductCardItem, String] {
           text = "Product"
-          cellValueFactory = { _.value.product }
+          cellValueFactory = { _.value.productProperty }
           prefWidth = 100
         },
-        new TableColumn[ProductCard, String]() {
+        new TableColumn[ProductCardItem, String]() {
           text = "Quantity"
-          cellValueFactory = { _.value.quantity}
-          cellFactory = column => new TextFieldTableCell[ProductCard, String] (new DefaultStringConverter())
+          cellValueFactory = { _.value.quantityProperty}
+          cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
           prefWidth = 100
         }
       )
@@ -181,7 +181,6 @@ class EcStockAddCard extends EcStockExample {
     }
 
     GridPane.setConstraints(detailTable, 0, 0, 1, 1)
-
 
     val detailGrid = new GridPane {
       hgap = 1
@@ -220,7 +219,7 @@ class EcStockAddCard extends EcStockExample {
     }
     calculatorGrid.setPrefSize(198, 110)
     GridPane.setConstraints(calculatorGrid, 0, 2, 1, 1)
-    generateCategory(productsGrid, "GADGET")
+    generateCategory(productsGrid, categories(0).id)
 
     val categoriesGrid = new GridPane {
       hgap = 3

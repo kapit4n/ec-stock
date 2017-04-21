@@ -55,7 +55,7 @@ class EcStockAddCategory extends EcStockExample {
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "Img")
+          val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "/scalafx/ecstock/products/candies.jpg")
           DBManager.session.save(category);
           DBManager.session.getTransaction().commit();
       }
