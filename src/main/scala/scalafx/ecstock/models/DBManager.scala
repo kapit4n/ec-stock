@@ -1,7 +1,6 @@
 package scalafx.ecstock.models
 import org.hibernate._
 import java.sql.{Connection,DriverManager}
-import scalafx.ecstock.models.Category
 import scalafx.Includes._
 import scala.collection.mutable.ListBuffer
 
@@ -25,6 +24,50 @@ object DBManager {
         val description = rs.getString("description")
         val imgSrc = rs.getString("imgSrc")
         results += new Category(id, name, description, imgSrc)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
+
+  def getCustomers(): List[Customer] = {
+    var results = new ListBuffer[Customer]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT id, name, address FROM customer")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val name = rs.getString("name")
+        val address = rs.getString("address")
+        results += new Customer(id, name, address)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
+
+  def getVendors(): List[Vendor] = {
+    var results = new ListBuffer[Vendor]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT id, name, address, contact, contact2 FROM vendor")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val name = rs.getString("name")
+        val address = rs.getString("address")
+        val contact = rs.getString("contact")
+        val contact2 = rs.getString("contact2")
+        results += new Vendor(id, name, address, contact, contact2)
       }
     } catch {
       case e: Exception => e.printStackTrace

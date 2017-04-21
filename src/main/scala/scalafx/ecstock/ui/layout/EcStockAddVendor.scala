@@ -78,7 +78,7 @@ class EcStockAddVendor extends EcStockExample {
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val vendor = new Vendor(nameTxt.getText(), addressTxt.getText(), contactTxt.getText(), contact2Txt.getText())
+          val vendor = new Vendor(0, nameTxt.getText(), addressTxt.getText(), contactTxt.getText(), contact2Txt.getText())
           DBManager.session.save(vendor);
           DBManager.session.getTransaction().commit();
       }

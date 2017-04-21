@@ -5,13 +5,15 @@ import scalafx.beans.property.{ObjectProperty, StringProperty}
 
 @Entity
 @Table(name = "vendor")
-class Vendor(val name: String, val address: String, val contact: String, val contact2: String) {
+class Vendor(idParam: Int, val name: String, val address: String, val contact: String, val contact2: String) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  var id: Int = _
+  var id: Int = idParam
+
   def this() {
-      this("", "", "", "")
+      this(0, "", "", "", "")
   }
+
   @Transient
   val nameProperty = new StringProperty(this, "nameProperty", name)
   @Transient

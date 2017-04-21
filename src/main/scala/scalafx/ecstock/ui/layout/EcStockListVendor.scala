@@ -15,6 +15,7 @@ import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
+import scalafx.ecstock.models.DBManager
 
 
 /**
@@ -28,10 +29,7 @@ class EcStockListVendor extends EcStockExample {
       wrapText = true
     }
 
-    val vendors = ObservableBuffer[Vendor](
-      new Vendor("Vendor 1", "Address 1", "Contact 1", "Contact 2"),
-      new Vendor("Vendor 2", "Address 2", "Contact 1", "Contact 2")
-    )
+    val vendors = ObservableBuffer[Vendor](DBManager.getVendors())
 
     val table1 = new TableView[Vendor](vendors) {
       columns ++= List(

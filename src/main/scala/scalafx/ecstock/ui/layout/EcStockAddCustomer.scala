@@ -76,7 +76,7 @@ class EcStockAddCustomer extends EcStockExample {
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val customer = new Customer(nameTxt.getText(), addressTxt.getText())
+          val customer = new Customer(0, nameTxt.getText(), addressTxt.getText())
           DBManager.session.save(customer);
           DBManager.session.getTransaction().commit();
       }
