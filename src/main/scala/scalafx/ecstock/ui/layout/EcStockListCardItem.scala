@@ -78,3 +78,7 @@ class EcStockListCardItem extends EcStockExample {
     }
   }
 }
+
+object EcStockListCardItem {
+  val objectName = "List Card Item"
+}

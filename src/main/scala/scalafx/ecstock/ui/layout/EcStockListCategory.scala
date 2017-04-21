@@ -78,3 +78,7 @@ class EcStockListCategory extends EcStockExample {
     }
   }
 }
+
+object EcStockListCategory {
+  val objectName = "List Category"
+}

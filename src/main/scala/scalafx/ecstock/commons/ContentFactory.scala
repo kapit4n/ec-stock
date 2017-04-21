@@ -63,7 +63,7 @@ object ContentFactory {
       inst.getContent
     }
 
-    val header = new Label(exampleName) {
+    val header = new Label(Messages.data(exampleName)) {
       styleClass += "page-header"
     }
 

@@ -77,3 +77,7 @@ class EcStockListVendor extends EcStockExample {
     }
   }
 }
+
+object EcStockListVendor {
+  val objectName = "List Vendor"
+}

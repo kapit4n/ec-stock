@@ -11,6 +11,8 @@ import org.hibernate._
 import scalafx.ecstock.models.Category
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
+import scalafx.ecstock.commons.PageDisplayer
+import scalafx.ecstock.EcStock
 
 /**
  *
@@ -66,7 +68,13 @@ class EcStockAddCategory extends EcStockExample {
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)
 
-    val cancelBtn = new Button(Messages.data("cancel"))
+    val cancelBtn = new Button(Messages.data("cancel")) {
+      onAction = (ae: ActionEvent) => {
+        EcStock.splitPane.items.remove(1)
+            EcStock.splitPane.items.add(1,
+              PageDisplayer.choosePage("layout > " + EcStockListCategory.objectName))
+      }
+    }
     GridPane.setConstraints(cancelBtn, 1, 0)
     GridPane.setMargin(cancelBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(cancelBtn, HPos.Center)
