@@ -1,3 +1,4 @@
+drop table IF EXISTS productInventory;
 drop table IF EXISTS product;
 drop table IF EXISTS category;
 drop table IF EXISTS brand;
@@ -36,7 +37,7 @@ create table vendor (
 );
 
 create table product (
-  id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) not null,
   retailPrice int NOT NULL,
   vendor int NOT NULL,
@@ -47,6 +48,17 @@ create table product (
   FOREIGN KEY (vendor) REFERENCES vendor(id),
   FOREIGN KEY (brand) REFERENCES brand(id),
   FOREIGN KEY (category) REFERENCES category(id),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table productInventory (
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  quantity int not null,
+  cost float NOT NULL,
+  vendor int NOT NULL,
+  product int NOT NULL,
+  FOREIGN KEY (vendor) REFERENCES vendor(id),
+  FOREIGN KEY (product) REFERENCES product(id),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

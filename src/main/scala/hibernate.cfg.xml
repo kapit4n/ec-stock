@@ -16,5 +16,6 @@
 		<mapping class="scalafx.ecstock.models.Customer"></mapping>
 		<mapping class="scalafx.ecstock.models.Brand"></mapping>
 		<mapping class="scalafx.ecstock.models.Product"></mapping>
+		<mapping class="scalafx.ecstock.models.ProductInventory"></mapping>
 	</session-factory>
 </hibernate-configuration>

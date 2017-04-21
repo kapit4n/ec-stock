@@ -7,6 +7,9 @@ import scalafx.scene.control.{Button, Label, Separator, TextField, ComboBox}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
 import scalafx.collections.ObservableBuffer
+import scalafx.ecstock.models.DBManager
+import scalafx.ecstock.models._
+import scalafx.event.ActionEvent
 
 /**
  *
@@ -20,19 +23,10 @@ class EcStockAddProductInventory extends EcStockExample {
       wrapText = true
     }
 
-    val products = ObservableBuffer(
-      "Product 1", "Product 2", "Product 3",
-      "Product 4", "Product 5", "Product 6",
-      "Longer ComboBox item",
-      "Product 7", "Product 8", "Product 9",
-      "Product 10", "Product 12")
+    val products = ObservableBuffer(DBManager.getProducts())
 
-    val vendors = ObservableBuffer(
-      "Vendor 1", "Vendor 2", "Vendor 3",
-      "Vendor 4", "Vendor 5", "Vendor 6",
-      "Longer ComboBox item",
-      "Vendor 7", "Vendor 8", "Vendor 9",
-      "Vendor 10", "Vendor 12")
+    val vendors = ObservableBuffer(DBManager.getVendors())
+
 
     val productLbl = new Label("Product:") {
       style = "-fx-font-weight:bold"
@@ -41,7 +35,7 @@ class EcStockAddProductInventory extends EcStockExample {
 
     GridPane.setConstraints(productLbl, 0, 0, 1, 1)
 
-    val productCb = new ComboBox[String] {
+    val productCb = new ComboBox[Product] {
           maxWidth = 200
           promptText = "Make a choice..."
           items = products
@@ -56,7 +50,7 @@ class EcStockAddProductInventory extends EcStockExample {
 
     GridPane.setConstraints(vendorLbl, 0, 1, 1, 1)
 
-    val vendorCb = new ComboBox[String] {
+    val vendorCb = new ComboBox[Vendor] {
           maxWidth = 200
           promptText = "Make a choice..."
           items = vendors
@@ -83,7 +77,7 @@ class EcStockAddProductInventory extends EcStockExample {
     GridPane.setConstraints(costLbl, 0, 3, 1, 1)
 
     val costTxt = new TextField() {
-      text = "20 Bs"
+      text = "20"
       alignmentInParent = Pos.BaselineLeft
     }
     GridPane.setConstraints(costTxt, 1, 3, 5, 1)
@@ -95,7 +89,14 @@ class EcStockAddProductInventory extends EcStockExample {
       children ++= Seq(productLbl, productCb, vendorLbl, vendorCb, quantityLbl, quantityTxt, costLbl, costTxt)
     }
 
-    val saveBtn = new Button("SAVE")
+    val saveBtn = new Button("SAVE") {
+      onAction = (ae: ActionEvent) => {
+          DBManager.session.beginTransaction();
+          val productInv = new ProductInventory(0, productCb.getValue().id, vendorCb.getValue().id, quantityTxt.getText().toLong, costTxt.getText().toDouble)
+          DBManager.session.save(productInv);
+          DBManager.session.getTransaction().commit();
+      }
+    }
     GridPane.setConstraints(saveBtn, 0, 0)
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)

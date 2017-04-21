@@ -122,4 +122,27 @@ object DBManager {
     }
     return results.toList
   }
+
+  def getProductInventories(): List[ProductInventory] = {
+    var results = new ListBuffer[ProductInventory]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT id, product, vendor, quantity, cost FROM productInventory")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val product = rs.getString("product").toInt
+        val vendor = rs.getString("vendor").toInt
+        val quantity = rs.getString("quantity").toLong
+        val cost = rs.getString("cost").toDouble
+        results += new ProductInventory(id, product, vendor, quantity, cost)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
 }

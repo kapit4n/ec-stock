@@ -4,17 +4,18 @@ import scalafx.beans.property.{StringProperty}
 
 @Entity
 @Table(name = "productInventory")
-class ProductInventory(product: String, vendor: String, quantity: String, cost: String) {
+class ProductInventory(idParam: Int, val product: Int, val vendor: Int, val quantity: Long, val cost: Double) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  var id: Int = _
+  var id: Int = idParam
 
   @Transient
-  val productProperty = new StringProperty(this, "productProperty", product)
+  val productProperty = new StringProperty(this, "productProperty", product.toString)
   @Transient
-  val vendorProperty = new StringProperty(this, "vendorProperty", vendor)
+  val vendorProperty = new StringProperty(this, "vendorProperty", vendor.toString)
   @Transient
-  val quantityProperty = new StringProperty(this, "quantityProperty", quantity)
+  val quantityProperty = new StringProperty(this, "quantityProperty", quantity.toString)
   @Transient
-  val costProperty = new StringProperty(this, "costProperty", cost)
+  val costProperty = new StringProperty(this, "costProperty", cost.toString)
+  override def toString = product.toString
 }
