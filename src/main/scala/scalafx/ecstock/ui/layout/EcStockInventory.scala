@@ -54,6 +54,11 @@ class EcStockInventory extends EcStockExample {
           text = "Total"
           cellValueFactory = { _.value.totalProperty }
           prefWidth = 100
+        },
+        new TableColumn[Product, String]() {
+          text = "Limit"
+          cellValueFactory = { _.value.limitProperty }
+          prefWidth = 100
         }
       )
     }

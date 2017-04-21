@@ -114,19 +114,29 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(totalTxt, 1, 6, 8, 1)
 
+    val limitLbl = new Label("Limit:") {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+    GridPane.setConstraints(limitLbl, 0, 7, 1, 1)
+
+    val limitTxt = new TextField() {
+      text = "0"
+      alignmentInParent = Pos.BaselineLeft
+    }
+    GridPane.setConstraints(limitTxt, 1, 7, 9, 1)
+
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(nameLbl, nameTxt, retailPriceLbl, retailPriceTxt, vendorLbl, vendorCb, brandLbl, brandCb, categoryLbl, categoryCb, descriptionLbl, descriptionTxt, totalLbl, totalTxt)
+      children ++= Seq(nameLbl, nameTxt, retailPriceLbl, retailPriceTxt, vendorLbl, vendorCb, brandLbl, brandCb, categoryLbl, categoryCb, descriptionLbl, descriptionTxt, totalLbl, totalTxt, limitLbl, limitTxt)
     }
 
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toLong, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "IMG", totalTxt.getText().toLong)
-          println(vendorCb.getValue().id)
-          println(brandCb.getValue().id)
+          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toLong, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "IMG", totalTxt.getText().toLong, limitTxt.getText().toLong)
           DBManager.session.save(product);
           DBManager.session.getTransaction().commit();
       }

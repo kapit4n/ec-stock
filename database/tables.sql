@@ -46,6 +46,7 @@ create table product (
   description VARCHAR(100) not null,
   imgSrc VARCHAR(100) not null,
   total int DEFAULT 0,
+  stockLimit int DEFAULT 0,
   FOREIGN KEY (vendor) REFERENCES vendor(id),
   FOREIGN KEY (brand) REFERENCES brand(id),
   FOREIGN KEY (category) REFERENCES category(id),
