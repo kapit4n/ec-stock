@@ -148,12 +148,12 @@ object DBManager {
     return results.toList
   }
 
-  def updateProductTotal(amount: Int, productId: Int) = {
+  def updateProductTotal(amount: Long, productId: Int) = {
     Class.forName(driver)
     var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("UPDATE product SET total = total + " + amount + "  WHERE id = " + productId)
+      val rs = statement.executeUpdate("UPDATE product SET total = total + " + amount + "  WHERE id = " + productId)
       println(rs)
     } catch {
       case e: Exception => e.printStackTrace

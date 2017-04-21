@@ -95,6 +95,7 @@ class EcStockAddProductInventory extends EcStockExample {
           val productInv = new ProductInventory(0, productCb.getValue().id, vendorCb.getValue().id, quantityTxt.getText().toLong, costTxt.getText().toDouble)
           DBManager.session.save(productInv);
           DBManager.session.getTransaction().commit();
+          DBManager.updateProductTotal(quantityTxt.getText().toLong, productCb.getValue().id)
       }
     }
     GridPane.setConstraints(saveBtn, 0, 0)
