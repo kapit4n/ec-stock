@@ -49,7 +49,7 @@ class EcStockAddCard extends EcStockExample {
     }
     if (!found) {
       val items = products.filter(_.id == product)
-      productCards += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice)
+      productCards += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).name)
     }
   }
 
@@ -167,7 +167,7 @@ class EcStockAddCard extends EcStockExample {
       columns ++= List(
         new TableColumn[ProductCardItem, String] {
           text = "Product"
-          cellValueFactory = { _.value.productProperty }
+          cellValueFactory = { _.value.productNameProperty }
           prefWidth = 100
         },
         new TableColumn[ProductCardItem, String]() {
