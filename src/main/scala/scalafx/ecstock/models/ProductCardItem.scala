@@ -26,4 +26,5 @@ class ProductCardItem(idParam: Int, var card: Int, val product: Int, var quantit
   
   @Transient
   val totalPriceProperty = new StringProperty(this, "totalPriceProperty", totalPrice.toString)
+
 }

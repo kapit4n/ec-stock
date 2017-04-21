@@ -132,7 +132,7 @@ object DBManager {
     var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c INNER JOIN customer AS cs ON c.customer = cs.id")
+      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c INNER JOIN customer AS cs ON c.customer = cs.id order by c.createdAt DESC")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val customer = rs.getString("customer").toInt
@@ -140,6 +140,30 @@ object DBManager {
         val observation = rs.getString("observation")
         val customerName = rs.getString("customerName")
         results += new ProductCard(id, customer, totalPrice, observation, customerName)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
+  def getCardItems(): List[ProductCardItem] = {
+    var results = new ListBuffer[ProductCardItem]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT p.id, card, product, quantity, price, totalPrice, p.name as productName FROM cardItem AS ci INNER JOIN product AS p ON ci.product = p.id order by ci.createdAt DESC")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val card = rs.getString("card").toInt
+        val product = rs.getString("product").toInt
+        val quantity = rs.getString("quantity").toInt
+        val price = rs.getString("price").toDouble
+        val totalPrice = rs.getString("totalPrice").toDouble
+        val productName = rs.getString("productName")
+        results += new ProductCardItem(id, card, product, quantity, price, totalPrice, productName)
       }
     } catch {
       case e: Exception => e.printStackTrace
