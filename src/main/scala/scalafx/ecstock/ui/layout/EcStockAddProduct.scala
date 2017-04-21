@@ -7,6 +7,9 @@ import scalafx.scene.control.{Button, Label, Separator, TextField, ComboBox}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
 import scalafx.collections.ObservableBuffer
+import scalafx.ecstock.models.DBManager
+import scalafx.ecstock.models._
+import scalafx.event.ActionEvent
 
 /**
  *
@@ -20,26 +23,11 @@ class EcStockAddProduct extends EcStockExample {
       wrapText = true
     }
 
-    val categories = ObservableBuffer(
-      "Category 1", "Category 2", "Category 3",
-      "Category 4", "Category 5", "Category 6",
-      "Longer ComboBox item",
-      "Category 7", "Category 8", "Category 9",
-      "Category 10", "Category 12")
+    val categories = ObservableBuffer(DBManager.getCategories())
 
-    val vendors = ObservableBuffer(
-      "Vendor 1", "Vendor 2", "Vendor 3",
-      "Vendor 4", "Vendor 5", "Vendor 6",
-      "Longer ComboBox item",
-      "Vendor 7", "Vendor 8", "Vendor 9",
-      "Vendor 10", "Vendor 12")
+    val vendors = ObservableBuffer(DBManager.getVendors())
 
-    val brands = ObservableBuffer(
-      "Brand 1", "Brand 2", "Brand 3",
-      "Brand 4", "Brand 5", "Brand 6",
-      "Longer ComboBox item",
-      "Brand 7", "Brand 8", "Brand 9",
-      "Brand 10", "Brand 12")
+    val brands = ObservableBuffer(DBManager.getBrands())
 
     val nameLbl = new Label("Name:") {
       style = "-fx-font-weight:bold"
@@ -69,7 +57,7 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(vendorLbl, 0, 2, 1, 1)
 
-    val vendorCb = new ComboBox[String] {
+    val vendorCb = new ComboBox[Vendor] {
           maxWidth = 200
           promptText = "Make a choice..."
           items = vendors
@@ -82,7 +70,7 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(brandLbl, 0, 3, 1, 1)
 
-    val brandCb = new ComboBox[String] {
+    val brandCb = new ComboBox[Brand] {
           maxWidth = 200
           promptText = "Make a choice..."
           items = brands
@@ -95,7 +83,7 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(categoryLbl, 0, 4, 1, 1)
 
-    val categoryCb = new ComboBox[String] {
+    val categoryCb = new ComboBox[Category] {
           maxWidth = 200
           promptText = "Make a choice..."
           items = categories
@@ -114,8 +102,6 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(descriptionTxt, 1, 5, 7, 1)
 
-
-
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
@@ -123,7 +109,17 @@ class EcStockAddProduct extends EcStockExample {
       children ++= Seq(nameLbl, nameTxt, retailPriceLbl, retailPriceTxt, vendorLbl, vendorCb, brandLbl, brandCb, categoryLbl, categoryCb, descriptionLbl, descriptionTxt)
     }
 
-    val saveBtn = new Button("SAVE")
+    val saveBtn = new Button("SAVE") {
+      onAction = (ae: ActionEvent) => {
+          DBManager.session.beginTransaction();
+          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toLong, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "IMG")
+          println(vendorCb.getValue().id)
+          println(brandCb.getValue().id)
+          DBManager.session.save(product);
+          DBManager.session.getTransaction().commit();
+      }
+    }
+
     GridPane.setConstraints(saveBtn, 0, 0)
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)

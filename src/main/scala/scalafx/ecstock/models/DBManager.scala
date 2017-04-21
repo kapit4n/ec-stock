@@ -76,4 +76,50 @@ object DBManager {
     }
     return results.toList
   }
+
+  def getBrands(): List[Brand] = {
+    var results = new ListBuffer[Brand]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT id, name, description FROM brand")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val name = rs.getString("name")
+        val description = rs.getString("description")
+        results += new Brand(id, name, description)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
+
+  def getProducts(): List[Product] = {
+    var results = new ListBuffer[Product]()
+    Class.forName(driver)
+    var connection = DriverManager.getConnection(url, username, password)
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description FROM product")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val name = rs.getString("name")
+        val retailPrice = rs.getString("retailPrice").toLong
+        val vendor = rs.getString("vendor").toInt
+        val brand = rs.getString("brand").toInt
+        val category = rs.getString("category").toInt
+        val description = rs.getString("description")
+        results += new Product(id, name, retailPrice, vendor, brand, category, description, "IMG")
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    } finally {
+      connection.close
+    }
+    return results.toList
+  }
 }

@@ -40,9 +40,7 @@ class EcStockListCategory extends EcStockExample {
     }
     */
 
-    var categoryData = DBManager.getCategories()
-
-    val categoryObs = ObservableBuffer[Category](categoryData)
+    val categoryObs = ObservableBuffer[Category](DBManager.getCategories())
     val table1 = new TableView[Category](categoryObs) {
       columns ++= List(
         new TableColumn[Category, String] {

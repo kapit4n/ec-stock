@@ -18,6 +18,7 @@ import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
+import scalafx.ecstock.models.DBManager
 
 
 /**
@@ -30,12 +31,8 @@ class EcStockListProduct extends EcStockExample {
       text = "Product List"
       wrapText = true
     }
-    val brand1 = new Brand("Brand 1", "description");
-    val vendor1 = new Vendor("vendor1", "address", "Contact 1", "Contact2");
-    val category1 = new Category("Category1", "Category Description", "img");
-    val products = ObservableBuffer[Product](
-      new Product("Product 1", 10, vendor1, brand1, category1, "Description 1", "imgSrc")
-    )
+
+    val products = ObservableBuffer[Product](DBManager.getProducts())
 
     val table1 = new TableView[Product](products) {
       columns ++= List(
@@ -49,17 +46,17 @@ class EcStockListProduct extends EcStockExample {
           cellValueFactory = { _.value.retailPriceProperty }
           prefWidth = 100
         },
-        new TableColumn[Product, Vendor]() {
+        new TableColumn[Product, String]() {
           text = "Vendor"
           cellValueFactory = { _.value.vendorProperty }
           prefWidth = 100
         },
-        new TableColumn[Product, Brand]() {
+        new TableColumn[Product, String]() {
           text = "Brand"
           cellValueFactory = { _.value.brandProperty }
           prefWidth = 100
         },
-        new TableColumn[Product, Category]() {
+        new TableColumn[Product, String]() {
           text = "Category"
           cellValueFactory = { _.value.categoryProperty }
           prefWidth = 100
