@@ -61,6 +61,9 @@ class EcStockAddCategory extends EcStockExample {
           val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "/scalafx/ecstock/products/candies.jpg")
           DBManager.session.save(category);
           DBManager.session.getTransaction().commit();
+          EcStock.splitPane.items.remove(1)
+            EcStock.splitPane.items.add(1,
+              PageDisplayer.choosePage("layout > " + EcStockListCategory.objectName))
       }
     }
 

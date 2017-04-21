@@ -82,6 +82,9 @@ class EcStockAddCustomer extends EcStockExample {
           val customer = new Customer(0, nameTxt.getText(), addressTxt.getText())
           DBManager.session.save(customer);
           DBManager.session.getTransaction().commit();
+          EcStock.splitPane.items.remove(1)
+          EcStock.splitPane.items.add(1,
+            PageDisplayer.choosePage("layout > " + EcStockListCustomer.objectName))
       }
     }
 

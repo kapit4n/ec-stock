@@ -46,15 +46,15 @@ class EcStockListCategory extends EcStockExample {
         new TableColumn[Category, String] {
           text = "Category"
           cellValueFactory = { _.value.nameProperty }
-          prefWidth = 200
+          prefWidth = 350
         },
         new TableColumn[Category, String]() {
           text = "Description"
           cellValueFactory = { _.value.descriptionProperty }
-          prefWidth = 300
+          prefWidth = 450
         }
       )
-      prefWidth = 500
+      prefWidth = 800
     }
 
     GridPane.setConstraints(table1, 0, 1, 1, 1)

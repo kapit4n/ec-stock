@@ -39,7 +39,7 @@ class EcStockInventory extends EcStockExample {
         new TableColumn[Product, String] {
           text = "Name"
           cellValueFactory = { _.value.nameProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Product, String]() {
           text = "Retail Price"
@@ -49,7 +49,7 @@ class EcStockInventory extends EcStockExample {
         new TableColumn[Product, String]() {
           text = "Vendor"
           cellValueFactory = { _.value.vendorProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Product, String]() {
           text = "Total"
@@ -62,6 +62,7 @@ class EcStockInventory extends EcStockExample {
           prefWidth = 100
         }
       )
+      prefWidth = 800
     }
 
     GridPane.setConstraints(table1, 0, 0, 1, 1)

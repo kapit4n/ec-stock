@@ -37,14 +37,15 @@ class EcStockListCard extends EcStockExample {
         new TableColumn[ProductCard, String] {
           text = "Customer"
           cellValueFactory = { _.value.customerNameProperty }
-          prefWidth = 100
+          prefWidth = 400
         },
         new TableColumn[ProductCard, String]() {
           text = "Total Price"
           cellValueFactory = { _.value.totalPriceProperty }
-          prefWidth = 100
+          prefWidth = 200
         }
       )
+      prefWidth = 800
     }
 
     GridPane.setConstraints(table1, 0, 0, 1, 1)

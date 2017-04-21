@@ -98,6 +98,9 @@ class EcStockAddProductInventory extends EcStockExample {
           DBManager.session.save(productInv);
           DBManager.session.getTransaction().commit();
           DBManager.updateProductTotal(quantityTxt.getText().toLong, productCb.getValue().id)
+          EcStock.splitPane.items.remove(1)
+            EcStock.splitPane.items.add(1,
+              PageDisplayer.choosePage("layout > " + EcStockListInventory.objectName))
       }
     }
     GridPane.setConstraints(saveBtn, 0, 0)
@@ -107,8 +110,8 @@ class EcStockAddProductInventory extends EcStockExample {
     val cancelBtn = new Button(Messages.data("cancel")) {
       onAction = (ae: ActionEvent) => {
         EcStock.splitPane.items.remove(1)
-            EcStock.splitPane.items.add(1,
-              PageDisplayer.choosePage("layout > " + EcStockListInventory.objectName))
+          EcStock.splitPane.items.add(1,
+            PageDisplayer.choosePage("layout > " + EcStockListInventory.objectName))
       }
     }
     GridPane.setConstraints(cancelBtn, 1, 0)

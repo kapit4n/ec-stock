@@ -36,24 +36,25 @@ class EcStockListVendor extends EcStockExample {
         new TableColumn[Vendor, String] {
           text = "Vendor Name"
           cellValueFactory = { _.value.nameProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Vendor, String]() {
           text = "Address"
           cellValueFactory = { _.value.addressProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Vendor, String]() {
           text = "Contact 1"
           cellValueFactory = { _.value.contactProperty }
-          prefWidth = 100
+          prefWidth = 200
         },
         new TableColumn[Vendor, String]() {
           text = "Contact 2"
           cellValueFactory = { _.value.contact2Property }
-          prefWidth = 100
+          prefWidth = 200
         }
       )
+      prefWidth = 800
     }
 
     GridPane.setConstraints(table1, 0, 1, 1, 1)

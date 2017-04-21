@@ -142,6 +142,9 @@ class EcStockAddProduct extends EcStockExample {
           val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toDouble, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "/scalafx/ecstock/products/imac.png", totalTxt.getText().toLong, limitTxt.getText().toLong)
           DBManager.session.save(product);
           DBManager.session.getTransaction().commit();
+          EcStock.splitPane.items.remove(1)
+            EcStock.splitPane.items.add(1,
+              PageDisplayer.choosePage("layout > " + EcStockListProduct.objectName))
       }
     }
 
