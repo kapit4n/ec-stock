@@ -10,6 +10,7 @@ import scalafx.scene.control._
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout._
 import scalafx.stage.Screen
+import scalafx.ecstock.i18n.Messages
 
 /** The main ScalaFX EcStock application object. */
 object EcStock extends JFXApp {
@@ -39,9 +40,27 @@ object EcStock extends JFXApp {
         case (false, Some(_))     => "dashBoard - " + newItem.getValue
         case (_, _)               => "dashBoard"
       }
-      centerPane = PageDisplayer.choosePage(pageCode)
-      splitPane.items.remove(1)
-      splitPane.items.add(1, centerPane)
+      val pageCodeAux = (newItem.isLeaf, Option(newItem.getParent)) match {
+        case (true, Some(parent)) => newItem.getValue
+        case (false, Some(_))     => "dashBoard - " + newItem.getValue
+        case (_, _)               => "dashBoard"
+      }
+      val parentAux = (newItem.isLeaf, Option(newItem.getParent)) match {
+        case (true, Some(parent)) => parent.getValue.toLowerCase
+        case (false, Some(_))     => "dashBoard - " + newItem.getValue
+        case (_, _)               => "dashBoard"
+      }
+
+      if (pageCode.contains("dashBoard")) {
+        centerPane = PageDisplayer.choosePage(pageCode)
+        splitPane.items.remove(1)
+        splitPane.items.add(1, centerPane)
+      }
+      else {
+        centerPane = PageDisplayer.choosePage(parentAux + " > " + Messages.dataOpposite(pageCodeAux))
+        splitPane.items.remove(1)
+        splitPane.items.add(1, centerPane)
+      }
     }
   }
 
