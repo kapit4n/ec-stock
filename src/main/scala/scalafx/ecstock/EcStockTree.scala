@@ -71,7 +71,6 @@ object EcStockTree {
           styleClass.clear()
           styleClass += "sample-tile"
           onAction = (ae: ActionEvent) => {
-
             EcStock.splitPane.items.remove(1)
             EcStock.splitPane.items.add(1,
               PageDisplayer.choosePage(groupName + " > " + sampleName))

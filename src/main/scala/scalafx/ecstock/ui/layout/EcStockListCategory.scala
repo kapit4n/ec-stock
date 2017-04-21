@@ -15,6 +15,11 @@ import scalafx.scene.control.TableColumn._
 import scalafx.scene.control.{TableCell, TableColumn, TableView}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
+import org.hibernate.criterion._
+import org.hibernate.{ Session, Criteria }
+import scalafx.ecstock.models.DBManager
+import scala.collection.JavaConverters._
+import scala.collection.mutable.ListBuffer
 
 
 /**
@@ -27,15 +32,21 @@ class EcStockListCategory extends EcStockExample {
       wrapText = true
     }
 
-    val categories = ObservableBuffer[Category](
-      new Category("Category 1", "Description 1", "imgSrc"),
-      new Category("Category 2", "Description 2", "imgSrc")
-    )
+    /*
+    // Source code to get all categories with hibernate but it doen't fill the data
+    var categoryData = new ListBuffer[Category]()
+    for (name <- DBManager.session.createCriteria(classOf[Category]).list().asScala) {
+      categoryData += name.asInstanceOf[Category]
+    }
+    */
 
-    val table1 = new TableView[Category](categories) {
+    var categoryData = DBManager.getCategories()
+
+    val categoryObs = ObservableBuffer[Category](categoryData)
+    val table1 = new TableView[Category](categoryObs) {
       columns ++= List(
         new TableColumn[Category, String] {
-          text = "Category 1"
+          text = "Category"
           cellValueFactory = { _.value.nameProperty }
           prefWidth = 100
         },

@@ -1,11 +1,11 @@
 package scalafx.ecstock.models
 import javax.persistence._
 
-import scalafx.beans.property.{StringProperty}
+import scalafx.beans.property.{StringProperty, ObjectProperty}
 
 @Entity
 @Table(name = "product")
-class Product(name : String, retailPrice : String, vendor : String, brand : String, category : String, description : String, imgSrc : String) {
+class Product(name: String, retailPrice: Long, vendor: Vendor, brand: Brand, category: Category, description: String, imgSrc: String) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Int = _
@@ -13,13 +13,13 @@ class Product(name : String, retailPrice : String, vendor : String, brand : Stri
   @Transient
   val nameProperty = new StringProperty(this, "nameProperty", name)
   @Transient
-  val retailPriceProperty = new StringProperty(this, "retailPriceProperty", retailPrice)
+  val retailPriceProperty = new StringProperty(this, "retailPriceProperty", retailPrice.toString)
   @Transient
-  val vendorProperty = new StringProperty(this, "vendorProperty", vendor)
+  val vendorProperty = new ObjectProperty(this, "vendorProperty", vendor)
   @Transient
-  val brandProperty = new StringProperty(this, "brandProperty", brand)
+  val brandProperty = new ObjectProperty(this, "brandProperty", brand)
   @Transient
-  val categoryProperty = new StringProperty(this, "categoryProperty", category)
+  val categoryProperty = new ObjectProperty(this, "categoryProperty", category)
   @Transient
   val descriptionProperty = new StringProperty(this, "descriptionProperty", description)
   @Transient

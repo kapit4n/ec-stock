@@ -55,11 +55,12 @@ class EcStockAddCategory extends EcStockExample {
     val saveBtn = new Button("SAVE") {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val catAux = new Category(nameTxt.getText(), descriptionTxt.getText(), "Img" )
-          DBManager.session.save(catAux);
+          val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "Img")
+          DBManager.session.save(category);
           DBManager.session.getTransaction().commit();
       }
     }
+
     GridPane.setConstraints(saveBtn, 0, 0)
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)

@@ -4,8 +4,8 @@ import javax.persistence._
 import scalafx.beans.property.{ObjectProperty, StringProperty}
 
 @Entity
-@Table(name = "customer")
-case class Customer(val name: String,val address: String) {
+@Table(name = "brand")
+class Brand(val name: String, val description: String) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Int = _
@@ -15,5 +15,6 @@ case class Customer(val name: String,val address: String) {
   @Transient
   val nameProperty = new StringProperty(this, "nameProperty", name)
   @Transient
-  val addressProperty = new StringProperty(this, "addressProperty", address)
+  val descriptionProperty = new StringProperty(this, "descriptionProperty", description)
+  override def toString = name
 }

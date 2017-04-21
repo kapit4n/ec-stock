@@ -7,8 +7,10 @@ import scalafx.scene.control.{Button, Label, Separator, TextField}
 import scalafx.scene.image.{Image, ImageView}
 import scalafx.scene.layout.{ColumnConstraints, GridPane, Priority, RowConstraints, VBox}
 import scalafx.collections.ObservableBuffer
-import scalafx.ecstock.models.Customer
 import java.sql.{Connection,DriverManager}
+import scalafx.ecstock.models.Customer
+import scalafx.ecstock.models.DBManager
+import scalafx.event.ActionEvent
 
 /**
  *
@@ -27,9 +29,9 @@ class EcStockAddCustomer extends EcStockExample {
         val statement = connection.createStatement
         val rs = statement.executeQuery("SELECT id, name FROM customer")
         while (rs.next) {
-            val host = rs.getString("id")
-            val user = rs.getString("name")
-            println("idCustomer = %s, name = %s".format(host,user))
+            val id = rs.getString("id")
+            val name = rs.getString("name")
+            println("idCustomer = %s, name = %s".format(id,name))
         }
     } catch {
         case e: Exception => e.printStackTrace
@@ -71,7 +73,15 @@ class EcStockAddCustomer extends EcStockExample {
       children ++= Seq(nameLbl, nameTxt, addressLbl, addressTxt)
     }
 
-    val saveBtn = new Button("SAVE")
+    val saveBtn = new Button("SAVE") {
+      onAction = (ae: ActionEvent) => {
+          DBManager.session.beginTransaction();
+          val customer = new Customer(nameTxt.getText(), addressTxt.getText())
+          DBManager.session.save(customer);
+          DBManager.session.getTransaction().commit();
+      }
+    }
+
     GridPane.setConstraints(saveBtn, 0, 0)
     GridPane.setMargin(saveBtn, Insets(10, 10, 10, 10))
     GridPane.setHalignment(saveBtn, HPos.Center)

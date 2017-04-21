@@ -5,10 +5,14 @@ import scalafx.beans.property.{ObjectProperty, StringProperty}
 
 @Entity
 @Table(name = "category")
-class Category(val name : String, val description : String, val imgSrc : String) {
+	class Category(idParam: Int, val name: String, val description: String, val imgSrc: String) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  var id: Int = _
+  var id: Int = idParam
+
+  def this() {
+      this(0, "", "", "")
+  }
 
   @Transient
   val nameProperty = new StringProperty(this, "nameProperty", name)
@@ -17,5 +21,5 @@ class Category(val name : String, val description : String, val imgSrc : String)
   @Transient
   val imgSrcProperty = new StringProperty(this, "imgSrcProperty", imgSrc)
 
-  override def toString = id + ")" + name
+  override def toString = name
 }
