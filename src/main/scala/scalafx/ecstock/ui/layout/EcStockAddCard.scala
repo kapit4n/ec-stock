@@ -26,14 +26,17 @@ import scalafx.ecstock.EcStock
 class EcStockAddCard extends EcStockExample {
 
   val productCardItems: ObservableBuffer[ProductCardItem] = ObservableBuffer[ProductCardItem]()
-  val products: ObservableBuffer[Product] = ObservableBuffer[Product](DBManager.getProducts())
-  val categories: ObservableBuffer[Category] = ObservableBuffer[Category](DBManager.getCategories())
-  val customers = ObservableBuffer(DBManager.getCustomers())
+  var products: ObservableBuffer[Product] = ObservableBuffer[Product]()
+  var categories: ObservableBuffer[Category] = ObservableBuffer[Category]()
+  var customers: ObservableBuffer[Customer] = ObservableBuffer[Customer]()
 
-  val productImgWidth = 100
-  val productImgHeight = 100
-  val categoryImgWidth = 100
+  val productImgWidth = 70
+  val productImgHeight = 70
+  val categoryImgWidth = 70
   val categoryImgHeight = 60
+
+  var totalLbl:Label = _
+  var totalTxt:TextField = _
 
   val productsGrid = new GridPane {
     hgap = 3
@@ -43,21 +46,43 @@ class EcStockAddCard extends EcStockExample {
     style = "-fx-background-color: yellow"
   }
 
+  def recalculateCardTotalPrice() = {
+    var total = 0.0
+    for (card <- productCardItems) {
+      total = total + card.totalPrice
+    }
+    totalTxt.setText(total.toString)
+  }
+
   /*
    * Updates the amount of the product on the card and add if it doensn't exist
    */
-  def addAmount(product: Int, quantity: Int) = {
+  def addProduct(product: Int, quantity: Int) = {
     var found = false
     for (card <- productCardItems.filter(_.product == product)) {
       card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity).toString
       card.quantity = card.quantity + quantity
       card.totalPrice = card.price * card.quantity
+      card.totalPriceProperty.value = card.totalPrice.toString
       found = true
     }
     if (!found) {
       val items = products.filter(_.id == product)
       productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).name)
     }
+    recalculateCardTotalPrice()
+  }
+
+  /*
+   * Updates the amount of the product on the card and add if it doensn't exist
+   */
+  def updateTotalByQuantity(product: Int, quantity: Int) = {
+    for (card <- productCardItems.filter(_.product == product)) {
+      card.quantity = quantity
+      card.totalPrice = card.price * card.quantity
+      card.totalPriceProperty.value = card.totalPrice.toString
+    }
+    recalculateCardTotalPrice()
   }
 
   /**
@@ -65,7 +90,7 @@ class EcStockAddCard extends EcStockExample {
    */
   def generateCategory(containerGrid: GridPane, categoryId: Int) = {
     var found = false
-    val maxC = 3
+    val maxC = 6
     val maxR = 3
     var column = 0
     var row = 0
@@ -85,7 +110,7 @@ class EcStockAddCard extends EcStockExample {
         val auxData = new Button(product.name, imgAux) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
-              addAmount(product.id, 1)
+              addProduct(product.id, 1)
             }
           }
 
@@ -104,7 +129,7 @@ class EcStockAddCard extends EcStockExample {
    */
   def generateCategories(containerGrid: GridPane) = {
     var found = false
-    val maxC = 3
+    val maxC = 6
     val maxR = 3
     var column = 0
     var row = 0
@@ -140,21 +165,9 @@ class EcStockAddCard extends EcStockExample {
   }
 
   def getContent = {
-
-    //products += new Product("IPAD", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/ipad.jpg")
-    //products += new Product("IMAC", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/imac.png")
-    //products += new Product("TV", "10", "Vendor 1", "Brand 1", "GADGET", "Description 1", "/scalafx/ecstock/products/tv.jpg")
-    //products += new Product("APPLE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/apple.jpg")
-    //products += new Product("ORANGE", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/orange.jpg")
-    //products += new Product("WATERMELON", "10", "Vendor 1", "Brand 1", "FRUIT", "Description 1", "/scalafx/ecstock/products/watermelon.jpg")
-    //products += new Product("CHOCOLATE", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/chocolate.jpg")
-    //products += new Product("LOLLIPOPS", "10", "Vendor 1", "Brand 1", "CANDY", "Description 1", "/scalafx/ecstock/products/lollipops.jpg")
-
-
-    //categories += new Category("FRUIT", "Description 1", "/scalafx/ecstock/products/fruits.jpg")
-    //categories += new Category("CANDY", "Description 2", "/scalafx/ecstock/products/candies.jpg")
-    //categories += new Category("GADGET", "Description 2", "/scalafx/ecstock/products/gadgets.png")
-
+    products = ObservableBuffer[Product](DBManager.getProducts())
+    categories = ObservableBuffer[Category](DBManager.getCategories())
+    customers = ObservableBuffer[Customer](DBManager.getCustomers())
 
     val infoCaution = new Label {
       text = Messages.data("Information")
@@ -181,10 +194,29 @@ class EcStockAddCard extends EcStockExample {
           text = Messages.data("Quantity")
           cellValueFactory = { _.value.quantityProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
-          prefWidth = 100
+          prefWidth = 66
+          onEditCommit = (evt: CellEditEvent[ProductCardItem, String]) => {
+              val rowOldValue = evt.rowValue
+              val rowNewValue = evt.newValue
+              println(rowOldValue.product)
+              println(rowNewValue)
+              updateTotalByQuantity(rowOldValue.product, rowNewValue.toInt)
+            }
+            editable = true
+        },
+        new TableColumn[ProductCardItem, String]() {
+          text = Messages.data("Price")
+          cellValueFactory = { _.value.priceProperty}
+          cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
+          prefWidth = 66
+        },
+        new TableColumn[ProductCardItem, String]() {
+          text = Messages.data("Total Price")
+          cellValueFactory = { _.value.totalPriceProperty}
+          cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
+          prefWidth = 66
         }
       )
-      prefWidth = 250
       editable = true
     }
 
@@ -199,15 +231,13 @@ class EcStockAddCard extends EcStockExample {
       children ++= Seq(detailTable)
     }
 
-    detailGrid.setPrefSize(110, 396)
+    detailGrid.setPrefSize(350, 450)
     GridPane.setConstraints(detailGrid, 0, 0, 2, 1)
 
-    productsGrid.setPrefSize(396, 396)
+    productsGrid.setPrefSize(650, 450)
     GridPane.setConstraints(productsGrid, 1, 0, 2, 2)
 
     val calculator = new Button("Calculator", calculatorImg) {
-        prefWidth = 110
-        prefHeight = 110
         contentDisplay = ContentDisplay.Top
         alignmentInParent = Pos.BaselineLeft
         styleClass.clear()
@@ -217,15 +247,29 @@ class EcStockAddCard extends EcStockExample {
         }
       }
     GridPane.setConstraints(calculator, 0, 0, 1, 1)
+
+    totalLbl = new Label(Messages.data("Total:")) {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+    GridPane.setConstraints(totalLbl, 0, 0, 1, 1)
+
+    totalTxt = new TextField {
+      text = "0"
+      editable = false
+    }
+
+    GridPane.setConstraints(totalTxt, 1, 0, 2, 1)
+
     val calculatorGrid = new GridPane {
-      hgap = 1
-      vgap = 1
+      hgap = 2
+      vgap = 2
       gridLinesVisible = true
       margin = Insets(18)
       style = "-fx-background-color: green"
-      children ++= Seq(calculator)
+      children ++= Seq(totalLbl, totalTxt)
     }
-    calculatorGrid.setPrefSize(198, 110)
+    calculatorGrid.setPrefSize(350, 110)
     GridPane.setConstraints(calculatorGrid, 0, 2, 1, 1)
     generateCategory(productsGrid, categories(0).id)
 
@@ -235,7 +279,7 @@ class EcStockAddCard extends EcStockExample {
       margin = Insets(18)
       style = "-fx-background-color: blue"
     }
-    categoriesGrid.setPrefSize(396, 110)
+    categoriesGrid.setPrefSize(650, 110)
     GridPane.setConstraints(categoriesGrid, 1, 2, 1, 2)
 
     generateCategories(categoriesGrid)
@@ -247,8 +291,9 @@ class EcStockAddCard extends EcStockExample {
       margin = Insets(18)
       style = "-fx-background-color: #336699"
       children ++= Seq(detailGrid, productsGrid, calculatorGrid, categoriesGrid)
-      prefWidth = 800
     }
+
+    infoGrid.setPrefSize(1000, 850)
 
     val customerLbl = new Label(Messages.data("Customer:")) {
       style = "-fx-font-weight:bold"

@@ -10,11 +10,15 @@ object DBManager {
   val driver = "com.mysql.jdbc.Driver"
   val username = "root"
   val password = "root"
+  Class.forName(driver)
+  var connection = DriverManager.getConnection(url, username, password)
+  
+  def closeConnection() = {
+    connection.close
+  }
 
   def getCategories(): List[Category] = {
     var results = new ListBuffer[Category]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT id, name, description, imgSrc FROM category")
@@ -27,16 +31,12 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def getCustomers(): List[Customer] = {
     var results = new ListBuffer[Customer]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT id, name, address FROM customer")
@@ -48,16 +48,12 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def getVendors(): List[Vendor] = {
     var results = new ListBuffer[Vendor]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT id, name, address, contact, contact2 FROM vendor")
@@ -71,16 +67,12 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def getBrands(): List[Brand] = {
     var results = new ListBuffer[Brand]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT id, name, description FROM brand")
@@ -92,47 +84,31 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def getProducts(): List[Product] = {
     var results = new ListBuffer[Product]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, imgSrc FROM product")
       while (rs.next) {
-        val id = rs.getString("id").toInt
-        val name = rs.getString("name")
-        val retailPrice = rs.getString("retailPrice").toDouble
-        val vendor = rs.getString("vendor").toInt
-        val brand = rs.getString("brand").toInt
-        val category = rs.getString("category").toInt
-        val description = rs.getString("description")
-        val total = rs.getString("total").toLong
-        val stockLimit = rs.getString("stockLimit").toLong
-        val imgSrc = rs.getString("imgSrc")
-        results += new Product(id, name, retailPrice, vendor, brand, category, description, imgSrc, total, stockLimit)
+        results += new Product(rs.getString("id").toInt, rs.getString("name"), rs.getString("retailPrice").toDouble,
+          rs.getString("vendor").toInt, rs.getString("brand").toInt, rs.getString("category").toInt,
+          rs.getString("description"), rs.getString("imgSrc"), rs.getString("total").toLong, rs.getString("stockLimit").toLong)
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def getCards(): List[ProductCard] = {
     var results = new ListBuffer[ProductCard]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c INNER JOIN customer AS cs ON c.customer = cs.id order by c.createdAt DESC")
+      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id order by c.createdAt DESC")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val customer = rs.getString("customer").toInt
@@ -143,18 +119,14 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
   def getCardItems(): List[ProductCardItem] = {
     var results = new ListBuffer[ProductCardItem]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT p.id, card, product, quantity, price, totalPrice, p.name as productName FROM cardItem AS ci INNER JOIN product AS p ON ci.product = p.id order by ci.createdAt DESC")
+      val rs = statement.executeQuery("SELECT p.id, card, product, quantity, price, totalPrice, p.name as productName FROM cardItem AS ci STRAIGHT_JOIN product AS p ON ci.product = p.id order by ci.createdAt DESC")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val card = rs.getString("card").toInt
@@ -167,16 +139,12 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def getProductInventories(): List[ProductInventory] = {
     var results = new ListBuffer[ProductInventory]()
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT id, product, vendor, quantity, cost FROM productInventory")
@@ -190,23 +158,17 @@ object DBManager {
       }
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
     return results.toList
   }
 
   def updateProductTotal(amount: Long, productId: Int) = {
-    Class.forName(driver)
-    var connection = DriverManager.getConnection(url, username, password)
     try {
       val statement = connection.createStatement
       val rs = statement.executeUpdate("UPDATE product SET total = total + " + amount + "  WHERE id = " + productId)
       println(rs)
     } catch {
       case e: Exception => e.printStackTrace
-    } finally {
-      connection.close
     }
   }
 
