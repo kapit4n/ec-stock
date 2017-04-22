@@ -87,4 +87,29 @@ create table cardItem (
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-insert into brand(name, description) values("Brand 1", "Description of brand");
+INSERT INTO brand(id, name, description)
+  VALUES(1, "Brand Name", "Description of brand");
+
+INSERT INTO vendor(1, name, address, contact, contact2)
+  VALUES(1, "Vendor Name", "Republica Av,Cochabamba City, BO", "Contact 1", "Contact 2");
+
+INSERT INTO category(id, name, description, imgSrc )
+  VALUES(1, "CATEGORY1", "Republica Av, Cochabamba City, BO", "/scalafx/ecstock/products/category.png");
+
+INSERT INTO customer(id, name, address)
+  VALUES(1, "Customer Name", "Republica Av,Cochabamba City, BO");
+
+INSERT INTO product(name, retailPrice, vendor, brand, category, description, imgSrc, total, stockLimit)
+  VALUES('Product 0', '100', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '100', '5'),
+  ('Product 1', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5'),
+  ('Product 2', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5'),
+  ('Product 3', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5'),
+  ('Product 4', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5'),
+  ('Product 5', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5'),
+  ('Product 6', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5'),
+  ('Product 7', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5'),
+  ('Product 8', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5'),
+  ('Product 9', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5'),
+  ('Product 10', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5'),
+  ('Product 11', '20', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '20', '5');
+
