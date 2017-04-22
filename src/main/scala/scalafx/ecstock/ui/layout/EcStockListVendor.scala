@@ -25,7 +25,7 @@ class EcStockListVendor extends EcStockExample {
 
   def getContent = {
     val infoCaution = new Label {
-      text = "Vendor List"
+      text = Messages.data("List")
       wrapText = true
     }
 
@@ -34,22 +34,22 @@ class EcStockListVendor extends EcStockExample {
     val table1 = new TableView[Vendor](vendors) {
       columns ++= List(
         new TableColumn[Vendor, String] {
-          text = "Vendor Name"
+          text = Messages.data("Vendor")
           cellValueFactory = { _.value.nameProperty }
           prefWidth = 200
         },
         new TableColumn[Vendor, String]() {
-          text = "Address"
+          text = Messages.data("Address")
           cellValueFactory = { _.value.addressProperty }
           prefWidth = 200
         },
         new TableColumn[Vendor, String]() {
-          text = "Contact 1"
+          text = Messages.data("Contact")
           cellValueFactory = { _.value.contactProperty }
           prefWidth = 200
         },
         new TableColumn[Vendor, String]() {
-          text = "Contact 2"
+          text = Messages.data("Contact2")
           cellValueFactory = { _.value.contact2Property }
           prefWidth = 200
         }

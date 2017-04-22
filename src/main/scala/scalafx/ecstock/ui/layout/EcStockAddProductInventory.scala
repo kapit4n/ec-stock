@@ -21,7 +21,7 @@ class EcStockAddProductInventory extends EcStockExample {
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
-      text = "ProductInventory Information"
+      text = Messages.data("Information")
       wrapText = true
     }
 
@@ -29,8 +29,7 @@ class EcStockAddProductInventory extends EcStockExample {
 
     val vendors = ObservableBuffer(DBManager.getVendors())
 
-
-    val productLbl = new Label("Product:") {
+    val productLbl = new Label(Messages.data("Product:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -39,13 +38,13 @@ class EcStockAddProductInventory extends EcStockExample {
 
     val productCb = new ComboBox[Product] {
           maxWidth = 200
-          promptText = "Make a choice..."
+          promptText = Messages.data("Make a choice...")
           items = products
         };
 
     GridPane.setConstraints(productCb, 1, 0, 2, 1)
 
-    val vendorLbl = new Label("Vendor:") {
+    val vendorLbl = new Label(Messages.data("Vendor:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -54,32 +53,32 @@ class EcStockAddProductInventory extends EcStockExample {
 
     val vendorCb = new ComboBox[Vendor] {
           maxWidth = 200
-          promptText = "Make a choice..."
+          promptText = Messages.data("Make a choice...")
           items = vendors
         };
 
     GridPane.setConstraints(vendorCb, 1, 1, 3, 1)
 
-    val quantityLbl = new Label("Quantity:") {
+    val quantityLbl = new Label(Messages.data("Quantity:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(quantityLbl, 0, 2, 1, 1)
 
     val quantityTxt = new TextField() {
-      text = "100"
+      text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
     GridPane.setConstraints(quantityTxt, 1, 2, 4, 1)
 
-    val costLbl = new Label("Cost:") {
+    val costLbl = new Label(Messages.data("Cost:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(costLbl, 0, 3, 1, 1)
 
     val costTxt = new TextField() {
-      text = "20"
+      text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
     GridPane.setConstraints(costTxt, 1, 3, 5, 1)
@@ -119,7 +118,7 @@ class EcStockAddProductInventory extends EcStockExample {
     GridPane.setHalignment(cancelBtn, HPos.Center)
 
     val actionCaution = new Label {
-      text = "Save Data."
+      text = Messages.data("Save Data.")
       wrapText = true
     }
 

@@ -157,7 +157,7 @@ class EcStockAddCard extends EcStockExample {
 
 
     val infoCaution = new Label {
-      text = "Card Information"
+      text = Messages.data("Information")
       wrapText = true
     }
 
@@ -173,18 +173,18 @@ class EcStockAddCard extends EcStockExample {
     val detailTable = new TableView[ProductCardItem](productCardItems) {
       columns ++= List(
         new TableColumn[ProductCardItem, String] {
-          text = "Product"
+          text = Messages.data("Product")
           cellValueFactory = { _.value.productNameProperty }
-          prefWidth = 180
+          prefWidth = 150
         },
         new TableColumn[ProductCardItem, String]() {
-          text = "Quantity"
+          text = Messages.data("Quantity")
           cellValueFactory = { _.value.quantityProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
-          prefWidth = 120
+          prefWidth = 100
         }
       )
-      prefWidth = 300
+      prefWidth = 250
       editable = true
     }
 
@@ -250,7 +250,7 @@ class EcStockAddCard extends EcStockExample {
       prefWidth = 800
     }
 
-    val customerLbl = new Label("Customer:") {
+    val customerLbl = new Label(Messages.data("Customer:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -259,7 +259,7 @@ class EcStockAddCard extends EcStockExample {
 
     val customerCb = new ComboBox[Customer] {
           maxWidth = 200
-          promptText = "Make a choice..."
+          promptText = Messages.data("Make a choice...")
           items = customers
         };
 
@@ -311,7 +311,7 @@ class EcStockAddCard extends EcStockExample {
 
 
     val actionCaution = new Label {
-      text = "Save Data"
+      text = Messages.data("Save Data")
       wrapText = true
     }
 

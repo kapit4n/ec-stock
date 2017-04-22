@@ -28,7 +28,7 @@ class EcStockListCategory extends EcStockExample {
 
   def getContent = {
     val infoCaution = new Label {
-      text = "Category List"
+      text = Messages.data("List")
       wrapText = true
     }
 
@@ -44,12 +44,12 @@ class EcStockListCategory extends EcStockExample {
     val table1 = new TableView[Category](categoryObs) {
       columns ++= List(
         new TableColumn[Category, String] {
-          text = "Category"
+          text = Messages.data("Category")
           cellValueFactory = { _.value.nameProperty }
           prefWidth = 350
         },
         new TableColumn[Category, String]() {
-          text = "Description"
+          text = Messages.data("Description")
           cellValueFactory = { _.value.descriptionProperty }
           prefWidth = 450
         }

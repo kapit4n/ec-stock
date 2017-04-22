@@ -22,7 +22,7 @@ class EcStockAddProduct extends EcStockExample {
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
-      text = "Product Information"
+      text = Messages.data("Information")
       wrapText = true
     }
 
@@ -32,29 +32,29 @@ class EcStockAddProduct extends EcStockExample {
 
     val brands = ObservableBuffer(DBManager.getBrands())
 
-    val nameLbl = new Label("Name:") {
+    val nameLbl = new Label(Messages.data("Name:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(nameLbl, 0, 0, 1, 1)
 
-    val nameTxt = new TextField {text = "Product Name"}
+    val nameTxt = new TextField {text = "Product"}
 
     GridPane.setConstraints(nameTxt, 1, 0, 2, 1)
 
-    val retailPriceLbl = new Label("Retail Price:") {
+    val retailPriceLbl = new Label(Messages.data("Retail Price:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(retailPriceLbl, 0, 1, 1, 1)
 
     val retailPriceTxt = new TextField() {
-      text = "100 Bs"
+      text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
     GridPane.setConstraints(retailPriceTxt, 1, 1, 5, 1)
 
-    val vendorLbl = new Label("Vendor:") {
+    val vendorLbl = new Label(Messages.data("Vendor:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -62,12 +62,12 @@ class EcStockAddProduct extends EcStockExample {
 
     val vendorCb = new ComboBox[Vendor] {
           maxWidth = 200
-          promptText = "Make a choice..."
+          promptText = Messages.data("Make a choice...")
           items = vendors
         };
     GridPane.setConstraints(vendorCb, 1, 2, 5, 1)
 
-    val brandLbl = new Label("Brand:") {
+    val brandLbl = new Label(Messages.data("Brand:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -75,12 +75,12 @@ class EcStockAddProduct extends EcStockExample {
 
     val brandCb = new ComboBox[Brand] {
           maxWidth = 200
-          promptText = "Make a choice..."
+          promptText = Messages.data("Make a choice...")
           items = brands
         };
     GridPane.setConstraints(brandCb, 1, 3 , 5, 1)
 
-    val categoryLbl = new Label("Category:") {
+    val categoryLbl = new Label(Messages.data("Category:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -88,24 +88,24 @@ class EcStockAddProduct extends EcStockExample {
 
     val categoryCb = new ComboBox[Category] {
           maxWidth = 200
-          promptText = "Make a choice..."
+          promptText = Messages.data("Make a choice...")
           items = categories
         };
     GridPane.setConstraints(categoryCb, 1, 4 , 6, 1)
 
-    val descriptionLbl = new Label("Description:") {
+    val descriptionLbl = new Label(Messages.data("Description:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(descriptionLbl, 0, 5, 1, 1)
 
     val descriptionTxt = new TextField() {
-      text = "100 Bs"
+      text = "Description"
       alignmentInParent = Pos.BaselineLeft
     }
     GridPane.setConstraints(descriptionTxt, 1, 5, 7, 1)
 
-    val totalLbl = new Label("Total:") {
+    val totalLbl = new Label(Messages.data("Total:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -117,7 +117,7 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(totalTxt, 1, 6, 8, 1)
 
-    val limitLbl = new Label("Limit:") {
+    val limitLbl = new Label(Messages.data("Limit:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -139,7 +139,7 @@ class EcStockAddProduct extends EcStockExample {
     val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toDouble, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "/scalafx/ecstock/products/imac.png", totalTxt.getText().toLong, limitTxt.getText().toLong)
+          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toDouble, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "/scalafx/ecstock/products/product.png", totalTxt.getText().toLong, limitTxt.getText().toLong)
           DBManager.session.save(product);
           DBManager.session.getTransaction().commit();
           EcStock.splitPane.items.remove(1)
@@ -164,7 +164,7 @@ class EcStockAddProduct extends EcStockExample {
     GridPane.setHalignment(cancelBtn, HPos.Center)
 
     val actionCaution = new Label {
-      text = "Save Data."
+      text = Messages.data("Save Data.")
       wrapText = true
     }
 

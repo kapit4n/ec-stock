@@ -22,28 +22,28 @@ class EcStockAddCategory extends EcStockExample {
 
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
     val infoCaution = new Label {
-      text = "Category Information"
+      text = Messages.data("Information")
       wrapText = true
     }
 
-    val nameLbl = new Label("Name:") {
+    val nameLbl = new Label(Messages.data("Name:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(nameLbl, 0, 0, 1, 1)
 
-    val nameTxt = new TextField {text = "Category Name"}
+    val nameTxt = new TextField {text = Messages.data("Category")}
 
     GridPane.setConstraints(nameTxt, 1, 0, 2, 1)
 
-    val descriptionLbl = new Label("Description:") {
+    val descriptionLbl = new Label(Messages.data("Description:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(descriptionLbl, 0, 1, 1, 1)
 
     val descriptionTxt = new TextField() {
-      text = "Republica Av, Cochabamba City, BO"
+      text = ""
       alignmentInParent = Pos.BaselineLeft
     }
     GridPane.setConstraints(descriptionTxt, 1, 1, 5, 1)
@@ -58,7 +58,7 @@ class EcStockAddCategory extends EcStockExample {
     val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "/scalafx/ecstock/products/candies.jpg")
+          val category = new Category(0, nameTxt.getText(), descriptionTxt.getText(), "/scalafx/ecstock/products/category.png")
           DBManager.session.save(category);
           DBManager.session.getTransaction().commit();
           EcStock.splitPane.items.remove(1)
@@ -83,7 +83,7 @@ class EcStockAddCategory extends EcStockExample {
     GridPane.setHalignment(cancelBtn, HPos.Center)
 
     val actionCaution = new Label {
-      text = "Save Data."
+      text = Messages.data("Save Data.")
       wrapText = true
     }
 

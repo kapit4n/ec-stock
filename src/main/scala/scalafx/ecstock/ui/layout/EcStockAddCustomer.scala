@@ -43,21 +43,21 @@ class EcStockAddCustomer extends EcStockExample {
     }
 
     val infoCaution = new Label {
-      text = "Customer Information"
+      text = Messages.data("Information")
       wrapText = true
     }
 
-    val nameLbl = new Label("Name:") {
+    val nameLbl = new Label(Messages.data("Name:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
     GridPane.setConstraints(nameLbl, 0, 0, 1, 1)
 
-    val nameTxt = new TextField {text = "Customer Name"}
+    val nameTxt = new TextField {text = ""}
 
     GridPane.setConstraints(nameTxt, 1, 0, 2, 1)
 
-    val addressLbl = new Label("Address:") {
+    val addressLbl = new Label(Messages.data("Address:")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
@@ -104,7 +104,7 @@ class EcStockAddCustomer extends EcStockExample {
     GridPane.setHalignment(cancelBtn, HPos.Center)
 
     val actionCaution = new Label {
-      text = "Save Data."
+      text = Messages.data("Save Data.")
       wrapText = true
     }
 
