@@ -43,7 +43,7 @@ class EcStockAddCard extends EcStockExample {
     vgap = 3
     gridLinesVisible = true
     margin = Insets(18)
-    style = "-fx-background-color: yellow"
+    //style = "-fx-background-color: yellow"
   }
 
   def recalculateCardTotalPrice() = {
@@ -227,7 +227,7 @@ class EcStockAddCard extends EcStockExample {
       vgap = 1
       gridLinesVisible = true
       margin = Insets(18)
-      style = "-fx-background-color: red"
+      //style = "-fx-background-color: red"
       children ++= Seq(detailTable)
     }
 
@@ -266,7 +266,7 @@ class EcStockAddCard extends EcStockExample {
       vgap = 2
       gridLinesVisible = true
       margin = Insets(18)
-      style = "-fx-background-color: green"
+      //style = "-fx-background-color: green"
       children ++= Seq(totalLbl, totalTxt)
     }
     calculatorGrid.setPrefSize(350, 110)
@@ -277,7 +277,7 @@ class EcStockAddCard extends EcStockExample {
       hgap = 3
       vgap = 3
       margin = Insets(18)
-      style = "-fx-background-color: blue"
+      //style = "-fx-background-color: blue"
     }
     categoriesGrid.setPrefSize(650, 110)
     GridPane.setConstraints(categoriesGrid, 1, 2, 1, 2)
@@ -289,7 +289,7 @@ class EcStockAddCard extends EcStockExample {
       vgap = 3
       gridLinesVisible = true
       margin = Insets(18)
-      style = "-fx-background-color: #336699"
+      //style = "-fx-background-color: #336699"
       children ++= Seq(detailGrid, productsGrid, calculatorGrid, categoriesGrid)
     }
 
