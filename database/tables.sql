@@ -62,6 +62,7 @@ create table productInventory (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   quantity int not null,
   cost float NOT NULL,
+  totalCost float NOT NULL,
   vendor int NOT NULL,
   product int NOT NULL,
   FOREIGN KEY (vendor) REFERENCES vendor(id),

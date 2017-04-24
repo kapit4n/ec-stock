@@ -198,8 +198,6 @@ class EcStockAddCard extends EcStockExample {
           onEditCommit = (evt: CellEditEvent[ProductCardItem, String]) => {
               val rowOldValue = evt.rowValue
               val rowNewValue = evt.newValue
-              println(rowOldValue.product)
-              println(rowNewValue)
               updateTotalByQuantity(rowOldValue.product, rowNewValue.toInt)
             }
             editable = true
@@ -321,7 +319,6 @@ class EcStockAddCard extends EcStockExample {
           DBManager.session.beginTransaction()
           DBManager.session.save(card)
           DBManager.session.getTransaction().commit()
-          println(card.id)
           DBManager.session.beginTransaction()
           for (cardItem <- productCardItems) {
             cardItem.card = card.id

@@ -34,24 +34,29 @@ class EcStockListInventory extends EcStockExample {
     val table1 = new TableView[ProductInventory](invs) {
       columns ++= List(
         new TableColumn[ProductInventory, String] {
-          text = Messages.data("Name")
-          cellValueFactory = { _.value.productProperty }
+          text = Messages.data("Product")
+          cellValueFactory = { _.value.productNameProperty }
           prefWidth = 250
         },
         new TableColumn[ProductInventory, String] {
           text = Messages.data("Vendor")
-          cellValueFactory = { _.value.vendorProperty }
+          cellValueFactory = { _.value.vendorNameProperty }
           prefWidth = 250
         },
         new TableColumn[ProductInventory, String]() {
           text = Messages.data("Quantity")
           cellValueFactory = { _.value.quantityProperty }
-          prefWidth = 150
+          prefWidth = 100
         },
         new TableColumn[ProductInventory, String]() {
           text = Messages.data("Cost")
           cellValueFactory = { _.value.costProperty }
-          prefWidth = 150
+          prefWidth = 100
+        },
+        new TableColumn[ProductInventory, String]() {
+          text = "Total Cost"
+          cellValueFactory = { _.value.totalCostProperty }
+          prefWidth = 100
         }
       )
       prefWidth = 800

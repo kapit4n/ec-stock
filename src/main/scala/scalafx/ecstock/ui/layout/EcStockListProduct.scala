@@ -60,6 +60,21 @@ class EcStockListProduct extends EcStockExample {
           text = Messages.data("Retail Price")
           cellValueFactory = { _.value.retailPriceProperty }
           prefWidth = 100
+        },
+        new TableColumn[Product, String]() {
+          text = "Unit Cost"
+          cellValueFactory = { _.value.unitCostProperty }
+          prefWidth = 100
+        },
+        new TableColumn[Product, String]() {
+          text = "Box Cost"
+          cellValueFactory = { _.value.boxCostProperty }
+          prefWidth = 100
+        },
+        new TableColumn[Product, String]() {
+          text = "Box Size"
+          cellValueFactory = { _.value.boxSizeProperty }
+          prefWidth = 100
         }
       )
       prefWidth = 800

@@ -13,10 +13,19 @@ import scalafx.event.ActionEvent
 import scalafx.ecstock.i18n.Messages
 import scalafx.ecstock.commons.PageDisplayer
 import scalafx.ecstock.EcStock
+
 /**
  *
  */
 class EcStockAddProductInventory extends EcStockExample {
+
+  var unitCostTxt: TextField = _
+  var totalCostTxt: TextField = _
+  var quantityTxt: TextField = _
+
+  def calTotalCost() = {
+    totalCostTxt.setText((quantityTxt.getText().toDouble * unitCostTxt.getText().toDouble).toString)
+  }
 
   def getContent = {
     // infoGrid places the children by specifying the rows and columns in GridPane.setConstraints()
@@ -29,27 +38,31 @@ class EcStockAddProductInventory extends EcStockExample {
 
     val vendors = ObservableBuffer(DBManager.getVendors())
 
-    val productLbl = new Label(Messages.data("Product:")) {
+    val productLbl = new Label(Messages.data("Product")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
 
-    GridPane.setConstraints(productLbl, 0, 0, 1, 1)
+    GridPane.setConstraints(productLbl, 0, 0)
 
     val productCb = new ComboBox[Product] {
-          maxWidth = 200
-          promptText = Messages.data("Make a choice...")
-          items = products
-        };
+        maxWidth = 200
+        promptText = Messages.data("Make a choice...")
+        items = products
+        value.onChange {
+          unitCostTxt.setText(value().unitCost.toString)
+          calTotalCost()
+        }
+      }
 
-    GridPane.setConstraints(productCb, 1, 0, 2, 1)
+    GridPane.setConstraints(productCb, 1, 0)
 
-    val vendorLbl = new Label(Messages.data("Vendor:")) {
+    val vendorLbl = new Label(Messages.data("Vendor")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
 
-    GridPane.setConstraints(vendorLbl, 0, 1, 1, 1)
+    GridPane.setConstraints(vendorLbl, 0, 1)
 
     val vendorCb = new ComboBox[Vendor] {
           maxWidth = 200
@@ -57,43 +70,65 @@ class EcStockAddProductInventory extends EcStockExample {
           items = vendors
         };
 
-    GridPane.setConstraints(vendorCb, 1, 1, 3, 1)
+    GridPane.setConstraints(vendorCb, 1, 1)
 
-    val quantityLbl = new Label(Messages.data("Quantity:")) {
+    val quantityLbl = new Label(Messages.data("Quantity")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(quantityLbl, 0, 2, 1, 1)
+    GridPane.setConstraints(quantityLbl, 0, 2)
 
-    val quantityTxt = new TextField() {
+    quantityTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
+      text.onChange {
+        if (!text().matches("\\d*")) {
+          quantityTxt.setText(text().replaceAll("[^\\d]", ""))
+        }
+        calTotalCost()
+      }
     }
-    GridPane.setConstraints(quantityTxt, 1, 2, 4, 1)
+    GridPane.setConstraints(quantityTxt, 1, 2)
 
-    val costLbl = new Label(Messages.data("Cost:")) {
+    val unitCostLbl = new Label(Messages.data("Unit Cost")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(costLbl, 0, 3, 1, 1)
 
-    val costTxt = new TextField() {
+    GridPane.setConstraints(unitCostLbl, 0, 3)
+
+    unitCostTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
+      editable = false
     }
-    GridPane.setConstraints(costTxt, 1, 3, 5, 1)
+    GridPane.setConstraints(unitCostTxt, 1, 3)
+
+    val totalCostLbl = new Label(Messages.data("Total Cost")) {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+
+    GridPane.setConstraints(totalCostLbl, 0, 4)
+
+    totalCostTxt = new TextField() {
+      text = "0"
+      alignmentInParent = Pos.BaselineLeft
+      editable = false
+    }
+    GridPane.setConstraints(totalCostTxt, 1, 4)
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(productLbl, productCb, vendorLbl, vendorCb, quantityLbl, quantityTxt, costLbl, costTxt)
+      children ++= Seq(productLbl, productCb, vendorLbl, vendorCb, quantityLbl, quantityTxt, unitCostLbl, unitCostTxt, totalCostLbl, totalCostTxt)
     }
 
     val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val productInv = new ProductInventory(0, productCb.getValue().id, vendorCb.getValue().id, quantityTxt.getText().toLong, costTxt.getText().toDouble)
+          val productInv = new ProductInventory(0, productCb.getValue().id, vendorCb.getValue().id, quantityTxt.getText().toLong, unitCostTxt.getText().toDouble, totalCostTxt.getText().toDouble, "", "")
           DBManager.session.save(productInv);
           DBManager.session.getTransaction().commit();
           DBManager.updateProductTotal(quantityTxt.getText().toLong, productCb.getValue().id)

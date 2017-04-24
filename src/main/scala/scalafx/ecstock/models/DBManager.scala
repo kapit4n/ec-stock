@@ -92,11 +92,13 @@ object DBManager {
     var results = new ListBuffer[Product]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, imgSrc FROM product")
+      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc FROM product")
       while (rs.next) {
         results += new Product(rs.getString("id").toInt, rs.getString("name"), rs.getString("retailPrice").toDouble,
           rs.getString("vendor").toInt, rs.getString("brand").toInt, rs.getString("category").toInt,
-          rs.getString("description"), rs.getString("imgSrc"), rs.getString("total").toLong, rs.getString("stockLimit").toLong)
+          rs.getString("description"), rs.getString("imgSrc"), rs.getString("total").toLong,
+          rs.getString("stockLimit").toLong, rs.getString("unitCost").toDouble, rs.getString("boxCost").toDouble,
+          rs.getString("boxSize").toLong)
       }
     } catch {
       case e: Exception => e.printStackTrace
@@ -143,18 +145,24 @@ object DBManager {
     return results.toList
   }
 
+  /**
+   * Get all product inventories
+  */
   def getProductInventories(): List[ProductInventory] = {
     var results = new ListBuffer[ProductInventory]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, product, vendor, quantity, cost FROM productInventory")
+      val rs = statement.executeQuery("SELECT pi.id, product, pi.vendor, quantity, cost, pi.totalCost, p.name as productName, v.name as vendorName FROM productInventory as pi STRAIGHT_JOIN product AS p ON pi.product = p.id STRAIGHT_JOIN vendor AS v ON pi.vendor = v.id")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val product = rs.getString("product").toInt
         val vendor = rs.getString("vendor").toInt
         val quantity = rs.getString("quantity").toLong
         val cost = rs.getString("cost").toDouble
-        results += new ProductInventory(id, product, vendor, quantity, cost)
+        val totalCost = rs.getString("totalCost").toDouble
+        val productName = rs.getString("productName")
+        val vendorName = rs.getString("vendorName")
+        results += new ProductInventory(id, product, vendor, quantity, cost, totalCost, productName, vendorName)
       }
     } catch {
       case e: Exception => e.printStackTrace
@@ -166,7 +174,6 @@ object DBManager {
     try {
       val statement = connection.createStatement
       val rs = statement.executeUpdate("UPDATE product SET total = total + " + amount + "  WHERE id = " + productId)
-      println(rs)
     } catch {
       case e: Exception => e.printStackTrace
     }
