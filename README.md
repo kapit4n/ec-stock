@@ -7,3 +7,6 @@ EcStock
 
 ## Install and Run
 * sbt run
+
+## Package
+* sbt universal:packageBin
