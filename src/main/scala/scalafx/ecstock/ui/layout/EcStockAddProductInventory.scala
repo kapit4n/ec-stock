@@ -22,6 +22,7 @@ class EcStockAddProductInventory extends EcStockExample {
   var unitCostTxt: TextField = _
   var totalCostTxt: TextField = _
   var quantityTxt: TextField = _
+  var productSearchTxt: TextField = _
 
   def calTotalCost() = {
     totalCostTxt.setText((quantityTxt.getText().toDouble * unitCostTxt.getText().toDouble).toString)
@@ -34,7 +35,7 @@ class EcStockAddProductInventory extends EcStockExample {
       wrapText = true
     }
 
-    val products = ObservableBuffer(DBManager.getProducts())
+    var products = ObservableBuffer(DBManager.getProducts(""))
 
     val vendors = ObservableBuffer(DBManager.getVendors())
 
@@ -50,13 +51,27 @@ class EcStockAddProductInventory extends EcStockExample {
         promptText = Messages.data("Make a choice...")
         items = products
         value.onChange {
-          unitCostTxt.setText(value().unitCost.toString)
-          calTotalCost()
+          try {
+            unitCostTxt.setText(value().unitCost.toString)
+            calTotalCost()
+          } catch {
+            case e: Exception => {}
+          }
         }
       }
 
     GridPane.setConstraints(productCb, 1, 0)
 
+    productSearchTxt = new TextField() {
+      text = ""
+      alignmentInParent = Pos.BaselineLeft
+      text.onChange {
+        products = ObservableBuffer(DBManager.getProducts(text()))
+        productCb.items = products
+      }
+    }
+    GridPane.setConstraints(productSearchTxt, 3, 0)
+    
     val vendorLbl = new Label(Messages.data("Vendor")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
@@ -122,7 +137,7 @@ class EcStockAddProductInventory extends EcStockExample {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(productLbl, productCb, vendorLbl, vendorCb, quantityLbl, quantityTxt, unitCostLbl, unitCostTxt, totalCostLbl, totalCostTxt)
+      children ++= Seq(productLbl, productCb, productSearchTxt, vendorLbl, vendorCb, quantityLbl, quantityTxt, unitCostLbl, unitCostTxt, totalCostLbl, totalCostTxt)
     }
 
     val saveBtn = new Button(Messages.data("save")) {

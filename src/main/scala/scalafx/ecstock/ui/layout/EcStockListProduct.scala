@@ -40,14 +40,14 @@ class EcStockListProduct extends EcStockExample {
       wrapText = true
     }
 
-    val products = ObservableBuffer[Product](DBManager.getProducts())
+    val products = ObservableBuffer[Product](DBManager.getProducts(""))
 
     val table1 = new TableView[Product](products) {
       columns ++= List(
         new TableColumn[Product, String] {
           text = Messages.data("Name")
           cellValueFactory = { _.value.nameProperty }
-          prefWidth = 200
+          prefWidth = 150
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
           onEditCommit = (evt: CellEditEvent[Product, String]) => {
             evt.rowValue.name = evt.newValue
@@ -59,17 +59,17 @@ class EcStockListProduct extends EcStockExample {
         new TableColumn[Product, String]() {
           text = Messages.data("Vendor")
           cellValueFactory = { _.value.vendorProperty }
-          prefWidth = 200
+          prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = Messages.data("Brand")
           cellValueFactory = { _.value.brandProperty }
-          prefWidth = 150
+          prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = Messages.data("Category")
           cellValueFactory = { _.value.categoryProperty }
-          prefWidth = 150
+          prefWidth = 100
         },
         new TableColumn[Product, String]() {
           text = Messages.data("Retail Price")
@@ -86,7 +86,7 @@ class EcStockListProduct extends EcStockExample {
         new TableColumn[Product, String]() {
           text = "Unit Cost"
           cellValueFactory = { _.value.unitCostProperty }
-          prefWidth = 100
+          prefWidth = 80
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
           onEditCommit = (evt: CellEditEvent[Product, String]) => {
             evt.rowValue.unitCost = evt.newValue.toDouble
@@ -98,7 +98,7 @@ class EcStockListProduct extends EcStockExample {
         new TableColumn[Product, String]() {
           text = "Box Cost"
           cellValueFactory = { _.value.boxCostProperty }
-          prefWidth = 100
+          prefWidth = 80
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
           onEditCommit = (evt: CellEditEvent[Product, String]) => {
             evt.rowValue.boxCost = evt.newValue.toDouble
@@ -110,7 +110,7 @@ class EcStockListProduct extends EcStockExample {
         new TableColumn[Product, String]() {
           text = "Box Size"
           cellValueFactory = { _.value.boxSizeProperty }
-          prefWidth = 100
+          prefWidth = 80
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
           onEditCommit = (evt: CellEditEvent[Product, String]) => {
             evt.rowValue.boxSize = evt.newValue.toLong

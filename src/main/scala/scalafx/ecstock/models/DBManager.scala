@@ -88,11 +88,14 @@ object DBManager {
     return results.toList
   }
 
-  def getProducts(): List[Product] = {
+  def getProducts(likeText: String): List[Product] = {
+    var likeQuery = " WHERE name like '%" + likeText+  "%'"
+    if (likeText.isEmpty) likeQuery = ""
+
     var results = new ListBuffer[Product]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc FROM product")
+      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc FROM product " + likeQuery)
       while (rs.next) {
         results += new Product(rs.getString("id").toInt, rs.getString("name"), rs.getString("retailPrice").toDouble,
           rs.getString("vendor").toInt, rs.getString("brand").toInt, rs.getString("category").toInt,
