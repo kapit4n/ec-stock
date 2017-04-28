@@ -196,11 +196,11 @@ class EcStockAddCard extends EcStockExample {
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
           prefWidth = 66
           onEditCommit = (evt: CellEditEvent[ProductCardItem, String]) => {
-              val rowOldValue = evt.rowValue
-              val rowNewValue = evt.newValue
-              updateTotalByQuantity(rowOldValue.product, rowNewValue.toInt)
-            }
-            editable = true
+            val rowOldValue = evt.rowValue
+            val rowNewValue = evt.newValue
+            updateTotalByQuantity(rowOldValue.product, rowNewValue.toInt)
+          }
+          editable = true
         },
         new TableColumn[ProductCardItem, String]() {
           text = Messages.data("Price")

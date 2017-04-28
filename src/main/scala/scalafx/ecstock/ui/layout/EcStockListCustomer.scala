@@ -17,12 +17,19 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
-
+import scalafx.util.converter.DefaultStringConverter
+import scalafx.scene.control.cell.TextFieldTableCell
 
 /**
  *
  */
 class EcStockListCustomer extends EcStockExample {
+  
+  def updateCustomer(data: Customer) = {
+    DBManager.session.beginTransaction();
+    DBManager.session.update(data);
+    DBManager.session.getTransaction().commit();
+  }
 
   def getContent = {
     val infoCaution = new Label {
@@ -38,14 +45,29 @@ class EcStockListCustomer extends EcStockExample {
           text = Messages.data("Name")
           cellValueFactory = { _.value.nameProperty }
           prefWidth = 400
+          cellFactory = column => new TextFieldTableCell[Customer, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Customer, String]) => {
+            evt.rowValue.name = evt.newValue
+            evt.rowValue.nameProperty.value = evt.newValue
+            updateCustomer(evt.rowValue)
+          }
+          editable = true
         },
         new TableColumn[Customer, String]() {
           text = Messages.data("Address")
           cellValueFactory = { _.value.addressProperty }
           prefWidth = 400
+          cellFactory = column => new TextFieldTableCell[Customer, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Customer, String]) => {
+            evt.rowValue.address = evt.newValue
+            evt.rowValue.addressProperty.value = evt.newValue
+            updateCustomer(evt.rowValue)
+          }
+          editable = true
         }
       )
       prefWidth = 800
+      editable = true
     }
 
     GridPane.setConstraints(table1, 0, 1, 1, 1)

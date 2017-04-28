@@ -21,10 +21,18 @@ import scalafx.ecstock.models.DBManager
 import scala.collection.JavaConverters._
 import scala.collection.mutable.ListBuffer
 import scalafx.ecstock.i18n.Messages
+import scalafx.util.converter.DefaultStringConverter
+import scalafx.scene.control.cell.TextFieldTableCell
 
 /**
  */
 class EcStockListCategory extends EcStockExample {
+
+  def updateCategory(data: Category) = {
+    DBManager.session.beginTransaction();
+    DBManager.session.update(data);
+    DBManager.session.getTransaction().commit();
+  }
 
   def getContent = {
     val infoCaution = new Label {
@@ -32,28 +40,35 @@ class EcStockListCategory extends EcStockExample {
       wrapText = true
     }
 
-    /*
-    // Source code to get all categories with hibernate but it doen't fill the data
-    var categoryData = new ListBuffer[Category]()
-    for (name <- DBManager.session.createCriteria(classOf[Category]).list().asScala) {
-      categoryData += name.asInstanceOf[Category]
-    }
-    */
-
-    val categoryObs = ObservableBuffer[Category](DBManager.getCategories())
+    var categoryObs = ObservableBuffer[Category](DBManager.getCategories())
     val table1 = new TableView[Category](categoryObs) {
       columns ++= List(
         new TableColumn[Category, String] {
           text = Messages.data("Category")
           cellValueFactory = { _.value.nameProperty }
           prefWidth = 350
+          editable = true
+          cellFactory = column => new TextFieldTableCell[Category, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Category, String]) => {
+            evt.rowValue.name = evt.newValue
+            evt.rowValue.nameProperty.value = evt.newValue
+            updateCategory(evt.rowValue)
+          }
         },
         new TableColumn[Category, String]() {
           text = Messages.data("Description")
           cellValueFactory = { _.value.descriptionProperty }
           prefWidth = 450
+          editable = true
+          cellFactory = column => new TextFieldTableCell[Category, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Category, String]) => {
+            evt.rowValue.description = evt.newValue
+            evt.rowValue.descriptionProperty.value = evt.newValue
+            updateCategory(evt.rowValue)
+          }
         }
       )
+      editable = true
       prefWidth = 800
     }
 

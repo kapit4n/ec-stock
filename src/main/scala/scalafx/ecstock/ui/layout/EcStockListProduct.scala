@@ -20,12 +20,20 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
+import scalafx.util.converter.DefaultStringConverter
+import scalafx.scene.control.cell.TextFieldTableCell
 
 /**
  *
  */
 class EcStockListProduct extends EcStockExample {
-
+  
+  def updateProduct(data: Product) = {
+    DBManager.session.beginTransaction();
+    DBManager.session.update(data);
+    DBManager.session.getTransaction().commit();
+  }
+  
   def getContent = {
     val infoCaution = new Label {
       text = Messages.data("List")
@@ -40,6 +48,13 @@ class EcStockListProduct extends EcStockExample {
           text = Messages.data("Name")
           cellValueFactory = { _.value.nameProperty }
           prefWidth = 200
+          cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Product, String]) => {
+            evt.rowValue.name = evt.newValue
+            evt.rowValue.nameProperty.value = evt.newValue
+            updateProduct(evt.rowValue)
+          }
+          editable = true
         },
         new TableColumn[Product, String]() {
           text = Messages.data("Vendor")
@@ -60,23 +75,52 @@ class EcStockListProduct extends EcStockExample {
           text = Messages.data("Retail Price")
           cellValueFactory = { _.value.retailPriceProperty }
           prefWidth = 100
+          cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Product, String]) => {
+            evt.rowValue.retailPrice = evt.newValue.toDouble
+            evt.rowValue.retailPriceProperty.value = evt.newValue
+            updateProduct(evt.rowValue)
+          }
+          editable = true
         },
         new TableColumn[Product, String]() {
           text = "Unit Cost"
           cellValueFactory = { _.value.unitCostProperty }
           prefWidth = 100
+          cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Product, String]) => {
+            evt.rowValue.unitCost = evt.newValue.toDouble
+            evt.rowValue.unitCostProperty.value = evt.newValue
+            updateProduct(evt.rowValue)
+          }
+          editable = true
         },
         new TableColumn[Product, String]() {
           text = "Box Cost"
           cellValueFactory = { _.value.boxCostProperty }
           prefWidth = 100
+          cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Product, String]) => {
+            evt.rowValue.boxCost = evt.newValue.toDouble
+            evt.rowValue.boxCostProperty.value = evt.newValue
+            updateProduct(evt.rowValue)
+          }
+          editable = true
         },
         new TableColumn[Product, String]() {
           text = "Box Size"
           cellValueFactory = { _.value.boxSizeProperty }
           prefWidth = 100
+          cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Product, String]) => {
+            evt.rowValue.boxSize = evt.newValue.toLong
+            evt.rowValue.boxSizeProperty.value = evt.newValue
+            updateProduct(evt.rowValue)
+          }
+          editable = true
         }
       )
+      editable = true
       prefWidth = 800
     }
 
