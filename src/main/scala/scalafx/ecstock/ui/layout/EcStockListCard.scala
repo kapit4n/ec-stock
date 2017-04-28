@@ -17,22 +17,25 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
-
+import scalafx.event.ActionEvent
 
 /**
  *
  */
 class EcStockListCard extends EcStockExample {
 
+  var productCards = ObservableBuffer[ProductCard]()
+  var table1 = new TableView[ProductCard]()
   def getContent = {
     val infoCaution = new Label {
       text = Messages.data("List")
       wrapText = true
     }
 
-    val productCards = ObservableBuffer[ProductCard](DBManager.getCards())
+    productCards = ObservableBuffer[ProductCard](DBManager.getCards())
 
-    val table1 = new TableView[ProductCard](productCards) {
+    table1 = new TableView[ProductCard]() {
+      items = productCards
       columns ++= List(
         new TableColumn[ProductCard, String] {
           text = Messages.data("Customer")
@@ -48,13 +51,33 @@ class EcStockListCard extends EcStockExample {
       prefWidth = 800
     }
 
-    GridPane.setConstraints(table1, 0, 0, 1, 1)
+    GridPane.setConstraints(table1, 0, 0)
 
     val infoGrid = new GridPane {
       hgap = 1
       vgap = 1
       margin = Insets(18)
       children ++= Seq(table1)
+    }
+    val todaySells = new Button("By Today") {
+      onAction = (ae: ActionEvent) => {
+        table1.items = ObservableBuffer[ProductCard](DBManager.getTodaySell())
+      }
+    }
+    GridPane.setConstraints(todaySells, 0, 0)
+    
+    val monthSells = new Button("By Month") {
+      onAction = (ae: ActionEvent) => {
+        table1.items = ObservableBuffer[ProductCard](DBManager.getCards())
+      }
+    }
+    GridPane.setConstraints(monthSells, 1, 0)
+
+    val filtersGrid = new GridPane {
+      hgap = 3
+      vgap = 3
+      margin = Insets(18)
+      children ++= Seq(todaySells, monthSells)
     }
 
     new VBox {
@@ -63,7 +86,7 @@ class EcStockListCard extends EcStockExample {
       spacing = 10
       padding = Insets(20)
       children = List(
-        new VBox {children = List(infoCaution, infoGrid)},
+        new VBox {children = List(infoCaution, filtersGrid, infoGrid)},
         new Separator()
       )
     }

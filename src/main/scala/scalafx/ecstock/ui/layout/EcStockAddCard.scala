@@ -25,7 +25,7 @@ import scalafx.ecstock.EcStock
  */
 class EcStockAddCard extends EcStockExample {
 
-  val productCardItems: ObservableBuffer[ProductCardItem] = ObservableBuffer[ProductCardItem]()
+  var productCardItems: ObservableBuffer[ProductCardItem] = ObservableBuffer[ProductCardItem]()
   var products: ObservableBuffer[Product] = ObservableBuffer[Product]()
   var categories: ObservableBuffer[Category] = ObservableBuffer[Category]()
   var customers: ObservableBuffer[Customer] = ObservableBuffer[Customer]()
@@ -165,7 +165,7 @@ class EcStockAddCard extends EcStockExample {
   }
 
   def getContent = {
-    products = ObservableBuffer[Product](DBManager.getProducts())
+    products = ObservableBuffer[Product](DBManager.getProducts(""))
     categories = ObservableBuffer[Category](DBManager.getCategories())
     customers = ObservableBuffer[Customer](DBManager.getCustomers())
 
