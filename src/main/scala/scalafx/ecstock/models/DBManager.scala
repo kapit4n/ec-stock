@@ -127,6 +127,26 @@ object DBManager {
     }
     return results.toList
   }
+
+  def getTodaySell(): List[ProductCard] = {
+    var results = new ListBuffer[ProductCard]()
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id WHERE DATE(c.createdAt) = CURDATE() order by c.createdAt DESC")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val customer = rs.getString("customer").toInt
+        val totalPrice = rs.getString("totalPrice").toDouble
+        val observation = rs.getString("observation")
+        val customerName = rs.getString("customerName")
+        results += new ProductCard(id, customer, totalPrice, observation, customerName)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    }
+    return results.toList
+  }
+
   def getCardItems(): List[ProductCardItem] = {
     var results = new ListBuffer[ProductCardItem]()
     try {
