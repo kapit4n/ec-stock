@@ -68,7 +68,7 @@ class EcStockListCard extends EcStockExample {
     
     val monthSells = new Button("By Month") {
       onAction = (ae: ActionEvent) => {
-        table1.items = ObservableBuffer[ProductCard](DBManager.getCards())
+        table1.items = ObservableBuffer[ProductCard](DBManager.getMonthSell())
       }
     }
     GridPane.setConstraints(monthSells, 1, 0)
