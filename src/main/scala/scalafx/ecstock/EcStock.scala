@@ -12,8 +12,35 @@ import scalafx.scene.layout._
 import scalafx.stage.Screen
 import scalafx.ecstock.i18n.Messages
 
+import scalafx.ecstock.utils.PDF
+import scalafx.ecstock.utils.PDF._
+import java.util.Date
+import scalafx.event.ActionEvent
+
 /** The main ScalaFX EcStock application object. */
 object EcStock extends JFXApp {
+
+
+   new PDF {
+    file("/tmp/HelloWorld.pdf")
+    paragraph(s"Hello World ${new Date()}!")
+    
+    paragraph {
+      phrase {
+        chunk("This is initial text. ")
+        chunk {
+          text("testing text element ")
+          font(style = BOLD, color = rgb"0x929083")
+          background(rgb"ffe400")
+        }
+        for (i <- 1 to 10) chunk(s"Chunk number $i ")
+      }
+      phrase("Second Phrase. ")
+      chunk("Chunk in the middle ")
+      phrase("Third Phrase. ")
+    }
+    close()
+  }
 
   //
   // Example selection tree
@@ -57,6 +84,7 @@ object EcStock extends JFXApp {
         splitPane.items.add(1, centerPane)
       }
       else {
+        println(parentAux + " > " + Messages.dataOpposite(pageCodeAux))
         centerPane = PageDisplayer.choosePage(parentAux + " > " + Messages.dataOpposite(pageCodeAux))
         splitPane.items.remove(1)
         splitPane.items.add(1, centerPane)
@@ -72,6 +100,7 @@ object EcStock extends JFXApp {
     id = "page-tree"
     content = controlsView
   }
+
   lazy val splitPane = new SplitPane {
     dividerPositions = 0
     id = "page-splitpane"
@@ -82,7 +111,7 @@ object EcStock extends JFXApp {
   // Layout the main stage
   //
   stage = new PrimaryStage {
-    title = "ScalaFX EcStock"
+    title = "DYAMSOFT EcStock"
     icons += new Image("/scalafx/ecstock/images/ScalaFX-icon-64x64.png")
     scene = new Scene(1500, 800) {
       stylesheets += this.getClass.getResource("/scalafx/ecstock/css/ecstock.css").toExternalForm
@@ -98,16 +127,22 @@ object EcStock extends JFXApp {
               new ImageView {
                 image = new Image(
                   this.getClass.getResourceAsStream("/scalafx/ecstock/images/logo.png"))
-                margin = Insets(0, 0, 0, 10)
+                margin = Insets(0, 0, 0, 0)
               },
               new Region {
                 minWidth = 300
               },
               new Button {
-                minWidth = 120
+                minWidth = 250
                 minHeight = 66
                 id = "newButton"
-              })
+                onAction = (ae: ActionEvent) => {
+                  centerPane = PageDisplayer.choosePage("layout > Add Card")
+                  splitPane.items.remove(1)
+                  splitPane.items.add(1, centerPane)
+                }
+              }
+            )
           }
         }
         center = new BorderPane {

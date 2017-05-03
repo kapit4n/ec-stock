@@ -21,6 +21,7 @@ libraryDependencies ++= Seq(
   "commons-logging" % "commons-logging" % "1.1.1",
   "commons-collections" % "commons-collections" % "3.2.1",
   "cglib" % "cglib" % "2.2",
+  "com.itextpdf" % "itextpdf" % "5.5.7",
   "javax.transaction" % "jta" % "1.1")
 
 resolvers += Opts.resolver.sonatypeSnapshots
