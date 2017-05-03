@@ -54,128 +54,140 @@ class EcStockAddProduct extends EcStockExample {
     }
     GridPane.setConstraints(retailPriceTxt, 1, 1)
 
+    val boxPriceLbl = new Label(Messages.data("Box Price")) {
+      style = "-fx-font-weight:bold"
+      alignmentInParent = Pos.BaselineRight
+    }
+    GridPane.setConstraints(boxPriceLbl, 0, 2)
+
+    val boxPriceTxt = new TextField() {
+      text = "0"
+      alignmentInParent = Pos.BaselineLeft
+    }
+    GridPane.setConstraints(boxPriceTxt, 1, 2)
+
     val unitCostLbl = new Label(Messages.data("Unit Cost")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(unitCostLbl, 0, 2)
+    GridPane.setConstraints(unitCostLbl, 0, 3)
 
     val unitCostTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(unitCostTxt, 1, 2)
+    GridPane.setConstraints(unitCostTxt, 1, 3)
 
     val boxSizeLbl = new Label(Messages.data("Box Size")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(boxSizeLbl, 0, 3)
+    GridPane.setConstraints(boxSizeLbl, 0, 4)
 
     val boxSizeTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(boxSizeTxt, 1, 3)
+    GridPane.setConstraints(boxSizeTxt, 1, 4)
 
     val boxCostLbl = new Label(Messages.data("Box Cost")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(boxCostLbl, 0, 4)
+    GridPane.setConstraints(boxCostLbl, 0, 5)
 
     val boxCostTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(boxCostTxt, 1, 4)
+    GridPane.setConstraints(boxCostTxt, 1, 5)
 
     val vendorLbl = new Label(Messages.data("Vendor")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(vendorLbl, 0, 5)
+    GridPane.setConstraints(vendorLbl, 0, 6)
 
     val vendorCb = new ComboBox[Vendor] {
           maxWidth = 200
           promptText = Messages.data("Make a choice...")
           items = vendors
         };
-    GridPane.setConstraints(vendorCb, 1, 5)
+    GridPane.setConstraints(vendorCb, 1, 6)
 
     val brandLbl = new Label(Messages.data("Brand")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(brandLbl, 0, 6)
+    GridPane.setConstraints(brandLbl, 0, 7)
 
     val brandCb = new ComboBox[Brand] {
           maxWidth = 200
           promptText = Messages.data("Make a choice...")
           items = brands
         };
-    GridPane.setConstraints(brandCb, 1, 6)
+    GridPane.setConstraints(brandCb, 1, 7)
 
     val categoryLbl = new Label(Messages.data("Category")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(categoryLbl, 0, 7)
+    GridPane.setConstraints(categoryLbl, 0, 8)
 
     val categoryCb = new ComboBox[Category] {
           maxWidth = 200
           promptText = Messages.data("Make a choice...")
           items = categories
         };
-    GridPane.setConstraints(categoryCb, 1, 7)
+    GridPane.setConstraints(categoryCb, 1, 8)
 
     val descriptionLbl = new Label(Messages.data("Description")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(descriptionLbl, 0, 8)
+    GridPane.setConstraints(descriptionLbl, 0, 9)
 
     val descriptionTxt = new TextField() {
       text = "Description"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(descriptionTxt, 1, 8)
+    GridPane.setConstraints(descriptionTxt, 1, 9)
 
     val totalLbl = new Label(Messages.data("Total")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(totalLbl, 0, 9)
+    GridPane.setConstraints(totalLbl, 0, 10)
 
     val totalTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(totalTxt, 1, 9)
+    GridPane.setConstraints(totalTxt, 1, 10)
 
     val limitLbl = new Label(Messages.data("Limit")) {
       style = "-fx-font-weight:bold"
       alignmentInParent = Pos.BaselineRight
     }
-    GridPane.setConstraints(limitLbl, 0, 10)
+    GridPane.setConstraints(limitLbl, 0, 11)
 
     val limitTxt = new TextField() {
       text = "0"
       alignmentInParent = Pos.BaselineLeft
     }
-    GridPane.setConstraints(limitTxt, 1, 10)
+    GridPane.setConstraints(limitTxt, 1, 11)
 
     val infoGrid = new GridPane {
       hgap = 2
       vgap = 10
       margin = Insets(18)
-      children ++= Seq(nameLbl, nameTxt, retailPriceLbl, retailPriceTxt, unitCostLbl, unitCostTxt, boxCostLbl, boxCostTxt, boxSizeLbl, boxSizeTxt, vendorLbl, vendorCb, brandLbl, brandCb, categoryLbl, categoryCb, descriptionLbl, descriptionTxt, totalLbl, totalTxt, limitLbl, limitTxt)
+      children ++= Seq(nameLbl, nameTxt, retailPriceLbl, retailPriceTxt, boxPriceLbl, boxPriceTxt, unitCostLbl, unitCostTxt, boxCostLbl, boxCostTxt, boxSizeLbl, boxSizeTxt, vendorLbl, vendorCb, brandLbl, brandCb, categoryLbl, categoryCb, descriptionLbl, descriptionTxt, totalLbl, totalTxt, limitLbl, limitTxt)
     }
 
     val saveBtn = new Button(Messages.data("save")) {
       onAction = (ae: ActionEvent) => {
           DBManager.session.beginTransaction();
-          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toDouble, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "/scalafx/ecstock/products/product.png", totalTxt.getText().toLong, limitTxt.getText().toLong, unitCostTxt.getText().toLong, boxCostTxt.getText().toDouble, boxSizeTxt.getText().toLong)
+          val product = new Product(0, nameTxt.getText(), retailPriceTxt.getText().toDouble, boxPriceTxt.getText().toDouble, vendorCb.getValue().id, brandCb.getValue().id, categoryCb.getValue().id, descriptionTxt.getText(), "/scalafx/ecstock/products/product.png", totalTxt.getText().toLong, limitTxt.getText().toLong, unitCostTxt.getText().toLong, boxCostTxt.getText().toDouble, boxSizeTxt.getText().toLong)
           DBManager.session.save(product);
           DBManager.session.getTransaction().commit();
           EcStock.splitPane.items.remove(1)

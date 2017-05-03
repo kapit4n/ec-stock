@@ -18,6 +18,9 @@ import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
 import scalafx.event.ActionEvent
+import scalafx.scene.control.DatePicker
+import java.util.Locale
+import java.time.LocalDate
 
 /**
  *
@@ -51,7 +54,7 @@ class EcStockListCard extends EcStockExample {
       prefWidth = 800
     }
 
-    GridPane.setConstraints(table1, 0, 0)
+    GridPane.setConstraints(table1, 1, 0)
 
     val infoGrid = new GridPane {
       hgap = 1
@@ -80,11 +83,30 @@ class EcStockListCard extends EcStockExample {
     }
     GridPane.setConstraints(allSells, 2, 0)
 
+    Locale.setDefault(new Locale("es", "ES"));
+
+    val fromPicker = new DatePicker() {        
+    }
+
+    GridPane.setConstraints(fromPicker, 3, 0)
+
+    val toPicker = new DatePicker() {        
+    }
+
+    GridPane.setConstraints(toPicker, 4, 0)
+
+    val searchRange = new Button("Search Range") {
+      onAction = (ae: ActionEvent) => {
+        table1.items = ObservableBuffer[ProductCard](DBManager.getCardsByRange(fromPicker.getValue(), toPicker.getValue()))
+      }
+    }
+    GridPane.setConstraints(searchRange, 5, 0)
+
     val filtersGrid = new GridPane {
-      hgap = 3
-      vgap = 3
+      hgap = 6
+      vgap = 1
       margin = Insets(18)
-      children ++= Seq(todaySells, monthSells, allSells)
+      children ++= Seq(todaySells, monthSells, allSells, fromPicker, toPicker, searchRange)
     }
 
     new VBox {

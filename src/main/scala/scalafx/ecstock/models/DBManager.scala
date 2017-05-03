@@ -3,6 +3,7 @@ import org.hibernate._
 import java.sql.{Connection,DriverManager}
 import scalafx.Includes._
 import scala.collection.mutable.ListBuffer
+import java.time.LocalDate
 
 object DBManager {
   val session: Session = HibernateUtil.getSessionFactory.openSession()
@@ -95,9 +96,10 @@ object DBManager {
     var results = new ListBuffer[Product]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, name, retailPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc FROM product " + likeQuery)
+      val rs = statement.executeQuery("SELECT id, name, retailPrice, boxPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc FROM product " + likeQuery)
       while (rs.next) {
-        results += new Product(rs.getString("id").toInt, rs.getString("name"), rs.getString("retailPrice").toDouble,
+        results += new Product(rs.getString("id").toInt, rs.getString("name"), rs.getString("retailPrice").toDouble, 
+          rs.getString("boxPrice").toDouble,
           rs.getString("vendor").toInt, rs.getString("brand").toInt, rs.getString("category").toInt,
           rs.getString("description"), rs.getString("imgSrc"), rs.getString("total").toLong,
           rs.getString("stockLimit").toLong, rs.getString("unitCost").toDouble, rs.getString("boxCost").toDouble,
@@ -114,6 +116,25 @@ object DBManager {
     try {
       val statement = connection.createStatement
       val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id order by c.createdAt DESC")
+      while (rs.next) {
+        val id = rs.getString("id").toInt
+        val customer = rs.getString("customer").toInt
+        val totalPrice = rs.getString("totalPrice").toDouble
+        val observation = rs.getString("observation")
+        val customerName = rs.getString("customerName")
+        results += new ProductCard(id, customer, totalPrice, observation, customerName)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    }
+    return results.toList
+  }
+
+  def getCardsByRange(fromD: LocalDate, toD: LocalDate): List[ProductCard] = {
+    var results = new ListBuffer[ProductCard]()
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id WHERE DATE(c.createdAt) >= '" + fromD.getYear() + "-"  + fromD.getMonthValue() + "-" + fromD.getDayOfMonth() + "' AND DATE(c.createdAt) <= '" + toD.getYear() + "-"  + toD.getMonthValue() + "-" + toD.getDayOfMonth() + "' order by c.createdAt DESC")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val customer = rs.getString("customer").toInt

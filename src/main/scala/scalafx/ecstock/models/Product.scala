@@ -5,7 +5,7 @@ import scalafx.beans.property.{StringProperty, ObjectProperty}
 
 @Entity
 @Table(name = "product")
-class Product(idParam: Int, var name: String, var retailPrice: Double, var vendor: Int,val brand: Int, var category: Int, var description: String, var imgSrc: String, var total: Long, var stockLimit: Long, var unitCost: Double, var boxCost: Double, var boxSize: Long) {
+class Product(idParam: Int, var name: String, var retailPrice: Double, boxPrice: Double, var vendor: Int,val brand: Int, var category: Int, var description: String, var imgSrc: String, var total: Long, var stockLimit: Long, var unitCost: Double, var boxCost: Double, var boxSize: Long) {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Int = idParam
@@ -37,6 +37,8 @@ class Product(idParam: Int, var name: String, var retailPrice: Double, var vendo
   val limitProperty = new StringProperty(this, "limitProperty", stockLimit.toString)
   @Transient
   val boxCostProperty = new StringProperty(this, "boxCostProperty", boxCost.toString)
+  @Transient
+  val boxPriceProperty = new StringProperty(this, "boxPriceProperty", boxPrice.toString)
   @Transient
   val boxSizeProperty = new StringProperty(this, "boxSizeProperty", boxSize.toString)
   @Transient

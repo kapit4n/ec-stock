@@ -42,6 +42,7 @@ create table product (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(100) not null,
   retailPrice float NOT NULL,
+  boxPrice float NOT NULL,
   vendor int NOT NULL,
   brand int NOT NULL,
   category int NOT NULL,
@@ -103,17 +104,17 @@ INSERT INTO category(id, name, description, imgSrc )
 INSERT INTO customer(id, name, address)
   VALUES(1, "Customer Name", "Republica Av,Cochabamba City, BO");
 
-INSERT INTO product(name, retailPrice, vendor, brand, category, description, imgSrc, total, stockLimit, unitCost, boxCost, boxSize)
-  VALUES('Product 0', '100', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '100', '5', '10', 100, 10),
-  ('Product 1', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
-  ('Product 2', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
-  ('Product 3', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
-  ('Product 4', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
-  ('Product 5', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
-  ('Product 6', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
-  ('Product 7', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
-  ('Product 8', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
-  ('Product 9', '50', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
-  ('Product 10', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
-  ('Product 11', '20', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '20', '5', '10', 100, 10);
+INSERT INTO product(name, retailPrice, boxPrice, vendor, brand, category, description, imgSrc, total, stockLimit, unitCost, boxCost, boxSize)
+  VALUES('Product 0', '100', '1000', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '100', '5', '10', 100, 10),
+  ('Product 1', '50', '500', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
+  ('Product 2', '200', '2000', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
+  ('Product 3', '50', '500', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
+  ('Product 4', '200', '2000', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
+  ('Product 5', '50', '500', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
+  ('Product 6', '200', '2000', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
+  ('Product 7', '50', '500', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
+  ('Product 8', '200', '2000', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
+  ('Product 9', '50', '500', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '50', '5', '10', 100, 10),
+  ('Product 10', '200', '2000', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '200', '5', '10', 100, 10),
+  ('Product 11', '20', '200', '1', '1', '1', 'description', '/scalafx/ecstock/products/product.png', '20', '5', '10', 100, 10);
 
