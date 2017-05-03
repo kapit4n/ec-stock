@@ -73,11 +73,18 @@ class EcStockListCard extends EcStockExample {
     }
     GridPane.setConstraints(monthSells, 1, 0)
 
+    val allSells = new Button("All") {
+      onAction = (ae: ActionEvent) => {
+        table1.items = ObservableBuffer[ProductCard](DBManager.getCards())
+      }
+    }
+    GridPane.setConstraints(allSells, 2, 0)
+
     val filtersGrid = new GridPane {
       hgap = 3
       vgap = 3
       margin = Insets(18)
-      children ++= Seq(todaySells, monthSells)
+      children ++= Seq(todaySells, monthSells, allSells)
     }
 
     new VBox {
