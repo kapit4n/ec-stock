@@ -218,15 +218,25 @@ class EcStockAddCard extends EcStockExample {
       editable = true
     }
 
+    val deleteCardItemBtn: Button = new Button(Messages.data("delete")) {
+      onAction = (ae: ActionEvent) => {
+        val selectedItem = detailTable.getSelectionModel().getSelectedItem()
+        detailTable.getItems().remove(selectedItem)
+        recalculateCardTotalPrice()
+      }
+    }
+
     GridPane.setConstraints(detailTable, 0, 0, 1, 1)
 
+    GridPane.setConstraints(deleteCardItemBtn, 0, 1)
+
     val detailGrid = new GridPane {
-      hgap = 1
-      vgap = 1
+      hgap = 2
+      vgap = 2
       gridLinesVisible = true
       margin = Insets(18)
       //style = "-fx-background-color: red"
-      children ++= Seq(detailTable)
+      children ++= Seq(detailTable, deleteCardItemBtn)
     }
 
     detailGrid.setPrefSize(350, 450)

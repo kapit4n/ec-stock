@@ -6,8 +6,13 @@ import scala.collection.mutable.{Map, SynchronizedMap, HashMap}
 object Messages {
   val data = collection.mutable.Map[String, String]()
   data += ("save" -> "Guardar")
+  data += ("delete" -> "Eliminar")
   data += ("cancel" -> "Cancelar")
   data += ("Add Card" -> "Nueva Venta")
+  data += ("searchRange" -> "Buscar Rango")
+  data += ("thisMonth" -> "Ultimo Mes")
+  data += ("today" -> "Hoy")
+  data += ("all" -> "Todo")
   data += ("Add Card By Box" -> "Nueva Venta por Cajas")
   data += ("Report" -> "Report")
   data += ("Add Category" -> "Nueva Categoria")

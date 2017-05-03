@@ -53,7 +53,7 @@ class EcStockListCard extends EcStockExample {
       )
       prefWidth = 800
     }
-
+    
     GridPane.setConstraints(table1, 1, 0)
 
     val infoGrid = new GridPane {
@@ -62,21 +62,21 @@ class EcStockListCard extends EcStockExample {
       margin = Insets(18)
       children ++= Seq(table1)
     }
-    val todaySells = new Button("By Today") {
+    val todaySells = new Button(Messages.data("today")) {
       onAction = (ae: ActionEvent) => {
         table1.items = ObservableBuffer[ProductCard](DBManager.getTodaySell())
       }
     }
     GridPane.setConstraints(todaySells, 0, 0)
     
-    val monthSells = new Button("By Month") {
+    val monthSells = new Button(Messages.data("thisMonth")) {
       onAction = (ae: ActionEvent) => {
         table1.items = ObservableBuffer[ProductCard](DBManager.getMonthSell())
       }
     }
     GridPane.setConstraints(monthSells, 1, 0)
 
-    val allSells = new Button("All") {
+    val allSells = new Button(Messages.data("all")) {
       onAction = (ae: ActionEvent) => {
         table1.items = ObservableBuffer[ProductCard](DBManager.getCards())
       }
@@ -95,7 +95,7 @@ class EcStockListCard extends EcStockExample {
 
     GridPane.setConstraints(toPicker, 4, 0)
 
-    val searchRange = new Button("Search Range") {
+    val searchRange = new Button(Messages.data("searchRange")) {
       onAction = (ae: ActionEvent) => {
         table1.items = ObservableBuffer[ProductCard](DBManager.getCardsByRange(fromPicker.getValue(), toPicker.getValue()))
       }
