@@ -28,16 +28,65 @@ import java.time.LocalDate
 class EcStockListCard extends EcStockExample {
 
   var productCards = ObservableBuffer[ProductCard]()
-  var table1 = new TableView[ProductCard]()
+  var containTable = new TableView[ProductCard]()
   def getContent = {
     val infoCaution = new Label {
       text = Messages.data("List")
       wrapText = true
     }
 
-    productCards = ObservableBuffer[ProductCard](DBManager.getCards())
+    productCards = ObservableBuffer[ProductCard](DBManager.getCards(DBManager.TODAY))
 
-    table1 = new TableView[ProductCard]() {
+    val todayFilter = new Button(Messages.data("today")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[ProductCard](DBManager.getCards(DBManager.TODAY))
+      }
+    }
+    GridPane.setConstraints(todayFilter, 0, 0)
+    
+    val lastMonthFilter = new Button(Messages.data("thisMonth")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[ProductCard](DBManager.getCards(DBManager.LAST_MONTH))
+      }
+    }
+    GridPane.setConstraints(lastMonthFilter, 1, 0)
+
+    val allFilter = new Button(Messages.data("all")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[ProductCard](DBManager.getCards(DBManager.ALL))
+      }
+    }
+    GridPane.setConstraints(allFilter, 2, 0)
+
+    Locale.setDefault(new Locale("es", "ES"));
+
+    val fromPicker = new DatePicker() {        
+    }
+
+    GridPane.setConstraints(fromPicker, 3, 0)
+
+    val toPicker = new DatePicker() {        
+    }
+
+    GridPane.setConstraints(toPicker, 4, 0)
+
+    val rangeFilter = new Button(Messages.data("searchRange")) {
+      onAction = (ae: ActionEvent) => {
+        DBManager.fromDate = fromPicker.getValue()
+        DBManager.toDate = toPicker.getValue()
+        containTable.items = ObservableBuffer[ProductCard](DBManager.getCards(DBManager.RANGE))
+      }
+    }
+    GridPane.setConstraints(rangeFilter, 5, 0)
+
+    val filtersGrid = new GridPane {
+      hgap = 6
+      vgap = 1
+      margin = Insets(18)
+      children ++= Seq(todayFilter, lastMonthFilter, allFilter, fromPicker, toPicker, rangeFilter)
+    }
+
+    containTable = new TableView[ProductCard]() {
       items = productCards
       columns ++= List(
         new TableColumn[ProductCard, String] {
@@ -54,59 +103,13 @@ class EcStockListCard extends EcStockExample {
       prefWidth = 800
     }
     
-    GridPane.setConstraints(table1, 1, 0)
+    GridPane.setConstraints(containTable, 1, 0)
 
     val infoGrid = new GridPane {
       hgap = 1
       vgap = 1
       margin = Insets(18)
-      children ++= Seq(table1)
-    }
-    val todaySells = new Button(Messages.data("today")) {
-      onAction = (ae: ActionEvent) => {
-        table1.items = ObservableBuffer[ProductCard](DBManager.getTodaySell())
-      }
-    }
-    GridPane.setConstraints(todaySells, 0, 0)
-    
-    val monthSells = new Button(Messages.data("thisMonth")) {
-      onAction = (ae: ActionEvent) => {
-        table1.items = ObservableBuffer[ProductCard](DBManager.getMonthSell())
-      }
-    }
-    GridPane.setConstraints(monthSells, 1, 0)
-
-    val allSells = new Button(Messages.data("all")) {
-      onAction = (ae: ActionEvent) => {
-        table1.items = ObservableBuffer[ProductCard](DBManager.getCards())
-      }
-    }
-    GridPane.setConstraints(allSells, 2, 0)
-
-    Locale.setDefault(new Locale("es", "ES"));
-
-    val fromPicker = new DatePicker() {        
-    }
-
-    GridPane.setConstraints(fromPicker, 3, 0)
-
-    val toPicker = new DatePicker() {        
-    }
-
-    GridPane.setConstraints(toPicker, 4, 0)
-
-    val searchRange = new Button(Messages.data("searchRange")) {
-      onAction = (ae: ActionEvent) => {
-        table1.items = ObservableBuffer[ProductCard](DBManager.getCardsByRange(fromPicker.getValue(), toPicker.getValue()))
-      }
-    }
-    GridPane.setConstraints(searchRange, 5, 0)
-
-    val filtersGrid = new GridPane {
-      hgap = 6
-      vgap = 1
-      margin = Insets(18)
-      children ++= Seq(todaySells, monthSells, allSells, fromPicker, toPicker, searchRange)
+      children ++= Seq(containTable)
     }
 
     new VBox {

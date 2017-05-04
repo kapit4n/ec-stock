@@ -6,6 +6,13 @@ import scala.collection.mutable.ListBuffer
 import java.time.LocalDate
 
 object DBManager {
+  val ALL = 0
+  val LAST_MONTH = 1
+  val TODAY = 2
+  val RANGE = 3
+  var toDate:LocalDate = _
+  var fromDate:LocalDate = _
+
   val session: Session = HibernateUtil.getSessionFactory.openSession()
   val url = "jdbc:mysql://localhost:3306/ecstock"
   val driver = "com.mysql.jdbc.Driver"
@@ -111,68 +118,15 @@ object DBManager {
     return results.toList
   }
 
-  def getCards(): List[ProductCard] = {
+  def getCards(filterValue:Int): List[ProductCard] = {
     var results = new ListBuffer[ProductCard]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id order by c.createdAt DESC")
-      while (rs.next) {
-        val id = rs.getString("id").toInt
-        val customer = rs.getString("customer").toInt
-        val totalPrice = rs.getString("totalPrice").toDouble
-        val observation = rs.getString("observation")
-        val customerName = rs.getString("customerName")
-        results += new ProductCard(id, customer, totalPrice, observation, customerName)
-      }
-    } catch {
-      case e: Exception => e.printStackTrace
-    }
-    return results.toList
-  }
-
-  def getCardsByRange(fromD: LocalDate, toD: LocalDate): List[ProductCard] = {
-    var results = new ListBuffer[ProductCard]()
-    try {
-      val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id WHERE DATE(c.createdAt) >= '" + fromD.getYear() + "-"  + fromD.getMonthValue() + "-" + fromD.getDayOfMonth() + "' AND DATE(c.createdAt) <= '" + toD.getYear() + "-"  + toD.getMonthValue() + "-" + toD.getDayOfMonth() + "' order by c.createdAt DESC")
-      while (rs.next) {
-        val id = rs.getString("id").toInt
-        val customer = rs.getString("customer").toInt
-        val totalPrice = rs.getString("totalPrice").toDouble
-        val observation = rs.getString("observation")
-        val customerName = rs.getString("customerName")
-        results += new ProductCard(id, customer, totalPrice, observation, customerName)
-      }
-    } catch {
-      case e: Exception => e.printStackTrace
-    }
-    return results.toList
-  }
-
-  def getMonthSell(): List[ProductCard] = {
-    var results = new ListBuffer[ProductCard]()
-    try {
-      val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id WHERE YEAR(c.createdAt) = YEAR(CURDATE()) AND MONTH(c.createdAt) = MONTH(CURDATE()) order by c.createdAt DESC")
-      while (rs.next) {
-        val id = rs.getString("id").toInt
-        val customer = rs.getString("customer").toInt
-        val totalPrice = rs.getString("totalPrice").toDouble
-        val observation = rs.getString("observation")
-        val customerName = rs.getString("customerName")
-        results += new ProductCard(id, customer, totalPrice, observation, customerName)
-      }
-    } catch {
-      case e: Exception => e.printStackTrace
-    }
-    return results.toList
-  }
-
-  def getTodaySell(): List[ProductCard] = {
-    var results = new ListBuffer[ProductCard]()
-    try {
-      val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT c.id, customer, totalPrice, observation, cs.name as customerName FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id WHERE DATE(c.createdAt) = CURDATE() order by c.createdAt DESC")
+      val where = getFilter(filterValue, "c.")
+      val fields = "c.id, customer, totalPrice, observation, cs.name as customerName"
+      val orderBy = "order by c.createdAt DESC"
+      val fromJoin = "FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id"
+      val rs = statement.executeQuery(f"SELECT $fields $fromJoin $where $orderBy")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val customer = rs.getString("customer").toInt
@@ -208,14 +162,31 @@ object DBManager {
     return results.toList
   }
 
+  def getFilter(filterValue:Int, prefix: String) : String = {
+    var filter = ""
+    val dateStr = prefix + "createdAt"
+
+    if (filterValue == TODAY)
+      filter = f" WHERE DATE($dateStr) = CURDATE() "
+
+    if (filterValue == LAST_MONTH)
+      filter = f" WHERE YEAR($dateStr) = YEAR(CURDATE()) AND MONTH($dateStr) = MONTH(CURDATE()) "
+
+    if (filterValue == RANGE)
+      filter = f" WHERE DATE($dateStr) >= '" + DBManager.fromDate.getYear() + "-"  + DBManager.fromDate.getMonthValue() + "-" + DBManager.fromDate.getDayOfMonth() + f"' AND DATE($dateStr) <= '" + DBManager.toDate.getYear() + "-"  + DBManager.toDate.getMonthValue() + "-" + DBManager.toDate.getDayOfMonth() + "'"
+
+    return filter
+  }
+
   /**
    * Get all product inventories
   */
-  def getProductInventories(): List[ProductInventory] = {
+  def getProductInventories(filterValue:Int): List[ProductInventory] = {
+    
     var results = new ListBuffer[ProductInventory]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT pi.id, product, pi.vendor, quantity, cost, pi.totalCost, p.name as productName, v.name as vendorName FROM productInventory as pi STRAIGHT_JOIN product AS p ON pi.product = p.id STRAIGHT_JOIN vendor AS v ON pi.vendor = v.id")
+      val rs = statement.executeQuery("SELECT pi.id, product, pi.vendor, quantity, cost, pi.totalCost, p.name as productName, v.name as vendorName FROM productInventory as pi STRAIGHT_JOIN product AS p ON pi.product = p.id STRAIGHT_JOIN vendor AS v ON pi.vendor = v.id " + getFilter(filterValue, "pi.") )
       while (rs.next) {
         val id = rs.getString("id").toInt
         val product = rs.getString("product").toInt

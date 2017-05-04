@@ -17,11 +17,18 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
+import scalafx.event.ActionEvent
+import scalafx.scene.control.DatePicker
+import java.util.Locale
+import java.time.LocalDate
 
 /**
  *
  */
 class EcStockListInventory extends EcStockExample {
+
+  var buys: ObservableBuffer[ProductInventory] = ObservableBuffer[ProductInventory]()
+  var containTable:TableView[ProductInventory] = new TableView[ProductInventory]()
 
   def getContent = {
     val infoCaution = new Label {
@@ -29,9 +36,58 @@ class EcStockListInventory extends EcStockExample {
       wrapText = true
     }
 
-    val invs = ObservableBuffer[ProductInventory](DBManager.getProductInventories())
+    buys = ObservableBuffer[ProductInventory](DBManager.getProductInventories(DBManager.TODAY))
 
-    val table1 = new TableView[ProductInventory](invs) {
+    val todayFilter = new Button(Messages.data("today")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[ProductInventory](DBManager.getProductInventories(DBManager.TODAY))
+      }
+    }
+    GridPane.setConstraints(todayFilter, 0, 0)
+
+    val lastMonthFilter = new Button(Messages.data("thisMonth")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[ProductInventory](DBManager.getProductInventories(DBManager.LAST_MONTH))
+      }
+    }
+    GridPane.setConstraints(lastMonthFilter, 1, 0)
+
+    val allFilter = new Button(Messages.data("all")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[ProductInventory](DBManager.getProductInventories(DBManager.ALL))
+      }
+    }
+    GridPane.setConstraints(allFilter, 2, 0)
+
+    Locale.setDefault(new Locale("es", "ES"));
+
+    val fromPicker = new DatePicker() {        
+    }
+
+    GridPane.setConstraints(fromPicker, 3, 0)
+
+    val toPicker = new DatePicker() {        
+    }
+
+    GridPane.setConstraints(toPicker, 4, 0)
+
+    val rangeFilter = new Button(Messages.data("searchRange")) {
+      onAction = (ae: ActionEvent) => {
+        DBManager.fromDate = fromPicker.getValue()
+        DBManager.toDate = toPicker.getValue()
+        containTable.items = ObservableBuffer[ProductInventory](DBManager.getProductInventories(DBManager.RANGE))
+      }
+    }
+    GridPane.setConstraints(rangeFilter, 5, 0)
+
+    val filtersGrid = new GridPane {
+      hgap = 6
+      vgap = 1
+      margin = Insets(18)
+      children ++= Seq(todayFilter, lastMonthFilter, allFilter, fromPicker, toPicker, rangeFilter)
+    }
+
+    containTable = new TableView[ProductInventory](buys) {
       columns ++= List(
         new TableColumn[ProductInventory, String] {
           text = Messages.data("Product")
@@ -62,13 +118,13 @@ class EcStockListInventory extends EcStockExample {
       prefWidth = 800
     }
 
-    GridPane.setConstraints(table1, 0, 1, 1, 1)
+    GridPane.setConstraints(containTable, 1, 0)
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(table1)
+      children ++= Seq(containTable)
     }
 
     new VBox {
@@ -77,7 +133,7 @@ class EcStockListInventory extends EcStockExample {
       spacing = 10
       padding = Insets(20)
       children = List(
-        new VBox {children = List(infoCaution, infoGrid)},
+        new VBox {children = List(infoCaution, filtersGrid, infoGrid)},
         new Separator()
       )
     }
