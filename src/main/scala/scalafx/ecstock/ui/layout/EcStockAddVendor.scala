@@ -84,6 +84,7 @@ class EcStockAddVendor extends EcStockExample {
           val vendor = new Vendor(0, nameTxt.getText(), addressTxt.getText(), contactTxt.getText(), contact2Txt.getText())
           DBManager.session.save(vendor);
           DBManager.session.getTransaction().commit();
+          DBManager.session.clear()
           EcStock.splitPane.items.remove(1)
             EcStock.splitPane.items.add(1,
               PageDisplayer.choosePage("layout > " + EcStockListVendor.objectName))

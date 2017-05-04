@@ -57,10 +57,10 @@ class EcStockAddCustomer extends EcStockExample {
 
       val saveBtn = new Button(Messages.data("save")) {
         onAction = (ae: ActionEvent) => {
-            DBManager.session.beginTransaction();
-            val customer = new Customer(0, nameTxt.getText(), addressTxt.getText())
-            DBManager.session.save(customer);
-            DBManager.session.getTransaction().commit();
+            DBManager.session.beginTransaction()
+            DBManager.session.save(new Customer(0, nameTxt.getText(), addressTxt.getText()))
+            DBManager.session.getTransaction().commit()
+            DBManager.session.clear()
             EcStock.splitPane.items.remove(1)
             EcStock.splitPane.items.add(1,
               PageDisplayer.choosePage("layout > " + EcStockListCustomer.objectName))

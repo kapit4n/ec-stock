@@ -23,6 +23,7 @@ import scala.collection.mutable.ListBuffer
 import scalafx.ecstock.i18n.Messages
 import scalafx.util.converter.DefaultStringConverter
 import scalafx.scene.control.cell.TextFieldTableCell
+import scalafx.event.ActionEvent
 
 /**
  */
@@ -40,8 +41,8 @@ class EcStockListCategory extends EcStockExample {
       wrapText = true
     }
 
-    var categoryObs = ObservableBuffer[Category](DBManager.getCategories())
-    val table1 = new TableView[Category](categoryObs) {
+    var categories = ObservableBuffer[Category](DBManager.getCategories())
+    val categoryTable = new TableView[Category](categories) {
       columns ++= List(
         new TableColumn[Category, String] {
           text = Messages.data("Category")
@@ -71,14 +72,26 @@ class EcStockListCategory extends EcStockExample {
       editable = true
       prefWidth = 800
     }
+    
+    GridPane.setConstraints(categoryTable, 0, 0)
 
-    GridPane.setConstraints(table1, 0, 1, 1, 1)
+    val deleteBtn: Button = new Button(Messages.data("delete")) {
+      onAction = (ae: ActionEvent) => {
+        val selectedItem = categoryTable.getSelectionModel().getSelectedItem()
+        categoryTable.getItems().remove(selectedItem)
+        categories.remove(selectedItem)
+        DBManager.session.beginTransaction()
+        DBManager.session.delete(selectedItem)
+        DBManager.session.getTransaction().commit()
+      }
+    }
+    GridPane.setConstraints(deleteBtn, 0, 1)
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(table1)
+      children ++= Seq(categoryTable, deleteBtn)
     }
 
     new VBox {

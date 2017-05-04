@@ -217,6 +217,7 @@ class EcStockAddCard extends EcStockExample {
       )
       editable = true
     }
+    GridPane.setConstraints(detailTable, 0, 0, 1, 1)
 
     val deleteCardItemBtn: Button = new Button(Messages.data("delete")) {
       onAction = (ae: ActionEvent) => {
@@ -225,9 +226,6 @@ class EcStockAddCard extends EcStockExample {
         recalculateCardTotalPrice()
       }
     }
-
-    GridPane.setConstraints(detailTable, 0, 0, 1, 1)
-
     GridPane.setConstraints(deleteCardItemBtn, 0, 1)
 
     val detailGrid = new GridPane {
@@ -339,6 +337,7 @@ class EcStockAddCard extends EcStockExample {
           for (cardItem <- productCardItems) {
             DBManager.updateProductTotal(cardItem.quantity * -1, cardItem.product)
           }
+          DBManager.session.clear()
           EcStock.splitPane.items.remove(1)
             EcStock.splitPane.items.add(1,
               PageDisplayer.choosePage("layout > " + EcStockListCard.objectName))

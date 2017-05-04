@@ -147,6 +147,7 @@ class EcStockAddProductInventory extends EcStockExample {
           DBManager.session.save(productInv);
           DBManager.session.getTransaction().commit();
           DBManager.updateProductTotal(quantityTxt.getText().toLong, productCb.getValue().id)
+          DBManager.session.clear()
           EcStock.splitPane.items.remove(1)
             EcStock.splitPane.items.add(1,
               PageDisplayer.choosePage("layout > " + EcStockListInventory.objectName))

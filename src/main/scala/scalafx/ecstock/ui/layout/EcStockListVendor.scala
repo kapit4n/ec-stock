@@ -19,6 +19,7 @@ import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
 import scalafx.util.converter.DefaultStringConverter
 import scalafx.scene.control.cell.TextFieldTableCell
+import scalafx.event.ActionEvent
 
 /**
  *
@@ -39,7 +40,7 @@ class EcStockListVendor extends EcStockExample {
 
     val vendors = ObservableBuffer[Vendor](DBManager.getVendors())
 
-    val table1 = new TableView[Vendor](vendors) {
+    val vendorTable = new TableView[Vendor](vendors) {
       columns ++= List(
         new TableColumn[Vendor, String] {
           text = Messages.data("Vendor")
@@ -94,13 +95,25 @@ class EcStockListVendor extends EcStockExample {
       editable = true
     }
 
-    GridPane.setConstraints(table1, 0, 1, 1, 1)
+    GridPane.setConstraints(vendorTable, 0, 0)
+
+    val deleteBtn: Button = new Button(Messages.data("delete")) {
+      onAction = (ae: ActionEvent) => {
+        val selectedItem = vendorTable.getSelectionModel().getSelectedItem()
+        vendorTable.getItems().remove(selectedItem)
+        vendors.remove(selectedItem)
+        DBManager.session.beginTransaction()
+        DBManager.session.delete(selectedItem)
+        DBManager.session.getTransaction().commit()
+      }
+    }
+    GridPane.setConstraints(deleteBtn, 0, 1)
 
     val infoGrid = new GridPane {
       hgap = 4
       vgap = 6
       margin = Insets(18)
-      children ++= Seq(table1)
+      children ++= Seq(vendorTable, deleteBtn)
     }
 
     new VBox {

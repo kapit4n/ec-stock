@@ -329,6 +329,7 @@ class EcStockAddCardByBox extends EcStockExample {
           for (cardItem <- productCardItems) {
             DBManager.updateProductTotal(cardItem.quantity * -1, cardItem.product)
           }
+          DBManager.session.clear()
           EcStock.splitPane.items.remove(1)
             EcStock.splitPane.items.add(1,
               PageDisplayer.choosePage("layout > " + EcStockListCard.objectName))
