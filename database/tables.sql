@@ -75,6 +75,7 @@ create table card (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   customer int NOT NULL,
   totalPrice float,
+  totalCost float,
   observation VARCHAR(100),
   FOREIGN KEY (customer) REFERENCES customer(id),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP

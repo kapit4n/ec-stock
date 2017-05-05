@@ -5,6 +5,9 @@ import scala.collection.mutable.{Map, SynchronizedMap, HashMap}
 
 object Messages {
   val data = collection.mutable.Map[String, String]()
+  data += ("totalSellPrice" -> "Total Ventas")
+  data += ("totalProductCost" -> "Costo Total Productos")
+  data += ("revenue" -> "Ganacias")
   data += ("outOfStock" -> "Fuera de Limite")
   data += ("save" -> "Guardar")
   data += ("search" -> "Buscar")
@@ -17,6 +20,7 @@ object Messages {
   data += ("all" -> "Todo")
   data += ("Add Card By Box" -> "Nueva Venta por Cajas")
   data += ("Report" -> "Reporte")
+  data += ("Report Finance" -> "Reporte de Ganancias")
   data += ("Add Category" -> "Nueva Categoria")
   data += ("Add Customer" -> "Nuevo Cliente")
   data += ("Add Product" -> "Nuevo Producto")
@@ -84,6 +88,7 @@ object Messages {
   dataOpposite += ("Nueva Venta" -> "Add Card")
   dataOpposite += ("Nueva Venta por Cajas" -> "Add Card By Box")
   dataOpposite += ("Reporte" -> "Report")
+  dataOpposite += ("Reporte de Ganancias" -> "Report Finance")
   dataOpposite += ("Nueva Categoria" -> "Add Category")
   dataOpposite += ("Nuevo Cliente" -> "Add Customer")
   dataOpposite += ("Nuevo Producto" -> "Add Product")

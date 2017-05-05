@@ -142,7 +142,7 @@ object DBManager {
     var results = new ListBuffer[ProductCard]()
     try {
       val statement = connection.createStatement
-      val select = "SELECT c.id, customer, totalPrice, observation, cs.name as customerName"
+      val select = "SELECT c.id, customer, totalPrice, totalCost, observation, cs.name as customerName"
       val from = "FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id"
       val where = getFilter(filterValue, "c.")
       val orderBy = "order by c.createdAt DESC"
@@ -151,9 +151,10 @@ object DBManager {
         val id = rs.getString("id").toInt
         val customer = rs.getString("customer").toInt
         val totalPrice = rs.getString("totalPrice").toDouble
+        val totalCost = rs.getString("totalCost").toDouble
         val observation = rs.getString("observation")
         val customerName = rs.getString("customerName")
-        results += new ProductCard(id, customer, totalPrice, observation, customerName)
+        results += new ProductCard(id, customer, totalPrice, totalCost, observation, customerName)
       }
     } catch {
       case e: Exception => e.printStackTrace
@@ -161,14 +162,15 @@ object DBManager {
     return results.toList
   }
 
-  def getCardItems(): List[ProductCardItem] = {
+  def getCardItems(filterValue:Int): List[ProductCardItem] = {
     var results = new ListBuffer[ProductCardItem]()
     try {
       val statement = connection.createStatement
       val select = "SELECT p.id, card, product, quantity, price, totalPrice, ci.unitCost, totalCost, p.name as productName"
+      val where = getFilter(filterValue, "ci.")
       val from = "FROM cardItem AS ci STRAIGHT_JOIN product AS p ON ci.product = p.id"
       val orderBy = "order by ci.createdAt DESC"
-      val rs = statement.executeQuery(f"$select $from $orderBy")
+      val rs = statement.executeQuery(f"$select $from $where $orderBy")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val card = rs.getString("card").toInt

@@ -87,7 +87,7 @@ class EcStockAddCardByBox extends EcStockExample {
       card.quantity = quantity * card.boxSize.toInt
       card.quantityProperty.value = (quantity * card.boxSize.toInt).toString
       card.boxQuantityProperty.value = (quantity).toString
-      
+
       card.totalPrice = card.boxPrice * (card.quantity / card.boxSize)
       card.totalCost = card.boxCost * (card.quantity / card.boxSize)
 
@@ -200,13 +200,13 @@ class EcStockAddCardByBox extends EcStockExample {
         new TableColumn[ProductCardItem, String] {
           text = Messages.data("Product")
           cellValueFactory = { _.value.productNameProperty }
-          prefWidth = 150
+          prefWidth = 100
         },
         new TableColumn[ProductCardItem, String]() {
           text = Messages.data("Quantity")
           cellValueFactory = { _.value.boxQuantityProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
-          prefWidth = 66
+          prefWidth = 80
           onEditCommit = (evt: CellEditEvent[ProductCardItem, String]) => {
             val rowOldValue = evt.rowValue
             val rowNewValue = evt.newValue
@@ -218,13 +218,13 @@ class EcStockAddCardByBox extends EcStockExample {
           text = Messages.data("Box Price")
           cellValueFactory = { _.value.priceProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
-          prefWidth = 66
+          prefWidth = 70
         },
         new TableColumn[ProductCardItem, String]() {
-          text = Messages.data("Total Price")
+          text = Messages.data("Total")
           cellValueFactory = { _.value.totalPriceProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
-          prefWidth = 66
+          prefWidth = 100
         }
       )
       editable = true

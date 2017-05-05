@@ -36,7 +36,7 @@ class EcStockAddCard extends EcStockExample {
   val categoryImgHeight = 60
 
   var totalLbl:Label = _
-  var totalTxt:TextField = _
+  var totalPriceTxt:TextField = _
 
   val productsGrid = new GridPane {
     hgap = 3
@@ -47,11 +47,11 @@ class EcStockAddCard extends EcStockExample {
   }
 
   def recalculateCardTotalPrice() = {
-    var total = 0.0
+    var totalPrice = 0.0
     for (card <- productCardItems) {
-      total = total + card.totalPrice
+      totalPrice = totalPrice + card.totalPrice
     }
-    totalTxt.setText(total.toString)
+    totalPriceTxt.setText(totalPrice.toString)
   }
 
   /*
@@ -266,12 +266,12 @@ class EcStockAddCard extends EcStockExample {
     }
     GridPane.setConstraints(totalLbl, 0, 0, 1, 1)
 
-    totalTxt = new TextField {
+    totalPriceTxt = new TextField {
       text = "0"
       editable = false
     }
 
-    GridPane.setConstraints(totalTxt, 1, 0, 2, 1)
+    GridPane.setConstraints(totalPriceTxt, 1, 0, 2, 1)
 
     val calculatorGrid = new GridPane {
       hgap = 2
@@ -279,7 +279,7 @@ class EcStockAddCard extends EcStockExample {
       gridLinesVisible = true
       margin = Insets(18)
       //style = "-fx-background-color: green"
-      children ++= Seq(totalLbl, totalTxt)
+      children ++= Seq(totalLbl, totalPriceTxt)
     }
     calculatorGrid.setPrefSize(350, 110)
     GridPane.setConstraints(calculatorGrid, 0, 2, 1, 1)
@@ -326,10 +326,12 @@ class EcStockAddCard extends EcStockExample {
       onAction = (ae: ActionEvent) => {
 
           var totalPrice: Double = 0
+          var totalCost: Double = 0
           for (cardItem <- productCardItems) {
             totalPrice = totalPrice + cardItem.totalPrice
+            totalCost = totalCost + cardItem.totalCost
           }
-          val card = new ProductCard(0, customerCb.getValue().id, totalPrice, "Observations", "")
+          val card = new ProductCard(0, customerCb.getValue().id, totalPrice, totalCost, "Observations", "")
           DBManager.session.beginTransaction()
           DBManager.session.save(card)
           DBManager.session.getTransaction().commit()
