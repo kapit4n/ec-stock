@@ -41,7 +41,7 @@ class EcStockListProduct extends EcStockExample {
       wrapText = true
     }
 
-    val products = ObservableBuffer[Product](DBManager.getProducts(""))
+    val products = ObservableBuffer[Product](DBManager.getProducts(DBManager.ALL))
 
     val productTable = new TableView[Product](products) {
       columns ++= List(

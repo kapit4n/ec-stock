@@ -20,21 +20,53 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Circle
 import scalafx.ecstock.models.DBManager
 import scalafx.ecstock.i18n.Messages
+import scalafx.event.ActionEvent
+import scalafx.scene.control.DatePicker
+import java.util.Locale
+import java.time.LocalDate
 
 /**
  *
  */
 class EcStockInventory extends EcStockExample {
-
+  var products:ObservableBuffer[Product] = ObservableBuffer[Product]()
+  var containTable:TableView[Product] = new TableView[Product]()
   def getContent = {
     val infoCaution = new Label {
       text = Messages.data("List")
       wrapText = true
     }
 
-    val products = ObservableBuffer[Product](DBManager.getProducts(""))
+    products = ObservableBuffer[Product](DBManager.getProducts(DBManager.ALL))
 
-    val table1 = new TableView[Product](products) {
+    val searchText = new TextField() {
+      
+    }
+    GridPane.setConstraints(searchText, 0, 0)
+    
+    val searchBtn = new Button(Messages.data("search")) {
+      onAction = (ae: ActionEvent) => {
+        DBManager.likeStr = searchText.getText()
+        containTable.items = ObservableBuffer[Product](DBManager.getProducts(DBManager.LIKE))
+      }
+    }
+    GridPane.setConstraints(searchBtn, 1, 0)
+
+    val outOfStock = new Button(Messages.data("outOfStock")) {
+      onAction = (ae: ActionEvent) => {
+        containTable.items = ObservableBuffer[Product](DBManager.getProducts(DBManager.OUT_OF_STOCK))
+      }
+    }
+    GridPane.setConstraints(outOfStock, 2, 0)
+
+    val filtersGrid = new GridPane {
+      hgap = 6
+      vgap = 1
+      margin = Insets(18)
+      children ++= Seq(searchText, searchBtn, outOfStock)
+    }
+
+    containTable = new TableView[Product](products) {
       columns ++= List(
         new TableColumn[Product, String] {
           text = Messages.data("Name")
@@ -65,13 +97,13 @@ class EcStockInventory extends EcStockExample {
       prefWidth = 800
     }
 
-    GridPane.setConstraints(table1, 0, 0, 1, 1)
+    GridPane.setConstraints(containTable, 0, 0)
 
     val infoGrid = new GridPane {
       hgap = 1
       vgap = 1
       margin = Insets(18)
-      children ++= Seq(table1)
+      children ++= Seq(containTable)
     }
 
     new VBox {
@@ -80,7 +112,7 @@ class EcStockInventory extends EcStockExample {
       spacing = 10
       padding = Insets(20)
       children = List(
-        new VBox {children = List(infoCaution, infoGrid)},
+        new VBox {children = List(infoCaution, filtersGrid, infoGrid)},
         new Separator()
       )
     }

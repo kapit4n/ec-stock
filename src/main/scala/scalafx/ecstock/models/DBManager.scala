@@ -10,8 +10,11 @@ object DBManager {
   val LAST_MONTH = 1
   val TODAY = 2
   val RANGE = 3
+  val OUT_OF_STOCK = 4
+  val LIKE = 5
   var toDate:LocalDate = _
   var fromDate:LocalDate = _
+  var likeStr:String = _
 
   val session: Session = HibernateUtil.getSessionFactory.openSession()
   val url = "jdbc:mysql://localhost:3306/ecstock"
@@ -96,14 +99,14 @@ object DBManager {
     return results.toList
   }
 
-  def getProducts(likeText: String): List[Product] = {
-    var likeQuery = " WHERE name like '%" + likeText+  "%'"
-    if (likeText.isEmpty) likeQuery = ""
-
+  def getProducts(filterValue: Int): List[Product] = {
     var results = new ListBuffer[Product]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT id, name, retailPrice, boxPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc FROM product " + likeQuery)
+      val where = getFilter(filterValue, "")
+      val fields = "id, name, retailPrice, boxPrice, vendor, brand, category, description, total, stockLimit, boxCost, unitCost, boxSize, imgSrc"
+      val fromJoin = "FROM product"
+      val rs = statement.executeQuery(f"SELECT $fields $fromJoin $where")
       while (rs.next) {
         results += new Product(rs.getString("id").toInt, rs.getString("name"), rs.getString("retailPrice").toDouble, 
           rs.getString("boxPrice").toDouble,
@@ -167,13 +170,19 @@ object DBManager {
     val dateStr = prefix + "createdAt"
 
     if (filterValue == TODAY)
-      filter = f" WHERE DATE($dateStr) = CURDATE() "
+      filter = f"WHERE DATE($dateStr) = CURDATE() "
 
     if (filterValue == LAST_MONTH)
-      filter = f" WHERE YEAR($dateStr) = YEAR(CURDATE()) AND MONTH($dateStr) = MONTH(CURDATE()) "
+      filter = f"WHERE YEAR($dateStr) = YEAR(CURDATE()) AND MONTH($dateStr) = MONTH(CURDATE()) "
 
     if (filterValue == RANGE)
-      filter = f" WHERE DATE($dateStr) >= '" + DBManager.fromDate.getYear() + "-"  + DBManager.fromDate.getMonthValue() + "-" + DBManager.fromDate.getDayOfMonth() + f"' AND DATE($dateStr) <= '" + DBManager.toDate.getYear() + "-"  + DBManager.toDate.getMonthValue() + "-" + DBManager.toDate.getDayOfMonth() + "'"
+      filter = f"WHERE DATE($dateStr) >= '" + DBManager.fromDate.getYear() + "-"  + DBManager.fromDate.getMonthValue() + "-" + DBManager.fromDate.getDayOfMonth() + f"' AND DATE($dateStr) <= '" + DBManager.toDate.getYear() + "-"  + DBManager.toDate.getMonthValue() + "-" + DBManager.toDate.getDayOfMonth() + "'"
+
+    if (filterValue == OUT_OF_STOCK)
+      filter = f"WHERE $prefix%sstockLimit > $prefix%stotal"
+
+    if (filterValue == LIKE)
+      filter = f" WHERE $prefix%sname like '%%$likeStr%s%%'"
 
     return filter
   }
