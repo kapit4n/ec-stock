@@ -4,6 +4,7 @@ import java.sql.{Connection,DriverManager}
 import scalafx.Includes._
 import scala.collection.mutable.ListBuffer
 import java.time.LocalDate
+import scala.collection.mutable.HashMap
 
 object DBManager {
   val ALL = 0
@@ -26,6 +27,22 @@ object DBManager {
   
   def closeConnection() = {
     connection.close
+  }
+
+  def getCustomerReport(): HashMap[String, Number] = {
+    var results = new scala.collection.mutable.HashMap[String, Number]()
+    try {
+      val statement = connection.createStatement
+      val rs = statement.executeQuery("select customer, sum(totalPrice) as total from card group by customer")
+      while (rs.next) {
+        val customer = rs.getString("customer")
+        val name = rs.getString("total").toLong
+        results += (customer -> name)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    }
+    return results
   }
 
   def getCategories(): List[Category] = {

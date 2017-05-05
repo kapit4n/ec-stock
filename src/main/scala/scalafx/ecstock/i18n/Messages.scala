@@ -16,7 +16,7 @@ object Messages {
   data += ("today" -> "Hoy")
   data += ("all" -> "Todo")
   data += ("Add Card By Box" -> "Nueva Venta por Cajas")
-  data += ("Report" -> "Report")
+  data += ("Report" -> "Reporte")
   data += ("Add Category" -> "Nueva Categoria")
   data += ("Add Customer" -> "Nuevo Cliente")
   data += ("Add Product" -> "Nuevo Producto")
