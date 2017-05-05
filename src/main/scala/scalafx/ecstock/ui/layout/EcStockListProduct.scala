@@ -85,7 +85,19 @@ class EcStockListProduct extends EcStockExample {
           editable = true
         },
         new TableColumn[Product, String]() {
-          text = "Unit Cost"
+          text = Messages.data("Box Price")
+          cellValueFactory = { _.value.boxPriceProperty }
+          prefWidth = 100
+          cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
+          onEditCommit = (evt: CellEditEvent[Product, String]) => {
+            evt.rowValue.boxPrice = evt.newValue.toDouble
+            evt.rowValue.boxPriceProperty.value = evt.newValue
+            updateProduct(evt.rowValue)
+          }
+          editable = true
+        },
+        new TableColumn[Product, String]() {
+          text = Messages.data("Unit Cost")
           cellValueFactory = { _.value.unitCostProperty }
           prefWidth = 80
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
@@ -97,7 +109,7 @@ class EcStockListProduct extends EcStockExample {
           editable = true
         },
         new TableColumn[Product, String]() {
-          text = "Box Cost"
+          text = Messages.data("Box Cost")
           cellValueFactory = { _.value.boxCostProperty }
           prefWidth = 80
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())
@@ -109,7 +121,7 @@ class EcStockListProduct extends EcStockExample {
           editable = true
         },
         new TableColumn[Product, String]() {
-          text = "Box Size"
+          text = Messages.data("Box Size")
           cellValueFactory = { _.value.boxSizeProperty }
           prefWidth = 80
           cellFactory = column => new TextFieldTableCell[Product, String] (new DefaultStringConverter())

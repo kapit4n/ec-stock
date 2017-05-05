@@ -31,7 +31,7 @@ class EcStockAddProductInventoryByBox extends EcStockExample {
       wrapText = true
     }
 
-    val products = ObservableBuffer(DBManager.getProducts(""))
+    val products = ObservableBuffer(DBManager.getProducts(DBManager.ALL))
 
     val vendors = ObservableBuffer(DBManager.getVendors())
 

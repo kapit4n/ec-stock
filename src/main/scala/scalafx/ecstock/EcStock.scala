@@ -84,7 +84,6 @@ object EcStock extends JFXApp {
         splitPane.items.add(1, centerPane)
       }
       else {
-        println(parentAux + " > " + Messages.dataOpposite(pageCodeAux))
         centerPane = PageDisplayer.choosePage(parentAux + " > " + Messages.dataOpposite(pageCodeAux))
         splitPane.items.remove(1)
         splitPane.items.add(1, centerPane)

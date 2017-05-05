@@ -21,13 +21,16 @@ class EcStockReport extends EcStockExample {
   def getContent = {
     val customerTotal = DBManager.getCustomerReport()
 
-    val years = ObservableBuffer(customerTotal.keySet.toList)
+    val customerNames = customerTotal.keySet.toList
+    val years = ObservableBuffer(customerNames)
     val xAxis = CategoryAxis(years)
-    val yAxis = NumberAxis("Units Sold", 0.0d, 5000.0d, 1000.0d)
+    val yAxis = NumberAxis("Dolar", 0.0d, 5000.0d, 100.0d)
 
     def xyData(ys: Seq[Number]) = ObservableBuffer(years zip ys map (xy => XYChart.Data(xy._1, xy._2)))
+    val totalBuf = scala.collection.mutable.ListBuffer.empty[Number]
+    for (customerName <- customerNames) totalBuf += customerTotal(customerName)
 
-    val series = XYChart.Series("Customers", xyData(customerTotal.values.to[collection.mutable.Seq]))
+    val series = XYChart.Series("Customers", xyData(totalBuf.toList.to[collection.mutable.Seq]))
 
     new BarChart[String, Number](xAxis, yAxis) {
       data = Seq(series)

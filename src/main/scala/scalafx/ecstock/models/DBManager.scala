@@ -199,7 +199,7 @@ object DBManager {
       filter = f"WHERE $prefix%sstockLimit > $prefix%stotal"
 
     if (filterValue == LIKE)
-      filter = f" WHERE $prefix%sname like '%%$likeStr%s%%'"
+      filter = " WHERE " + prefix + "name like '%" + likeStr + "%'"
 
     return filter
   }

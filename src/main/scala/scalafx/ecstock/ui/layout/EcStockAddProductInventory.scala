@@ -35,7 +35,7 @@ class EcStockAddProductInventory extends EcStockExample {
       wrapText = true
     }
 
-    var products = ObservableBuffer(DBManager.getProducts(""))
+    var products = ObservableBuffer(DBManager.getProducts(DBManager.ALL))
 
     val vendors = ObservableBuffer(DBManager.getVendors())
 
@@ -66,7 +66,8 @@ class EcStockAddProductInventory extends EcStockExample {
       text = ""
       alignmentInParent = Pos.BaselineLeft
       text.onChange {
-        products = ObservableBuffer(DBManager.getProducts(text()))
+        DBManager.likeStr = text()
+        products = ObservableBuffer(DBManager.getProducts(DBManager.LIKE))
         productCb.items = products
       }
     }

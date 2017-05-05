@@ -40,7 +40,11 @@ class EcStockInventory extends EcStockExample {
     products = ObservableBuffer[Product](DBManager.getProducts(DBManager.ALL))
 
     val searchText = new TextField() {
-      
+      text = ""
+      text.onChange {
+        DBManager.likeStr = text()
+        containTable.items = ObservableBuffer(DBManager.getProducts(DBManager.LIKE))
+      }
     }
     GridPane.setConstraints(searchText, 0, 0)
     

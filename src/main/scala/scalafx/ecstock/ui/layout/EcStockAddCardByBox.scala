@@ -165,7 +165,7 @@ class EcStockAddCardByBox extends EcStockExample {
   }
 
   def getContent = {
-    products = ObservableBuffer[Product](DBManager.getProducts(""))
+    products = ObservableBuffer[Product](DBManager.getProducts(DBManager.ALL))
     categories = ObservableBuffer[Category](DBManager.getCategories())
     customers = ObservableBuffer[Customer](DBManager.getCustomers())
 
