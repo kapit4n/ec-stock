@@ -106,7 +106,7 @@ class EcStockListInventory extends EcStockExample {
         },
         new TableColumn[ProductInventory, String]() {
           text = Messages.data("Cost")
-          cellValueFactory = { _.value.costProperty }
+          cellValueFactory = { _.value.unitCostProperty }
           prefWidth = 100
         },
         new TableColumn[ProductInventory, String]() {

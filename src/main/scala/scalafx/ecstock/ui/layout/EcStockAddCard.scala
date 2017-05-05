@@ -63,12 +63,14 @@ class EcStockAddCard extends EcStockExample {
       card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity).toString
       card.quantity = card.quantity + quantity
       card.totalPrice = card.price * card.quantity
+      card.totalCost = card.unitCost * card.quantity
       card.totalPriceProperty.value = card.totalPrice.toString
+      card.totalCostProperty.value = card.totalCost.toString
       found = true
     }
     if (!found) {
       val items = products.filter(_.id == product)
-      productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).name)
+      productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).unitCost, items(0).unitCost, items(0).name)
     }
     recalculateCardTotalPrice()
   }
@@ -80,7 +82,9 @@ class EcStockAddCard extends EcStockExample {
     for (card <- productCardItems.filter(_.product == product)) {
       card.quantity = quantity
       card.totalPrice = card.price * card.quantity
+      card.totalCost = card.unitCost * card.quantity
       card.totalPriceProperty.value = card.totalPrice.toString
+      card.totalCostProperty.value = card.totalCost.toString
     }
     recalculateCardTotalPrice()
   }

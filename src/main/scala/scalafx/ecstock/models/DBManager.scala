@@ -165,7 +165,7 @@ object DBManager {
     var results = new ListBuffer[ProductCardItem]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT p.id, card, product, quantity, price, totalPrice, p.name as productName FROM cardItem AS ci STRAIGHT_JOIN product AS p ON ci.product = p.id order by ci.createdAt DESC")
+      val rs = statement.executeQuery("SELECT p.id, card, product, quantity, price, totalPrice, ci.unitCost, totalCost, p.name as productName FROM cardItem AS ci STRAIGHT_JOIN product AS p ON ci.product = p.id order by ci.createdAt DESC")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val card = rs.getString("card").toInt
@@ -173,8 +173,10 @@ object DBManager {
         val quantity = rs.getString("quantity").toInt
         val price = rs.getString("price").toDouble
         val totalPrice = rs.getString("totalPrice").toDouble
+        val unitCost = rs.getString("unitCost").toDouble
+        val totalCost = rs.getString("totalCost").toDouble
         val productName = rs.getString("productName")
-        results += new ProductCardItem(id, card, product, quantity, price, totalPrice, productName)
+        results += new ProductCardItem(id, card, product, quantity, price, totalPrice, unitCost, totalCost, productName)
       }
     } catch {
       case e: Exception => e.printStackTrace
@@ -212,17 +214,17 @@ object DBManager {
     var results = new ListBuffer[ProductInventory]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT pi.id, product, pi.vendor, quantity, cost, pi.totalCost, p.name as productName, v.name as vendorName FROM productInventory as pi STRAIGHT_JOIN product AS p ON pi.product = p.id STRAIGHT_JOIN vendor AS v ON pi.vendor = v.id " + getFilter(filterValue, "pi.") )
+      val rs = statement.executeQuery("SELECT pi.id, product, pi.vendor, quantity, pi.unitCost, pi.totalCost, p.name as productName, v.name as vendorName FROM productInventory as pi STRAIGHT_JOIN product AS p ON pi.product = p.id STRAIGHT_JOIN vendor AS v ON pi.vendor = v.id " + getFilter(filterValue, "pi.") )
       while (rs.next) {
         val id = rs.getString("id").toInt
         val product = rs.getString("product").toInt
         val vendor = rs.getString("vendor").toInt
         val quantity = rs.getString("quantity").toLong
-        val cost = rs.getString("cost").toDouble
+        val unitCost = rs.getString("unitCost").toDouble
         val totalCost = rs.getString("totalCost").toDouble
         val productName = rs.getString("productName")
         val vendorName = rs.getString("vendorName")
-        results += new ProductInventory(id, product, vendor, quantity, cost, totalCost, productName, vendorName)
+        results += new ProductInventory(id, product, vendor, quantity, unitCost, totalCost, productName, vendorName)
       }
     } catch {
       case e: Exception => e.printStackTrace
