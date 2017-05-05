@@ -20,8 +20,8 @@ import scalafx.event.ActionEvent
 /** The main ScalaFX EcStock application object. */
 object EcStock extends JFXApp {
 
-
-   new PDF {
+  /*
+  new PDF {
     file("/tmp/HelloWorld.pdf")
     paragraph(s"Hello World ${new Date()}!")
     
@@ -40,7 +40,7 @@ object EcStock extends JFXApp {
       phrase("Third Phrase. ")
     }
     close()
-  }
+  }*/
 
   //
   // Example selection tree
