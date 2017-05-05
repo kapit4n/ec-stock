@@ -60,15 +60,21 @@ class EcStockAddCardByBox extends EcStockExample {
   def addProduct(product: Int, quantity: Int) = {
     var found = false
     for (card <- productCardItems.filter(_.product == product)) {
-      card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity).toString
-      card.quantity = card.quantity + quantity
-      card.totalPrice = card.price * card.quantity
+      card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity * card.boxSize.toInt).toString
+      card.quantity = (card.quantity) + quantity * card.boxSize.toInt
+      card.boxQuantityProperty.value = (card.quantity / card.boxSize.toInt).toString
+      card.totalPrice = card.boxPrice * (card.quantity / card.boxSize.toInt)
+      card.totalCost = card.boxCost * (card.quantity / card.boxSize.toInt)
+
       card.totalPriceProperty.value = card.totalPrice.toString
+      card.totalCostProperty.value = card.totalCost.toString
       found = true
     }
     if (!found) {
       val items = products.filter(_.id == product)
-      productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice, items(0).retailPrice, items(0).name)
+      productCardItems += new ProductCardItem(0, 0, items(0).id, items(0).boxSize.toInt, items(0).boxPrice,
+        items(0).boxPrice, items(0).boxCost, items(0).boxCost, items(0).name, items(0).boxSize,
+        items(0).boxPrice, items(0).boxCost)
     }
     recalculateCardTotalPrice()
   }
@@ -78,9 +84,15 @@ class EcStockAddCardByBox extends EcStockExample {
    */
   def updateTotalByQuantity(product: Int, quantity: Int) = {
     for (card <- productCardItems.filter(_.product == product)) {
-      card.quantity = quantity
-      card.totalPrice = card.price * card.quantity
+      card.quantity = quantity * card.boxSize.toInt
+      card.quantityProperty.value = (quantity * card.boxSize.toInt).toString
+      card.boxQuantityProperty.value = (quantity).toString
+      
+      card.totalPrice = card.boxPrice * (card.quantity / card.boxSize)
+      card.totalCost = card.boxCost * (card.quantity / card.boxSize)
+
       card.totalPriceProperty.value = card.totalPrice.toString
+      card.totalCostProperty.value = card.totalCost.toString
     }
     recalculateCardTotalPrice()
   }
@@ -192,7 +204,7 @@ class EcStockAddCardByBox extends EcStockExample {
         },
         new TableColumn[ProductCardItem, String]() {
           text = Messages.data("Quantity")
-          cellValueFactory = { _.value.quantityProperty}
+          cellValueFactory = { _.value.boxQuantityProperty}
           cellFactory = column => new TextFieldTableCell[ProductCardItem, String] (new DefaultStringConverter())
           prefWidth = 66
           onEditCommit = (evt: CellEditEvent[ProductCardItem, String]) => {

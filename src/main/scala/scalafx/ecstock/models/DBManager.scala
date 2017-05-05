@@ -142,11 +142,11 @@ object DBManager {
     var results = new ListBuffer[ProductCard]()
     try {
       val statement = connection.createStatement
+      val select = "SELECT c.id, customer, totalPrice, observation, cs.name as customerName"
+      val from = "FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id"
       val where = getFilter(filterValue, "c.")
-      val fields = "c.id, customer, totalPrice, observation, cs.name as customerName"
       val orderBy = "order by c.createdAt DESC"
-      val fromJoin = "FROM card AS c STRAIGHT_JOIN customer AS cs ON c.customer = cs.id"
-      val rs = statement.executeQuery(f"SELECT $fields $fromJoin $where $orderBy")
+      val rs = statement.executeQuery(f"$select $from $where $orderBy")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val customer = rs.getString("customer").toInt
@@ -165,7 +165,10 @@ object DBManager {
     var results = new ListBuffer[ProductCardItem]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("SELECT p.id, card, product, quantity, price, totalPrice, ci.unitCost, totalCost, p.name as productName FROM cardItem AS ci STRAIGHT_JOIN product AS p ON ci.product = p.id order by ci.createdAt DESC")
+      val select = "SELECT p.id, card, product, quantity, price, totalPrice, ci.unitCost, totalCost, p.name as productName"
+      val from = "FROM cardItem AS ci STRAIGHT_JOIN product AS p ON ci.product = p.id"
+      val orderBy = "order by ci.createdAt DESC"
+      val rs = statement.executeQuery(f"$select $from $orderBy")
       while (rs.next) {
         val id = rs.getString("id").toInt
         val card = rs.getString("card").toInt
@@ -176,7 +179,8 @@ object DBManager {
         val unitCost = rs.getString("unitCost").toDouble
         val totalCost = rs.getString("totalCost").toDouble
         val productName = rs.getString("productName")
-        results += new ProductCardItem(id, card, product, quantity, price, totalPrice, unitCost, totalCost, productName)
+        results += new ProductCardItem(id, card, product, quantity, price, totalPrice, unitCost,
+          totalCost, productName, 1, 1, 1)
       }
     } catch {
       case e: Exception => e.printStackTrace
