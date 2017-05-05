@@ -33,9 +33,9 @@ object DBManager {
     var results = new scala.collection.mutable.HashMap[String, Number]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("select customer, sum(totalPrice) as total from card group by customer")
+      val rs = statement.executeQuery("select name, sum(totalPrice) as total from card inner join customer on customer.id = card.customer group by customer")
       while (rs.next) {
-        val customer = rs.getString("customer")
+        val customer = rs.getString("name")
         val name = rs.getString("total").toLong
         results += (customer -> name)
       }

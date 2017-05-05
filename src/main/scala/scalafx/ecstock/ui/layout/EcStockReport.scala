@@ -14,7 +14,7 @@ import scala.collection.mutable.Seq
 
 
 /**
- * Form to show char customer by total buy
+ * Form to show char customer by total bought
  */
 class EcStockReport extends EcStockExample {
 
