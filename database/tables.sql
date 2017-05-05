@@ -62,7 +62,7 @@ create table product (
 create table productInventory (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   quantity int not null,
-  cost float NOT NULL,
+  unitCost float NOT NULL,
   totalCost float NOT NULL,
   vendor int NOT NULL,
   product int NOT NULL,
@@ -87,6 +87,8 @@ create table cardItem (
   quantity int not null,
   price float NOT NULL,
   totalPrice float NOT NULL,
+  unitCost float NOT NULL,
+  totalCost float NOT NULL,
   FOREIGN KEY (card) REFERENCES card(id),
   FOREIGN KEY (product) REFERENCES product(id),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
