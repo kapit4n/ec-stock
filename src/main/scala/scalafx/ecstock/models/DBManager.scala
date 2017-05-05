@@ -33,11 +33,56 @@ object DBManager {
     var results = new scala.collection.mutable.HashMap[String, Number]()
     try {
       val statement = connection.createStatement
-      val rs = statement.executeQuery("select name, sum(totalPrice) as total from card inner join customer on customer.id = card.customer group by customer")
+      val select = "select name, sum(totalPrice) as total "
+      val from = "from card inner join customer on customer.id = card.customer"
+      val groupBy = "group by customer"
+      val rs = statement.executeQuery(f"$select $from $groupBy")
       while (rs.next) {
         val customer = rs.getString("name")
-        val name = rs.getString("total").toLong
-        results += (customer -> name)
+        val total = rs.getString("total").toLong
+        results += (customer -> total)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    }
+    return results
+  }
+
+  def getProductReport(): HashMap[String, List[Number]] = {
+    var results = new scala.collection.mutable.HashMap[String, List[Number]]()
+    try {
+      val statement = connection.createStatement
+      val select = "select p.name, sum(totalPrice) as totalPrice, sum(totalCost) as totalCost "
+      val from = "from cardItem as ci inner join product as p on p.id = ci.product"
+      val groupBy = "group by ci.product"
+      val rs = statement.executeQuery(f"$select $from $groupBy")
+      while (rs.next) {
+        val product = rs.getString("name")
+        val totalPrice = rs.getString("totalPrice").toLong
+        val totalCost = rs.getString("totalCost").toLong
+        val totalsBuf = scala.collection.mutable.ListBuffer.empty[Number]
+        totalsBuf += totalPrice
+        totalsBuf += totalCost
+        results += (product -> totalsBuf.toList)
+      }
+    } catch {
+      case e: Exception => e.printStackTrace
+    }
+    return results
+  }
+
+  def getFinanceReport(): HashMap[String, Number] = {
+    var results = new scala.collection.mutable.HashMap[String, Number]()
+    try {
+      val statement = connection.createStatement
+      val select = "select p.name, (sum(totalPrice) - sum(totalCost)) as revenue"
+      val from = "from cardItem as ci inner join product as p on p.id = ci.product"
+      val groupBy = "group by ci.product"
+      val rs = statement.executeQuery(f"$select $from $groupBy")
+      while (rs.next) {
+        val product = rs.getString("name")
+        val revenue = rs.getString("revenue").toLong
+        results += (product -> revenue)
       }
     } catch {
       case e: Exception => e.printStackTrace

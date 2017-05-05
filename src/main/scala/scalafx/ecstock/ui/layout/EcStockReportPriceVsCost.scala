@@ -15,26 +15,29 @@ import scalafx.ecstock.i18n.Messages
 
 
 /**
- * Form to show char product by total bought
+ * Form to show char customer by total bought
  */
-class EcStockReportFinance extends EcStockExample {
+class EcStockReportPriceVsCost extends EcStockExample {
 
   def getContent = {
-    val revenueValues = DBManager.getFinanceReport()
+    val productsValues = DBManager.getProductReport()
 
-    val productNames = revenueValues.keySet.toList
-    val years = ObservableBuffer(productNames)
+    val customerNames = productsValues.keySet.toList
+    val years = ObservableBuffer(customerNames)
     val xAxis = CategoryAxis(years)
     val yAxis = NumberAxis(Messages.data("dolars"), 0.0d, 5000.0d, 100.0d)
 
     def xyData(ys: Seq[Number]) = ObservableBuffer(years zip ys map (xy => XYChart.Data(xy._1, xy._2)))
     val totalBuf = scala.collection.mutable.ListBuffer.empty[Number]
     val totalCostBuf = scala.collection.mutable.ListBuffer.empty[Number]
-    for (productName <- productNames) totalBuf += revenueValues(productName)
-    val series = XYChart.Series(Messages.data("revenues"), xyData(totalBuf.toList.to[collection.mutable.Seq]))
+    for (customerName <- customerNames) totalBuf += productsValues(customerName)(0)
+    for (customerName <- customerNames) totalCostBuf += productsValues(customerName)(1)
+
+    val series = XYChart.Series(Messages.data("prices"), xyData(totalBuf.toList.to[collection.mutable.Seq]))
+    val seriesCost = XYChart.Series(Messages.data("costs"), xyData(totalCostBuf.toList.to[collection.mutable.Seq]))
 
     new BarChart[String, Number](xAxis, yAxis) {
-      data = Seq(series)
+      data = Seq(series, seriesCost)
       categoryGap = 25.0d
     }
   }

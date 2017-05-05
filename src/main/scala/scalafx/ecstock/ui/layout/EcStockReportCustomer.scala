@@ -11,12 +11,13 @@ import scalafx.scene.chart.XYChart._
 import scalafx.ecstock.models.DBManager
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.Seq
+import scalafx.ecstock.i18n.Messages
 
 
 /**
  * Form to show char customer by total bought
  */
-class EcStockReport extends EcStockExample {
+class EcStockReportCustomer extends EcStockExample {
 
   def getContent = {
     val customerTotal = DBManager.getCustomerReport()
@@ -24,13 +25,13 @@ class EcStockReport extends EcStockExample {
     val customerNames = customerTotal.keySet.toList
     val years = ObservableBuffer(customerNames)
     val xAxis = CategoryAxis(years)
-    val yAxis = NumberAxis("Dolar", 0.0d, 5000.0d, 100.0d)
+    val yAxis = NumberAxis(Messages.data("dolars"), 0.0d, 5000.0d, 100.0d)
 
     def xyData(ys: Seq[Number]) = ObservableBuffer(years zip ys map (xy => XYChart.Data(xy._1, xy._2)))
     val totalBuf = scala.collection.mutable.ListBuffer.empty[Number]
     for (customerName <- customerNames) totalBuf += customerTotal(customerName)
 
-    val series = XYChart.Series("Customers", xyData(totalBuf.toList.to[collection.mutable.Seq]))
+    val series = XYChart.Series(Messages.data("customers"), xyData(totalBuf.toList.to[collection.mutable.Seq]))
 
     new BarChart[String, Number](xAxis, yAxis) {
       data = Seq(series)
