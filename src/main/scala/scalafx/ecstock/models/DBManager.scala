@@ -33,13 +33,14 @@ object DBManager {
     var results = new scala.collection.mutable.HashMap[String, Number]()
     try {
       val statement = connection.createStatement
-      val select = "select name, sum(totalPrice) as total"
+      val select = "select name, CAST(sum(totalPrice) AS DECIMAL(18,0)) as total"
       val from = "from card as ca inner join customer as c on c.id = ca.customer"
       val where = getFilter(filterValue, "ca.")
       val groupBy = "group by ca.customer"
       val rs = statement.executeQuery(f"$select $from $where $groupBy")
       while (rs.next) {
         val customer = rs.getString("name")
+        //val total = "24,4".toLong
         val total = rs.getString("total").toLong
         results += (customer -> total)
       }
@@ -53,7 +54,7 @@ object DBManager {
     var results = new scala.collection.mutable.HashMap[String, List[Number]]()
     try {
       val statement = connection.createStatement
-      val select = "select p.name, sum(totalPrice) as totalPrice, sum(totalCost) as totalCost "
+      val select = "select p.name, CAST(sum(totalPrice) AS DECIMAL(18,0)) as totalPrice, CAST(sum(totalCost) AS DECIMAL(18,0)) as totalCost "
       val from = "from cardItem as ci inner join product as p on p.id = ci.product"
       val where = getFilter(filterValue, "ci.")
       val groupBy = "group by ci.product"
@@ -77,7 +78,7 @@ object DBManager {
     var results = new scala.collection.mutable.HashMap[String, Number]()
     try {
       val statement = connection.createStatement
-      val select = "select p.name, (sum(totalPrice) - sum(totalCost)) as revenue"
+      val select = "select p.name, CAST((sum(totalPrice) - sum(totalCost)) AS DECIMAL(18,0)) as revenue"
       val from = "from cardItem as ci inner join product as p on p.id = ci.product"
       val where = getFilter(filterValue, "ci.")
       val groupBy = "group by ci.product"

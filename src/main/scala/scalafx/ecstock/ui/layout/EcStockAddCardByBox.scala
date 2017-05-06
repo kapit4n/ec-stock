@@ -324,10 +324,12 @@ class EcStockAddCardByBox extends EcStockExample {
       onAction = (ae: ActionEvent) => {
 
           var totalPrice: Double = 0
+          var totalCost: Double = 0
           for (cardItem <- productCardItems) {
             totalPrice = totalPrice + cardItem.totalPrice
+            totalCost = totalCost + cardItem.totalCost
           }
-          val card = new ProductCard(0, customerCb.getValue().id, totalPrice, "Observations", "")
+          val card = new ProductCard(0, customerCb.getValue().id, totalPrice, totalCost, "Observations", "")
           DBManager.session.beginTransaction()
           DBManager.session.save(card)
           DBManager.session.getTransaction().commit()
