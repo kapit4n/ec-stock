@@ -1,5 +1,6 @@
 EcStock
 ================
+Desktop application built with scala fx.
 
 ## Prerequisites
 * sbt
