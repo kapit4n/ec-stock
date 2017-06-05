@@ -57,19 +57,23 @@ class EcStockAddCard extends EcStockExample {
   /*
    * Updates the amount of the product on the card and add if it doensn't exist
    */
-  def addProduct(product: Int, quantity: Int) = {
+  def addProduct(productId: Int, quantity: Int) = {
     var found = false
-    for (card <- productCardItems.filter(_.product == product)) {
-      card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity).toString
-      card.quantity = card.quantity + quantity
-      card.totalPrice = card.price * card.quantity
-      card.totalCost = card.unitCost * card.quantity
-      card.totalPriceProperty.value = card.totalPrice.toString
-      card.totalCostProperty.value = card.totalCost.toString
-      found = true
+    for (card <- productCardItems.filter(_.product == productId)) {
+      for (product <- products.filter(_.id == productId)) {
+        if (product.total >= (card.quantity + quantity)) {
+          card.quantityProperty.value = (card.quantityProperty.value.toInt + quantity).toString
+          card.quantity = card.quantity + quantity
+          card.totalPrice = card.price * card.quantity
+          card.totalCost = card.unitCost * card.quantity
+          card.totalPriceProperty.value = card.totalPrice.toString
+          card.totalCostProperty.value = card.totalCost.toString
+        }
+        found = true
+      }
     }
     if (!found) {
-      val items = products.filter(_.id == product)
+      val items = products.filter(_.id == productId)
       productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice,
         items(0).retailPrice, items(0).unitCost, items(0).unitCost, items(0).name, items(0).boxSize,
         items(0).boxPrice, items(0).boxCost)
@@ -80,13 +84,18 @@ class EcStockAddCard extends EcStockExample {
   /*
    * Updates the amount of the product on the card and add if it doensn't exist
    */
-  def updateTotalByQuantity(product: Int, quantity: Int) = {
-    for (card <- productCardItems.filter(_.product == product)) {
-      card.quantity = quantity
-      card.totalPrice = card.price * card.quantity
-      card.totalCost = card.unitCost * card.quantity
-      card.totalPriceProperty.value = card.totalPrice.toString
-      card.totalCostProperty.value = card.totalCost.toString
+  def updateTotalByQuantity(productId: Int, quantity: Int) = {
+    for (card <- productCardItems.filter(_.product == productId)) {
+      for (product <- products.filter(_.id == productId)) {
+        if (product.total >= quantity) {
+          card.quantity = quantity
+        }
+        card.totalPrice = card.price * card.quantity
+        card.totalCost = card.unitCost * card.quantity
+        card.quantityProperty.value = card.quantity.toString
+        card.totalPriceProperty.value = card.totalPrice.toString
+        card.totalCostProperty.value = card.totalCost.toString
+      }
     }
     recalculateCardTotalPrice()
   }
@@ -102,7 +111,7 @@ class EcStockAddCard extends EcStockExample {
     var row = 0
     containerGrid.children.clear()
     for (product <- products.filter(_.category == categoryId)) {
-        val imgAux = new ImageView {
+        val auxImage = new ImageView {
           val filePath =  product.imgSrc
           val inputStream = this.getClass.getResourceAsStream(filePath)
           if (inputStream == null) {
@@ -114,16 +123,16 @@ class EcStockAddCard extends EcStockExample {
         }
         var pName = product.name
         if (product.name.length > 10) pName = product.name.substring(0, 10)
-        val auxData = new Button(pName + "(" + product.total + ")", imgAux) {
+        val auxButton = new Button(pName + "(" + product.total + ")", auxImage) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
               addProduct(product.id, 1)
             }
           }
-        auxData.setStyle("-fx-font: 10 arial; -fx-base: #b6e7c9;");
+        auxButton.setStyle("-fx-font: 10 arial; -fx-base: #b6e7c9;");
 
-        GridPane.setConstraints(auxData, column, row, 1, 1)
-        containerGrid.children += auxData
+        GridPane.setConstraints(auxButton, column, row, 1, 1)
+        containerGrid.children += auxButton
 
         column = column + 1
         column = column % maxC
@@ -143,7 +152,7 @@ class EcStockAddCard extends EcStockExample {
     var row = 0
     containerGrid.children.clear()
     for (category <- categories) {
-        val imgAux = new ImageView {
+        val auxImage = new ImageView {
           val filePath =  category.imgSrc
           val inputStream = this.getClass.getResourceAsStream(filePath)
           if (inputStream == null) {
@@ -154,15 +163,15 @@ class EcStockAddCard extends EcStockExample {
           fitHeight = categoryImgHeight
         }
 
-        val auxData = new Button(category.name, imgAux) {
+        val auxButton = new Button(category.name, auxImage) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
               generateCategory(productsGrid, category.id)
             }
           }
 
-        GridPane.setConstraints(auxData, column, row, 1, 1)
-        containerGrid.children += auxData
+        GridPane.setConstraints(auxButton, column, row, 1, 1)
+        containerGrid.children += auxButton
 
         column = column + 1
         column = column % maxC
