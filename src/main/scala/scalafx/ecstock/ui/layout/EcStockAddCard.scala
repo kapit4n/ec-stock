@@ -74,9 +74,11 @@ class EcStockAddCard extends EcStockExample {
     }
     if (!found) {
       val items = products.filter(_.id == productId)
-      productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice,
-        items(0).retailPrice, items(0).unitCost, items(0).unitCost, items(0).name, items(0).boxSize,
-        items(0).boxPrice, items(0).boxCost)
+      if (items(0).total >= quantity) {
+        productCardItems += new ProductCardItem(0, 0, items(0).id, 1, items(0).retailPrice,
+          items(0).retailPrice, items(0).unitCost, items(0).unitCost, items(0).name, items(0).boxSize,
+          items(0).boxPrice, items(0).boxCost)
+      }
     }
     recalculateCardTotalPrice()
   }
