@@ -112,13 +112,15 @@ class EcStockAddCard extends EcStockExample {
           fitWidth = productImgWidth
           fitHeight = productImgHeight
         }
-
-        val auxData = new Button(product.name, imgAux) {
+        var pName = product.name
+        if (product.name.length > 10) pName = product.name.substring(0, 10)
+        val auxData = new Button(pName + "(" + product.total + ")", imgAux) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
               addProduct(product.id, 1)
             }
           }
+        auxData.setStyle("-fx-font: 10 arial; -fx-base: #b6e7c9;");
 
         GridPane.setConstraints(auxData, column, row, 1, 1)
         containerGrid.children += auxData
