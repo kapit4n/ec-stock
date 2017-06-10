@@ -14,3 +14,14 @@ Desktop application built with scala fx.
 
 ## Package
 * sbt universal:packageBin
+
+## Features
+* Register products
+* Register vendors
+* Register customers
+* Purchase Orders
+* Inventory Check
+* Orders/Shopping card
+* Customer/orders chart report
+* Product/Order Report
+
