@@ -45,6 +45,14 @@ object EcStock extends JFXApp {
   //
   // Example selection tree
   //
+
+  def goToPage(pagePath: String) = {
+    centerPane = PageDisplayer.choosePage("layout > " + pagePath)
+    splitPane.items.remove(0)
+    splitPane.items.add(0, centerPane)
+  }
+
+
   var centerPane = PageDisplayer.choosePage("dashBoard")
   val rootTreeItem = new TreeItem[String]("Inventary") {
     expanded = true
@@ -52,58 +60,152 @@ object EcStock extends JFXApp {
   }
 
   val screen = Screen.primary
-  val controlsView = new TreeView[String]() {
-    minWidth = 200
-    maxWidth = 200
-    editable = true
-    root = rootTreeItem
-    id = "page-tree"
-  }
-  controlsView.selectionModel().selectionMode = SelectionMode.Single
-  controlsView.selectionModel().selectedItem.onChange {
-    (_, _, newItem) => {
-      val pageCode = (newItem.isLeaf, Option(newItem.getParent)) match {
-        case (true, Some(parent)) => parent.getValue.toLowerCase + " > " + newItem.getValue
-        case (false, Some(_))     => "dashBoard - " + newItem.getValue
-        case (_, _)               => "dashBoard"
-      }
-      val pageCodeAux = (newItem.isLeaf, Option(newItem.getParent)) match {
-        case (true, Some(parent)) => newItem.getValue
-        case (false, Some(_))     => "dashBoard - " + newItem.getValue
-        case (_, _)               => "dashBoard"
-      }
-      val parentAux = (newItem.isLeaf, Option(newItem.getParent)) match {
-        case (true, Some(parent)) => parent.getValue.toLowerCase
-        case (false, Some(_))     => "dashBoard - " + newItem.getValue
-        case (_, _)               => "dashBoard"
-      }
-
-      if (pageCode.contains("dashBoard")) {
-        centerPane = PageDisplayer.choosePage(pageCode)
-        splitPane.items.remove(1)
-        splitPane.items.add(1, centerPane)
-      }
-      else {
-        centerPane = PageDisplayer.choosePage(parentAux + " > " + Messages.dataOpposite(pageCodeAux))
-        splitPane.items.remove(1)
-        splitPane.items.add(1, centerPane)
-      }
-    }
-  }
-
-  val scrollPane = new ScrollPane {
-    minWidth = 200
-    maxWidth = 200
-    fitToWidth = true
-    fitToHeight = true
-    id = "page-tree"
-    content = controlsView
-  }
 
   lazy val splitPane = new SplitPane {
     dividerPositions = 0
     id = "page-splitpane"
-    items.addAll(scrollPane, centerPane)
+    items.addAll(centerPane)
+  }
+
+
+  var menuBar = new MenuBar {
+    maxWidth = 1200
+    maxHeight = 35
+    menus = List(
+      new Menu("Root"),
+      new Menu("Ventas") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Add Card") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Card")
+            }
+          },
+          new MenuItem("Add Card By Box") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Card By Box")
+            }
+          },
+          new MenuItem("List Card") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Card")
+            }
+          }
+        )
+      },
+      new Menu("Compras") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Add Product Inventory") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Product Inventory")
+            }
+          },
+          new MenuItem("Add Product Inventory By Box") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Product Inventory By Box")
+            }
+          },
+          new MenuItem("Inventory") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Inventory")
+            }
+          }
+        )
+      },
+      new Menu("Administration") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Add Product") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Product")
+            }
+          },
+          new MenuItem("Add Category") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Category")
+            }
+          },
+          new MenuItem("Add Brand") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Brand")
+            }
+          },
+          new MenuItem("Add Customer") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Customer")
+            }
+          },
+          new MenuItem("List Product") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Product")
+            }
+          },
+          new MenuItem("List Category") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Category")
+            }
+          },
+          new MenuItem("List Brands") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Brand")
+            }
+          },
+          new MenuItem("List Customer") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Customer")
+            }
+          }
+        )
+      },
+      new Menu("Reports") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Sales") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Card")
+            }
+          },
+          new MenuItem("Buys") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Inventory")
+            }
+          },
+          new MenuItem("Sales By Customer") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Report Customer")
+            }
+          },
+          new MenuItem("Inventory") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Inventory")
+            }
+          },
+          new MenuItem("Report Price Vs Cost") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Report Price Vs Cost")
+            }
+          },
+          new MenuItem("Finance Report") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Report Finance")
+            }
+          }
+        )
+      }
+      )
   }
 
   //
@@ -123,11 +225,7 @@ object EcStock extends JFXApp {
             maxHeight = 76
             id = "mainToolBar"
             content = List(
-              new ImageView {
-                image = new Image(
-                  this.getClass.getResourceAsStream("/scalafx/ecstock/images/logo.png"))
-                margin = Insets(0, 0, 0, 0)
-              },
+              menuBar,
               new Region {
                 minWidth = 300
               },
@@ -136,9 +234,7 @@ object EcStock extends JFXApp {
                 minHeight = 66
                 id = "newButton"
                 onAction = (ae: ActionEvent) => {
-                  centerPane = PageDisplayer.choosePage("layout > Add Card")
-                  splitPane.items.remove(1)
-                  splitPane.items.add(1, centerPane)
+                  goToPage("Add Card")
                 }
               }
             )
