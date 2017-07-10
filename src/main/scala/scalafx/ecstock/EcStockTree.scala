@@ -70,10 +70,10 @@ object EcStockTree {
           prefHeight = 145
           contentDisplay = ContentDisplay.Top
           styleClass.clear()
-          styleClass += "sample-tile"
+          styleClass += "sample-title"
           onAction = (ae: ActionEvent) => {
-            EcStock.splitPane.items.remove(1)
-            EcStock.splitPane.items.add(1,
+            EcStock.splitPane.items.remove(0)
+            EcStock.splitPane.items.add(0,
               PageDisplayer.choosePage(groupName + " > " + sampleName))
           }
         }

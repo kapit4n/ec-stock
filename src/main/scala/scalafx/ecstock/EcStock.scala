@@ -72,7 +72,11 @@ object EcStock extends JFXApp {
     maxWidth = 1200
     maxHeight = 35
     menus = List(
-      new Menu("Root"),
+      new Menu("Root") {
+        onAction = (ae: ActionEvent) => {
+              
+            }
+      },
       new Menu("Ventas") {
         graphic = new ImageView {
           image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
@@ -225,18 +229,7 @@ object EcStock extends JFXApp {
             maxHeight = 76
             id = "mainToolBar"
             content = List(
-              menuBar,
-              new Region {
-                minWidth = 300
-              },
-              new Button {
-                minWidth = 250
-                minHeight = 66
-                id = "newButton"
-                onAction = (ae: ActionEvent) => {
-                  goToPage("Add Card")
-                }
-              }
+              menuBar
             )
           }
         }
