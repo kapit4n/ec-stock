@@ -114,7 +114,7 @@ object EcStock extends JFXApp {
           }
         )
       },
-      new Menu("Administration") {
+      new Menu("Products") {
         graphic = new ImageView {
           image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
           margin = Insets(0, 0, 0, 5)
@@ -125,19 +125,9 @@ object EcStock extends JFXApp {
               goToPage("Add Product")
             }
           },
-          new MenuItem("Add Category") {
-            onAction = (ae: ActionEvent) => {
-              goToPage("Add Category")
-            }
-          },
           new MenuItem("Add Brand") {
             onAction = (ae: ActionEvent) => {
               goToPage("Add Brand")
-            }
-          },
-          new MenuItem("Add Customer") {
-            onAction = (ae: ActionEvent) => {
-              goToPage("Add Customer")
             }
           },
           new MenuItem("List Product") {
@@ -145,19 +135,45 @@ object EcStock extends JFXApp {
               goToPage("List Product")
             }
           },
-          new MenuItem("List Category") {
-            onAction = (ae: ActionEvent) => {
-              goToPage("List Category")
-            }
-          },
           new MenuItem("List Brands") {
             onAction = (ae: ActionEvent) => {
               goToPage("List Brand")
+            }
+          }
+        )
+      },
+      new Menu("Customers") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Add Customer") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Customer")
             }
           },
           new MenuItem("List Customer") {
             onAction = (ae: ActionEvent) => {
               goToPage("List Customer")
+            }
+          }
+        )
+      },
+      new Menu("Categories") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Add Category") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Add Category")
+            }
+          },
+          new MenuItem("List Category") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("List Category")
             }
           }
         )
@@ -178,14 +194,22 @@ object EcStock extends JFXApp {
               goToPage("List Inventory")
             }
           },
-          new MenuItem("Sales By Customer") {
-            onAction = (ae: ActionEvent) => {
-              goToPage("Report Customer")
-            }
-          },
           new MenuItem("Inventory") {
             onAction = (ae: ActionEvent) => {
               goToPage("Inventory")
+            }
+          }
+        )
+      },
+      new Menu("Graphics") {
+        graphic = new ImageView {
+          image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))
+          margin = Insets(0, 0, 0, 5)
+        }
+        items = List(
+          new MenuItem("Sales By Customer") {
+            onAction = (ae: ActionEvent) => {
+              goToPage("Report Customer")
             }
           },
           new MenuItem("Report Price Vs Cost") {
