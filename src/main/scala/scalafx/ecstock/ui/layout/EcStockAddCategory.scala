@@ -62,8 +62,8 @@ class EcStockAddCategory extends EcStockExample {
           DBManager.session.save(category);
           DBManager.session.getTransaction().commit();
           DBManager.session.clear()
-          EcStock.splitPane.items.remove(1)
-            EcStock.splitPane.items.add(1,
+          EcStock.splitPane.items.remove(0)
+            EcStock.splitPane.items.add(0,
               PageDisplayer.choosePage("layout > " + EcStockListCategory.objectName))
       }
     }

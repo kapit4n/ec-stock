@@ -53,11 +53,7 @@ object EcStock extends JFXApp {
   }
 
 
-  var centerPane = PageDisplayer.choosePage("dashBoard")
-  val rootTreeItem = new TreeItem[String]("Inventary") {
-    expanded = true
-    children = EcStockTree.create().getTree
-  }
+  var centerPane = PageDisplayer.choosePage("layout > Add Card")
 
   val screen = Screen.primary
 
@@ -72,11 +68,6 @@ object EcStock extends JFXApp {
     maxWidth = 1200
     maxHeight = 35
     menus = List(
-      new Menu("Root") {
-        onAction = (ae: ActionEvent) => {
-              
-            }
-      },
       new Menu("Ventas") {
         graphic = new ImageView {
           image = new Image(this.getClass.getResourceAsStream("/scalafx/ecstock/images/crumb-selected-focused.png"))

@@ -191,8 +191,8 @@ class EcStockAddProduct extends EcStockExample {
           DBManager.session.save(product);
           DBManager.session.getTransaction().commit();
           DBManager.session.clear()
-          EcStock.splitPane.items.remove(1)
-            EcStock.splitPane.items.add(1,
+          EcStock.splitPane.items.remove(0)
+            EcStock.splitPane.items.add(0,
               PageDisplayer.choosePage("layout > " + EcStockListProduct.objectName))
       }
     }

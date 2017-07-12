@@ -61,8 +61,8 @@ class EcStockAddCustomer extends EcStockExample {
             DBManager.session.save(new Customer(0, nameTxt.getText(), addressTxt.getText()))
             DBManager.session.getTransaction().commit()
             DBManager.session.clear()
-            EcStock.splitPane.items.remove(1)
-            EcStock.splitPane.items.add(1,
+            EcStock.splitPane.items.remove(0)
+            EcStock.splitPane.items.add(0,
               PageDisplayer.choosePage("layout > " + EcStockListCustomer.objectName))
         }
       }

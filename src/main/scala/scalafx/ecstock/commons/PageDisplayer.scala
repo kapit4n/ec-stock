@@ -37,15 +37,10 @@ import scalafx.scene.layout.{Priority, VBox}
  */
 object PageDisplayer {
 
-  def choosePage(value: String = "dashBoard"): Node = {
+  def choosePage(value: String = ""): Node = {
     value match {
-      case "dashBoard" => displayPage(new DashboardPage())
       case _ =>
-        if (value.startsWith("dashBoard - ")) {
-          displayPage(new DashboardPage(value.split("-")(1).trim()))
-        } else {
-          displayPage(EcStockTabbedPage.buildTab(value.split(">")(1).trim(), value.split(">")(0).trim()))
-        }
+        displayPage(EcStockTabbedPage.buildTab(value.split(">")(1).trim(), value.split(">")(0).trim()))
     }
   }
 
