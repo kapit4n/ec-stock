@@ -74,8 +74,8 @@ class EcStockAddCategory extends EcStockExample {
 
     val cancelBtn = new Button(Messages.data("cancel")) {
       onAction = (ae: ActionEvent) => {
-        EcStock.splitPane.items.remove(1)
-            EcStock.splitPane.items.add(1,
+        EcStock.splitPane.items.remove(0)
+            EcStock.splitPane.items.add(0,
               PageDisplayer.choosePage("layout > " + EcStockListCategory.objectName))
       }
     }
