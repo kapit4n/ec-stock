@@ -39,8 +39,8 @@ class EcStockAddCard extends EcStockExample {
   var totalPriceTxt:TextField = _
 
   val productsGrid = new GridPane {
-    hgap = 3
-    vgap = 3
+    hgap = 4
+    vgap = 4
     gridLinesVisible = true
     margin = Insets(18)
     //style = "-fx-background-color: yellow"
@@ -259,7 +259,7 @@ class EcStockAddCard extends EcStockExample {
     detailGrid.setPrefSize(350, 450)
     GridPane.setConstraints(detailGrid, 0, 0, 2, 1)
 
-    productsGrid.setPrefSize(650, 450)
+    productsGrid.setPrefSize(750, 450)
     GridPane.setConstraints(productsGrid, 1, 0, 2, 2)
 
     val calculator = new Button("Calculator", calculatorImg) {
@@ -304,7 +304,7 @@ class EcStockAddCard extends EcStockExample {
       margin = Insets(18)
       //style = "-fx-background-color: blue"
     }
-    categoriesGrid.setPrefSize(650, 110)
+    categoriesGrid.setPrefSize(750, 110)
     GridPane.setConstraints(categoriesGrid, 1, 2, 1, 2)
 
     generateCategories(categoriesGrid)
