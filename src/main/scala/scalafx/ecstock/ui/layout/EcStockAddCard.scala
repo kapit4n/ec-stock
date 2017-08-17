@@ -30,19 +30,19 @@ class EcStockAddCard extends EcStockExample {
   var categories: ObservableBuffer[Category] = ObservableBuffer[Category]()
   var customers: ObservableBuffer[Customer] = ObservableBuffer[Customer]()
 
-  val productImgWidth = 70
-  val productImgHeight = 70
-  val categoryImgWidth = 70
-  val categoryImgHeight = 60
+  val productImgWidth = 45
+  val productImgHeight = 45
+  val categoryImgWidth = 45
+  val categoryImgHeight = 45
 
   var totalLbl:Label = _
   var totalPriceTxt:TextField = _
 
   val productsGrid = new GridPane {
-    hgap = 4
-    vgap = 4
+    hgap = 10
+    vgap = 10
     gridLinesVisible = true
-    margin = Insets(18)
+    margin = Insets(5)
     //style = "-fx-background-color: yellow"
   }
 
@@ -107,7 +107,7 @@ class EcStockAddCard extends EcStockExample {
    */
   def generateCategory(containerGrid: GridPane, categoryId: Int) = {
     var found = false
-    val maxC = 6
+    val maxC = 10
     val maxR = 3
     var column = 0
     var row = 0
@@ -124,14 +124,16 @@ class EcStockAddCard extends EcStockExample {
           fitHeight = productImgHeight
         }
         var pName = product.name
-        if (product.name.length > 10) pName = product.name.substring(0, 10)
+        if (product.name.length > 7 && product.total < 10) pName = product.name.substring(0, 7)
+        else if (product.name.length > 6 && product.total > 9 && product.total < 100) pName = product.name.substring(0, 6)
+        else if (product.name.length > 5 && product.total > 99 && product.total < 1000) pName = product.name.substring(0, 5)
         val auxButton = new Button(pName + "(" + product.total + ")", auxImage) {
             contentDisplay = ContentDisplay.Top
             onAction = (ae: ActionEvent) => {
               addProduct(product.id, 1)
             }
           }
-        auxButton.setStyle("-fx-font: 10 arial; -fx-base: #b6e7c9;");
+        auxButton.setStyle("-fx-font: 9 arial; -fx-base: #b6e7c9;");
 
         GridPane.setConstraints(auxButton, column, row, 1, 1)
         containerGrid.children += auxButton
@@ -148,7 +150,7 @@ class EcStockAddCard extends EcStockExample {
    */
   def generateCategories(containerGrid: GridPane) = {
     var found = false
-    val maxC = 6
+    val maxC = 8
     val maxR = 3
     var column = 0
     var row = 0
@@ -185,6 +187,7 @@ class EcStockAddCard extends EcStockExample {
 
   def getContent = {
     products = ObservableBuffer[Product](DBManager.getProducts(DBManager.ALL))
+    products = products.filter(p => p.total > 0)
     categories = ObservableBuffer[Category](DBManager.getCategories())
     customers = ObservableBuffer[Customer](DBManager.getCustomers())
 
