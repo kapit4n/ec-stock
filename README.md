@@ -2,6 +2,9 @@ EcStock
 ================
 Desktop application built with scala fx.
 
+<img src="https://raw.githubusercontent.com/kapit4n/ec-stock/master/mockups/ec-stock-shopping-cart.png" width="100%"/>
+
+
 # Planning
 [Planning Board](https://github.com/kapit4n/ec-stock/projects/1)
 
