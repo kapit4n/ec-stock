@@ -30,17 +30,17 @@ class EcStockAddCardByBox extends EcStockExample {
   var categories: ObservableBuffer[Category] = ObservableBuffer[Category]()
   var customers: ObservableBuffer[Customer] = ObservableBuffer[Customer]()
 
-  val productImgWidth = 70
-  val productImgHeight = 70
-  val categoryImgWidth = 70
-  val categoryImgHeight = 60
+  val productImgWidth = 40
+  val productImgHeight = 40
+  val categoryImgWidth = 50
+  val categoryImgHeight = 50
 
   var totalLbl:Label = _
   var totalTxt:TextField = _
 
   val productsGrid = new GridPane {
-    hgap = 3
-    vgap = 3
+    hgap = 8
+    vgap = 8
     gridLinesVisible = true
     margin = Insets(18)
     //style = "-fx-background-color: yellow"
@@ -102,8 +102,8 @@ class EcStockAddCardByBox extends EcStockExample {
    */
   def generateCategory(containerGrid: GridPane, categoryId: Int) = {
     var found = false
-    val maxC = 6
-    val maxR = 3
+    val maxC = 8
+    val maxR = 8
     var column = 0
     var row = 0
     containerGrid.children.clear()
@@ -141,7 +141,7 @@ class EcStockAddCardByBox extends EcStockExample {
    */
   def generateCategories(containerGrid: GridPane) = {
     var found = false
-    val maxC = 6
+    val maxC = 8
     val maxR = 3
     var column = 0
     var row = 0

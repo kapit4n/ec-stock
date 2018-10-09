@@ -61,7 +61,7 @@ class EcStockReportPriceVsCost extends EcStockExample {
     
     val lastMonthFilter = new Button(Messages.data("thisMonth")) {
       onAction = (ae: ActionEvent) => {
-        var chart = buildChart(DBManager.getProductReport(DBManager.LAST_MONTH))
+	var chart = buildChart(DBManager.getProductReport(DBManager.LAST_MONTH))
         childrenVBox.children = List(filtersGrid, chart)
       }
     }
@@ -69,7 +69,7 @@ class EcStockReportPriceVsCost extends EcStockExample {
 
     val allFilter = new Button(Messages.data("all")) {
       onAction = (ae: ActionEvent) => {
-        var chart = buildChart(DBManager.getProductReport(DBManager.ALL))
+	var chart = buildChart(DBManager.getProductReport(DBManager.ALL))
         childrenVBox.children = List(filtersGrid, chart)
       }
     }
@@ -89,7 +89,7 @@ class EcStockReportPriceVsCost extends EcStockExample {
 
     val rangeFilter = new Button(Messages.data("searchRange")) {
       onAction = (ae: ActionEvent) => {
-        DBManager.fromDate = fromPicker.getValue()
+	DBManager.fromDate = fromPicker.getValue()
         DBManager.toDate = toPicker.getValue()
         var chart = buildChart(DBManager.getProductReport(DBManager.RANGE))
         childrenVBox.children = List(filtersGrid, chart)
@@ -104,7 +104,7 @@ class EcStockReportPriceVsCost extends EcStockExample {
       margin = Insets(18)
       children ++= Seq(todayFilter, lastMonthFilter, allFilter, fromPicker, toPicker, rangeFilter)
     }
-    var chart = buildChart(DBManager.getProductReport(DBManager.ALL))
+    var chart = buildChart(DBManager.getProductReport(DBManager.TODAY))
     childrenVBox = new VBox {children = List(filtersGrid, chart)}
 
     new VBox {
